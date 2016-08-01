@@ -1,3 +1,4 @@
+/* global c */
 function createShaderProgram(gl, vs, fs) {
   var program = gl.createProgram();
 
