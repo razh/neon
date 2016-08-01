@@ -34,27 +34,39 @@ function render(el) {
     gl,
 
     'attribute vec3 p;' +
+    'attribute vec3 c;' +
+    'varying vec3 vc;' +
     'void main() {' +
+      'vc = c;' +
       'gl_Position = vec4(p, 1.0);' +
     '}',
 
+    'varying lowp vec3 vc;' +
     'void main() {' +
-      'gl_FragColor = vec4(1.0);' +
+      'gl_FragColor = vec4(vc, 1.0);' +
     '}'
   );
 
   gl.useProgram(program);
 
-  var array = [
+  var position = [
     -0.5, -0.5, 0,
     -0.5, 0.5, 0,
     0.5, -0.5, 0,
     0.5, 0.5, 0
   ];
 
-  setFloat32Attribute(gl, program, 'p', 3, array);
+  var color = [
+    1, 1, 1,
+    1, 0, 0,
+    0, 1, 0,
+    0, 0, 1
+  ];
 
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, array.length / 3);
+  setFloat32Attribute(gl, program, 'p', 3, position);
+  setFloat32Attribute(gl, program, 'c', 3, color);
+
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, position.length / 3);
 }
 
 c.width = window.innerWidth;
