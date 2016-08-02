@@ -1,0 +1,22 @@
+{
+  "name": "neon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "modules/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razh/neon.git"
+  },
+  "author": "razh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/razh/neon/issues"
+  },
+  "homepage": "https://github.com/razh/neon#readme",
+  "devDependencies": {
+    "eslint": "^3.2.2"
+  }
+}
