@@ -24,11 +24,42 @@ export function vec3_add(a, b) {
   return a;
 }
 
+export function vec3_subVectors(v, a, b) {
+  v.x = a.x - b.x;
+  v.y = a.y - b.y;
+  v.z = a.z - b.z;
+  return v;
+}
+
 export function vec3_multiplyScalar(v, scalar) {
   v.x *= scalar;
   v.y *= scalar;
   v.z *= scalar;
   return v;
+}
+
+export function vec3_divideScalar(v, scalar) {
+  return vec3_multiplyScalar(v, 1 / scalar);
+}
+
+export function vec3_cross(a, b) {
+  var x = a.x;
+  var y = a.y;
+  var z = a.z;
+
+  a.x = y * b.z - z * b.y;
+  a.y = z * b.x - x * b.z;
+  a.z = x * b.y - y * b.x;
+
+  return a;
+}
+
+export function vec3_length(v) {
+  return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+export function vec3_normalize(v) {
+  return vec3_divideScalar(v, vec3_length(v));
 }
 
 export function vec3_applyQuaternion(v, q) {
