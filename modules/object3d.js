@@ -9,7 +9,7 @@ import {
   vec3_applyQuaternion,
   vec3_X,
   vec3_Y,
-  vec3_Z
+  vec3_Z,
 } from './vec3';
 
 export function object3d_create() {

@@ -17,7 +17,7 @@ export function boxGeom_create(width, height, depth) {
     -halfWidth, halfHeight, -halfDepth,
     -halfWidth, halfHeight, halfDepth,
     -halfWidth, -halfHeight, -halfDepth,
-    -halfWidth, -halfHeight, halfDepth
+    -halfWidth, -halfHeight, halfDepth,
   ];
 
   var faces = [
@@ -32,7 +32,7 @@ export function boxGeom_create(width, height, depth) {
     5, 7, 0,
     7, 2, 0,
     1, 3, 4,
-    3, 6, 4
+    3, 6, 4,
   ];
 
   return geom_computeFaceNormals(geom_push(geom_create(), vertices, faces));

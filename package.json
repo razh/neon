@@ -4,6 +4,7 @@
   "description": "",
   "main": "modules/index.js",
   "scripts": {
+    "lint": "eslint ./modules",
     "test": "test"
   },
   "repository": {

@@ -8,6 +8,6 @@ export function face3_create(a, b, c) {
     c: c,
     normal: vec3_create(),
     color: color_create(),
-    vertexColors: []
+    vertexColors: [],
   };
 }

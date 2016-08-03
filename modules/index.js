@@ -54,14 +54,14 @@ function render(el) {
     -0.5, -0.5, 0,
     -0.5, 0.5, 0,
     0.5, -0.5, 0,
-    0.5, 0.5, 0
+    0.5, 0.5, 0,
   ];
 
   var color = [
     1, 1, 1,
     1, 0, 0,
     0, 1, 0,
-    0, 0, 1
+    0, 0, 1,
   ];
 
   setFloat32Attribute(gl, program, 'p', 3, position);

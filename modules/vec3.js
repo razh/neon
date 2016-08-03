@@ -2,7 +2,7 @@ export function vec3_create(x, y, z) {
   return {
     x: x || 0,
     y: y || 0,
-    z: z || 0
+    z: z || 0,
   };
 }
 

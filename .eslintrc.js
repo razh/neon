@@ -19,4 +19,12 @@ module.exports = {
     Uint8Array: false,
     Uint8ClampedArray: false,
   },
+  rules: {
+    'comma-dangle': ['error', 'always-multiline'],
+    'no-multi-spaces': 'error',
+    'object-curly-spacing': ['error', 'always'],
+    'padded-blocks': ['error', 'never'],
+    'space-before-function-paren': ['error', 'never'],
+    'space-in-parens': ['error', 'never'],
+  }
 };

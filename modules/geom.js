@@ -5,13 +5,13 @@ import {
   vec3_copy,
   vec3_cross,
   vec3_subVectors,
-  vec3_normalize
+  vec3_normalize,
 } from './vec3';
 
 export function geom_create() {
-  return  {
+  return {
     vertices: [],
-    faces: []
+    faces: [],
   };
 }
 

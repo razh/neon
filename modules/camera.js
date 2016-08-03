@@ -14,7 +14,7 @@ export function camera_create(fov, aspect, near, far) {
       aspect: aspect || 1,
       up: vec3_clone(vec3_Y),
       matrixWorldInverse: mat4_create(),
-      projectionMatrix: mat4_create()
+      projectionMatrix: mat4_create(),
     }
   ));
 }
@@ -40,7 +40,7 @@ export function camera_updateProjectionMatrix(camera) {
     x, 0, 0, 0,
     0, y, 0, 0,
     a, b, c, -1,
-    0, 0, d, 0
+    0, 0, d, 0,
   ]);
 
   return camera;
