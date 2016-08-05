@@ -1,9 +1,11 @@
 {
   "name": "neon",
   "version": "1.0.0",
-  "description": "",
+  "description": "neon",
   "main": "modules/index.js",
   "scripts": {
+    "build": "rollup modules/index.js -o dist/bundle.js && npm run minify",
+    "minify": "uglifyjs dist/bundle.js -c -m -o dist/bundle.min.js",
     "lint": "eslint ./modules",
     "test": "test"
   },
@@ -18,6 +20,8 @@
   },
   "homepage": "https://github.com/razh/neon#readme",
   "devDependencies": {
-    "eslint": "^3.2.2"
+    "eslint": "^3.2.2",
+    "rollup": "^0.34.3",
+    "uglify-js": "^2.7.0"
   }
 }
