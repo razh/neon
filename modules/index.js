@@ -21,9 +21,14 @@ function setFloat32Attribute(gl, program, name, size, array) {
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
 
-  var index = gl.getAttribLocation(program, name);
-  gl.enableVertexAttribArray(index);
-  gl.vertexAttribPointer(index, size, gl.FLOAT, false, 0, 0);
+  var location = gl.getAttribLocation(program, name);
+  gl.enableVertexAttribArray(location);
+  gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
+}
+
+function setMat4Uniform(gl, program, name, array) {
+  var location = gl.getUniformLocation(program, name);
+  gl.uniformMatrix4fv(location, false, array);
 }
 
 function render(el) {
@@ -34,12 +39,13 @@ function render(el) {
   var program = createShaderProgram(
     gl,
 
+    'uniform mat4 M;' +
     'attribute vec3 p;' +
     'attribute vec3 c;' +
     'varying vec3 vc;' +
     'void main() {' +
       'vc = c;' +
-      'gl_Position = vec4(p, 1.0);' +
+      'gl_Position = M * vec4(p, 1.0);' +
     '}',
 
     'varying lowp vec3 vc;' +
@@ -63,6 +69,13 @@ function render(el) {
     0, 1, 0,
     0, 0, 1,
   ];
+
+  setMat4Uniform(gl, program, 'M', new Float32Array([
+    0.5, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0.25, 0, 0, 1,
+  ]));
 
   setFloat32Attribute(gl, program, 'p', 3, position);
   setFloat32Attribute(gl, program, 'c', 3, color);
