@@ -54,6 +54,22 @@ export function vec3_cross(a, b) {
   return a;
 }
 
+export function vec3_crossVectors(v, a, b) {
+  var ax = a.x;
+  var ay = a.y;
+  var az = a.z;
+
+  var bx = b.x;
+  var by = b.y;
+  var bz = b.z;
+
+  v.x = ay * bz - az * by;
+  v.y = az * bx - ax * bz;
+  v.z = ax * by - ay * bx;
+
+  return v;
+}
+
 export function vec3_length(v) {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
