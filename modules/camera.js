@@ -1,5 +1,6 @@
-import { mat4_create } from './mat4';
+import { mat4_create, mat4_lookAt } from './mat4';
 import { object3d_create } from './object3d';
+import { quat_setFromRotationMatrix } from './quat';
 import { vec3_clone, vec3_Y } from './vec3';
 
 var DEG_TO_RAD = Math.PI / 180;
@@ -18,6 +19,15 @@ export function camera_create(fov, aspect, near, far) {
     }
   ));
 }
+
+export var camera_lookAt = (function() {
+  var m1 = mat4_create();
+
+  return function(camera, vector) {
+    mat4_lookAt(m1, vector, camera.position, camera.up);
+    quat_setFromRotationMatrix(camera.quaternion, m1);
+  };
+}());
 
 export function camera_updateProjectionMatrix(camera) {
   var near = camera.near;
