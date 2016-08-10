@@ -35,8 +35,8 @@ export function camera_updateProjectionMatrix(camera) {
 
   var top = near * Math.tan(camera.fov * 0.5 * DEG_TO_RAD);
   var bottom = -top;
-  var left = bottom * this.aspect;
-  var right = top * this.aspect;
+  var left = bottom * camera.aspect;
+  var right = top * camera.aspect;
 
   var x = 2 * near / (right - left);
   var y = 2 * near / (top - bottom);
