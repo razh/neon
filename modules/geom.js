@@ -62,7 +62,7 @@ export var geom_computeFaceNormals = (function() {
 
       vec3_normalize(cb);
 
-      vec3_copy(face.normal);
+      vec3_copy(face.normal, cb);
     }
 
     return geom;
