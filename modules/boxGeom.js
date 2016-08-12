@@ -1,6 +1,10 @@
+// @flow
+
+import type { Geometry } from './geom';
+
 import { geom_create, geom_push, geom_computeFaceNormals } from './geom';
 
-export function boxGeom_create(width, height, depth) {
+export function boxGeom_create(width: number, height: number, depth: number): Geometry {
   var halfWidth = width / 2;
   var halfHeight = height / 2;
   var halfDepth = depth / 2;

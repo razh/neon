@@ -1,3 +1,9 @@
+// @flow
+
+import type { Vector3 } from './vec3';
+
+export type Matrix4 = Float32Array;
+
 import {
   vec3_create,
   vec3_crossVectors,
@@ -20,7 +26,7 @@ export var mat4_lookAt = (function() {
   var y = vec3_create();
   var z = vec3_create();
 
-  return function(m, eye, target, up) {
+  return function(m: Matrix4, eye: Vector3, target: Vector3, up: Vector3) {
     vec3_normalize(vec3_subVectors(z, eye, target));
 
     if (!vec3_length(z)) {

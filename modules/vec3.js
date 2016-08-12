@@ -1,4 +1,14 @@
-export function vec3_create(x, y, z) {
+// @flow
+
+import type { Quaternion } from './quat';
+
+export type Vector3 = {
+  x: number,
+  y: number,
+  z: number,
+};
+
+export function vec3_create(x: ?number, y: ?number, z: ?number) {
   return {
     x: x || 0,
     y: y || 0,
@@ -6,43 +16,43 @@ export function vec3_create(x, y, z) {
   };
 }
 
-export function vec3_clone(v) {
+export function vec3_clone(v: Vector3) {
   return vec3_create(v.x, v.y, v.z);
 }
 
-export function vec3_copy(a, b) {
+export function vec3_copy(a: Vector3, b: Vector3) {
   a.x = b.x;
   a.y = b.y;
   a.z = b.z;
   return a;
 }
 
-export function vec3_add(a, b) {
+export function vec3_add(a: Vector3, b: Vector3) {
   a.x += b.x;
   a.y += b.y;
   a.z += b.z;
   return a;
 }
 
-export function vec3_subVectors(v, a, b) {
+export function vec3_subVectors(v: Vector3, a: Vector3, b: Vector3) {
   v.x = a.x - b.x;
   v.y = a.y - b.y;
   v.z = a.z - b.z;
   return v;
 }
 
-export function vec3_multiplyScalar(v, scalar) {
+export function vec3_multiplyScalar(v: Vector3, scalar: number) {
   v.x *= scalar;
   v.y *= scalar;
   v.z *= scalar;
   return v;
 }
 
-export function vec3_divideScalar(v, scalar) {
+export function vec3_divideScalar(v: Vector3, scalar: number) {
   return vec3_multiplyScalar(v, 1 / scalar);
 }
 
-export function vec3_cross(a, b) {
+export function vec3_cross(a: Vector3, b: Vector3) {
   var x = a.x;
   var y = a.y;
   var z = a.z;
@@ -54,7 +64,7 @@ export function vec3_cross(a, b) {
   return a;
 }
 
-export function vec3_crossVectors(v, a, b) {
+export function vec3_crossVectors(v: Vector3, a: Vector3, b: Vector3) {
   var ax = a.x;
   var ay = a.y;
   var az = a.z;
@@ -70,15 +80,15 @@ export function vec3_crossVectors(v, a, b) {
   return v;
 }
 
-export function vec3_length(v) {
+export function vec3_length(v: Vector3) {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
-export function vec3_normalize(v) {
+export function vec3_normalize(v: Vector3) {
   return vec3_divideScalar(v, vec3_length(v));
 }
 
-export function vec3_applyQuaternion(v, q) {
+export function vec3_applyQuaternion(v: Vector3, q: Quaternion) {
   var x = v.x, y = v.y, z = v.z;
   var qx = q.x, qy = q.y, qz = q.z, qw = q.w;
 

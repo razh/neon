@@ -1,3 +1,9 @@
+import { camera_create } from './camera';
+import { boxGeom_create } from './boxGeom';
+
+camera_create();
+boxGeom_create(1, 1, 1);
+
 /* global c */
 function createShaderProgram(gl, vs, fs) {
   var program = gl.createProgram();

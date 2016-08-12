@@ -1,3 +1,13 @@
+//  @flow
+
+import type { Vector3 } from './vec3';
+import type { Face3 } from './face3';
+
+export type Geometry = {
+  vertices: Array<Vector3>,
+  faces: Array<Face3>,
+};
+
 import { face3_create } from './face3';
 
 import {
@@ -8,14 +18,14 @@ import {
   vec3_normalize,
 } from './vec3';
 
-export function geom_create() {
+export function geom_create(): Geometry {
   return {
     vertices: [],
     faces: [],
   };
 }
 
-export function geom_push(geom, vertices, faces) {
+export function geom_push(geom: Geometry, vertices: Array<number>, faces: Array<number>) {
   var offset = geom.vertices.length;
 
   var i;
@@ -46,7 +56,7 @@ export var geom_computeFaceNormals = (function() {
   var cb = vec3_create();
   var ab = vec3_create();
 
-  return function(geom) {
+  return function(geom: Geometry) {
     var faces = geom.faces;
 
     for (var f = 0; f < faces.length; f++) {
