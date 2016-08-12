@@ -4,8 +4,7 @@
   "description": "neon",
   "main": "modules/index.js",
   "scripts": {
-    "build": "rollup modules/index.js -o dist/bundle.js && npm run minify",
-    "minify": "uglifyjs dist/bundle.js -c -m -o dist/bundle.min.js",
+    "gulp": "gulp",
     "lint": "eslint ./modules",
     "test": "test"
   },
@@ -20,8 +19,17 @@
   },
   "homepage": "https://github.com/razh/neon#readme",
   "devDependencies": {
-    "eslint": "^3.2.2",
-    "rollup": "^0.34.3",
-    "uglify-js": "^2.7.0"
+    "browser-sync": "2.14.0",
+    "del": "2.2.1",
+    "eslint": "3.2.2",
+    "gulp": "3.9.1",
+    "gulp-htmlmin": "2.0.0",
+    "gulp-if": "2.0.1",
+    "gulp-load-plugins": "1.2.4",
+    "gulp-size": "2.1.0",
+    "gulp-uglify": "2.0.0",
+    "gulp-zip": "3.2.0",
+    "rollup": "0.34.7",
+    "run-sequence": "1.2.2"
   }
 }
