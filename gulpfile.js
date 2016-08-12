@@ -6,6 +6,7 @@ const $ = require('gulp-load-plugins')();
 
 const browserSync = require('browser-sync').create();
 const del = require('del');
+const flow = require('rollup-plugin-flow');
 const rollup = require('rollup').rollup;
 const runSequence = require('run-sequence');
 
@@ -23,7 +24,10 @@ gulp.task('browser-sync', () => {
 gulp.task('clean', () => del(['build', 'dist']));
 
 gulp.task('rollup', () => {
-  return rollup({ entry: 'modules/index.js' })
+  return rollup({
+    entry: 'modules/index.js',
+    plugins: [flow()],
+  })
     .then(bundle => bundle.write({
       dest: 'build/bundle.js',
       format: 'iife',

@@ -6,6 +6,7 @@
   "scripts": {
     "gulp": "gulp",
     "lint": "eslint ./modules",
+    "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "test": "test"
   },
   "repository": {
@@ -19,9 +20,12 @@
   },
   "homepage": "https://github.com/razh/neon#readme",
   "devDependencies": {
+    "babel-eslint": "6.1.2",
     "browser-sync": "2.14.0",
     "del": "2.2.1",
     "eslint": "3.2.2",
+    "eslint-plugin-flowtype": "2.6.3",
+    "flow-bin": "0.30.0",
     "gulp": "3.9.1",
     "gulp-htmlmin": "2.0.0",
     "gulp-if": "2.0.1",
@@ -30,6 +34,7 @@
     "gulp-uglify": "2.0.0",
     "gulp-zip": "3.2.0",
     "rollup": "0.34.7",
+    "rollup-plugin-flow": "1.0.1",
     "run-sequence": "1.2.2"
   }
 }

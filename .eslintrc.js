@@ -3,6 +3,10 @@ module.exports = {
   env: {
     browser: true,
   },
+  parser: 'babel-eslint',
+  plugins: [
+    'flowtype',
+  ],
   parserOptions: {
     sourceType: 'module',
   },
@@ -26,5 +30,25 @@ module.exports = {
     'padded-blocks': ['error', 'never'],
     'space-before-function-paren': ['error', 'never'],
     'space-in-parens': ['error', 'never'],
-  }
+
+    'flowtype/define-flow-type': 'warning',
+    "flowtype/require-parameter-type": 'warning',
+    'flowtype/require-return-type': [
+      'warning',
+      'always',
+      {
+        annotateUndefined: 'never'
+      }
+    ],
+    'flowtype/space-after-type-colon': ['warning', 'always'],
+    'flowtype/space-before-type-colon': ['warning', 'never'],
+    'flowtype/type-id-match': ['warning', '^([A-Z][a-z0-9]+)+Type$'],
+    'flowtype/use-flow-type': 'warning',
+    'flowtype/valid-syntax': 'warning',
+  },
+  settings: {
+    flowtype: {
+      onlyFilesWithFlowAnnotation: false,
+    }
+  },
 };
