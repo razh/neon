@@ -1,5 +1,8 @@
 module.exports = {
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'plugin:flowtype/recommended',
+  ],
   env: {
     browser: true,
   },
@@ -30,25 +33,5 @@ module.exports = {
     'padded-blocks': ['error', 'never'],
     'space-before-function-paren': ['error', 'never'],
     'space-in-parens': ['error', 'never'],
-
-    'flowtype/define-flow-type': 'warning',
-    "flowtype/require-parameter-type": 'warning',
-    'flowtype/require-return-type': [
-      'warning',
-      'always',
-      {
-        annotateUndefined: 'never'
-      }
-    ],
-    'flowtype/space-after-type-colon': ['warning', 'always'],
-    'flowtype/space-before-type-colon': ['warning', 'never'],
-    'flowtype/type-id-match': ['warning', '^([A-Z][a-z0-9]+)+Type$'],
-    'flowtype/use-flow-type': 'warning',
-    'flowtype/valid-syntax': 'warning',
-  },
-  settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: false,
-    }
   },
 };
