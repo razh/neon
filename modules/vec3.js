@@ -1,5 +1,6 @@
 // @flow
 
+import type { Matrix4 } from './mat4';
 import type { Quaternion } from './quat';
 
 export type Vector3 = {
@@ -14,6 +15,20 @@ export function vec3_create(x: ?number, y: ?number, z: ?number) {
     y: y || 0,
     z: z || 0,
   };
+}
+
+export function vec3_set(v: Vector3, x: number, y: number, z: number) {
+  v.x = x;
+  v.y = y;
+  v.z = z;
+  return v;
+}
+
+export function vec3_setScalar(v: Vector3, scalar: number) {
+  v.x = scalar;
+  v.y = scalar;
+  v.z = scalar;
+  return v;
 }
 
 export function vec3_clone(v: Vector3) {
@@ -34,11 +49,25 @@ export function vec3_add(a: Vector3, b: Vector3) {
   return a;
 }
 
+export function vec3_addVectors(v: Vector3, a: Vector3, b: Vector3) {
+  v.x = a.x + b.x;
+  v.y = a.y + b.y;
+  v.z = a.z + b.z;
+  return v;
+}
+
 export function vec3_subVectors(v: Vector3, a: Vector3, b: Vector3) {
   v.x = a.x - b.x;
   v.y = a.y - b.y;
   v.z = a.z - b.z;
   return v;
+}
+
+export function vec3_multiply(a: Vector3, b: Vector3) {
+  a.x *= b.x;
+  a.y *= b.y;
+  a.z *= b.z;
+  return a;
 }
 
 export function vec3_multiplyScalar(v: Vector3, scalar: number) {
@@ -48,8 +77,35 @@ export function vec3_multiplyScalar(v: Vector3, scalar: number) {
   return v;
 }
 
+export function vec3_transformDirection(v: Vector3, m: Matrix4) {
+  // input: THREE.Matrix4 affine matrix
+  // vector interpreted as a direction
+
+  var x = v.x, y = v.y, z = v.z;
+
+  v.x = m[0] * x + m[4] * y + m[8] * z;
+  v.y = m[1] * x + m[5] * y + m[9] * z;
+  v.z = m[2] * x + m[6] * y + m[10] * z;
+
+  return vec3_normalize(v);
+}
+
 export function vec3_divideScalar(v: Vector3, scalar: number) {
   return vec3_multiplyScalar(v, 1 / scalar);
+}
+
+export function vec3_min(a: Vector3, b: Vector3) {
+  a.x = Math.min(a.x, b.x);
+  a.y = Math.min(a.y, b.y);
+  a.z = Math.min(a.z, b.z);
+  return a;
+}
+
+export function vec3_max(a: Vector3, b: Vector3) {
+  a.x = Math.max(a.x, b.x);
+  a.y = Math.max(a.y, b.y);
+  a.z = Math.max(a.z, b.z);
+  return a;
 }
 
 export function vec3_cross(a: Vector3, b: Vector3) {
@@ -88,6 +144,16 @@ export function vec3_normalize(v: Vector3) {
   return vec3_divideScalar(v, vec3_length(v));
 }
 
+export function vec3_applyMatrix4(v: Vector3, m: Matrix4) {
+  var x = v.x, y = v.y, z = v.z;
+
+  v.x = m[0] * x + m[4] * y + m[8] * z + m[12];
+  v.y = m[1] * x + m[5] * y + m[9] * z + m[13];
+  v.z = m[2] * x + m[6] * y + m[10] * z + m[14];
+
+  return v;
+}
+
 export function vec3_applyQuaternion(v: Vector3, q: Quaternion) {
   var x = v.x, y = v.y, z = v.z;
   var qx = q.x, qy = q.y, qz = q.z, qw = q.w;
@@ -105,6 +171,22 @@ export function vec3_applyQuaternion(v: Vector3, q: Quaternion) {
   v.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
   v.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 
+  return v;
+}
+
+export function vec3_distanceTo(a: Vector3, b: Vector3) {
+  return Math.sqrt(vec3_distanceToSquared(a, b));
+}
+
+export function vec3_distanceToSquared(a: Vector3, b: Vector3) {
+  var dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
+  return dx * dx + dy * dy + dz * dz;
+}
+
+export function vec3_setFromMatrixPosition(v: Vector3, m: Matrix4) {
+  v.x = m[12];
+  v.y = m[13];
+  v.z = m[14];
   return v;
 }
 
