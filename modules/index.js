@@ -1,44 +1,27 @@
+// @flow
+
 import { camera_create } from './camera';
 import { boxGeom_create } from './boxGeom';
+import {
+  createShaderProgram,
+  createFloat32Buffer,
+  setFloat32Attribute,
+  setMat4Uniform,
+  getAttributeLocations,
+  getUniformLocations,
+} from './shader';
 
 camera_create();
 boxGeom_create(1, 1, 1);
 
-/* global c */
-function createShaderProgram(gl, vs, fs) {
-  var program = gl.createProgram();
-
-  function createShader(type, source) {
-    var shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    gl.attachShader(program, shader);
-  }
-
-  createShader(gl.VERTEX_SHADER, vs);
-  createShader(gl.FRAGMENT_SHADER, fs);
-
-  gl.linkProgram(program);
-
-  return program;
-}
-
-function setFloat32Attribute(gl, program, name, size, array) {
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
-
-  var location = gl.getAttribLocation(program, name);
-  gl.enableVertexAttribArray(location);
-  gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
-}
-
-function setMat4Uniform(gl, program, name, array) {
-  var location = gl.getUniformLocation(program, name);
-  gl.uniformMatrix4fv(location, false, array);
-}
+declare var c: HTMLCanvasElement;
 
 function render(el) {
   var gl = el.getContext('webgl');
+  if (!gl) {
+    return;
+  }
+
   gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -60,6 +43,9 @@ function render(el) {
     '}'
   );
 
+  var attributes = getAttributeLocations(gl, program);
+  var uniforms = getUniformLocations(gl, program);
+
   gl.useProgram(program);
 
   var position = [
@@ -69,22 +55,24 @@ function render(el) {
     0.5, 0.5, 0,
   ];
 
-  var color = [
+  var positionBuffer = createFloat32Buffer(gl, position);
+
+  var color = createFloat32Buffer(gl, [
     1, 1, 1,
     1, 0, 0,
     0, 1, 0,
     0, 0, 1,
-  ];
+  ]);
 
-  setMat4Uniform(gl, program, 'M', new Float32Array([
+  setMat4Uniform(gl, uniforms.M, [
     0.5, 0, 0, 0,
     0, 1, 0, 0,
     0, 0, 1, 0,
     0.25, 0, 0, 1,
-  ]));
+  ]);
 
-  setFloat32Attribute(gl, program, 'p', 3, position);
-  setFloat32Attribute(gl, program, 'c', 3, color);
+  setFloat32Attribute(gl, attributes.p, positionBuffer, 3);
+  setFloat32Attribute(gl, attributes.c, color, 3);
 
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, position.length / 3);
 }

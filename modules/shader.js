@@ -18,7 +18,7 @@ export function createShaderProgram(gl: WebGLRenderingContext, vs: string, fs: s
   return program;
 }
 
-export function createFloat32Buffer(gl: WebGLRenderingContext, array: Array<number>) {
+export function createFloat32Buffer(gl: WebGLRenderingContext, array: Array<number>): WebGLBuffer {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
@@ -36,7 +36,7 @@ export function setMat4Uniform(gl: WebGLRenderingContext, location: number, arra
   gl.uniformMatrix4fv(location, false, array);
 }
 
-export function getAttributeLocations(gl: WebGLRenderingContext, program: WebGLProgram) {
+export function getAttributeLocations(gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } {
   var locations = {};
 
   var count = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
@@ -52,7 +52,7 @@ export function getAttributeLocations(gl: WebGLRenderingContext, program: WebGLP
   return locations;
 }
 
-export function getUniformLocations(gl: WebGLRenderingContext, program: WebGLProgram) {
+export function getUniformLocations(gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } {
   var locations = {};
 
   var count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
