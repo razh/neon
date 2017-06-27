@@ -51,30 +51,3 @@ export function geom_push(geom: Geometry, vertices: Array<number>, faces: Array<
 
   return geom;
 }
-
-export var geom_computeFaceNormals = (function() {
-  var cb = vec3_create();
-  var ab = vec3_create();
-
-  return function(geom: Geometry) {
-    var faces = geom.faces;
-
-    for (var f = 0; f < faces.length; f++) {
-      var face = faces[f];
-
-      var vA = geom.vertices[face.a];
-      var vB = geom.vertices[face.b];
-      var vC = geom.vertices[face.c];
-
-      vec3_subVectors(cb, vC, vB);
-      vec3_subVectors(ab, vA, vB);
-      vec3_cross(cb, ab);
-
-      vec3_normalize(cb);
-
-      vec3_copy(face.normal, cb);
-    }
-
-    return geom;
-  };
-}());
