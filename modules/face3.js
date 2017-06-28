@@ -1,6 +1,5 @@
 // @flow
 
-import type { Color } from './color';
 import type { Vector3 } from './vec3';
 
 export type Face3 = {
@@ -8,11 +7,10 @@ export type Face3 = {
   b: number,
   c: number,
   normal: Vector3,
-  color: Color,
-  vertexColors: Array<Color>,
+  color: Vector3,
+  vertexColors: Array<Vector3>,
 };
 
-import { color_create } from './color';
 import { vec3_create } from './vec3';
 
 export function face3_create(a: number, b: number, c: number): Face3 {
@@ -21,7 +19,7 @@ export function face3_create(a: number, b: number, c: number): Face3 {
     b: b,
     c: c,
     normal: vec3_create(),
-    color: color_create(),
+    color: vec3_create(),
     vertexColors: [],
   };
 }
