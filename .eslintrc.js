@@ -11,6 +11,7 @@ module.exports = {
     'flowtype',
   ],
   parserOptions: {
+    ecmaVersion: 2017,
     sourceType: 'module',
   },
   globals: {
