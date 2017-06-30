@@ -1,4 +1,5 @@
 /* eslint-env node */
+
 'use strict';
 
 const gulp = require('gulp');
@@ -8,7 +9,6 @@ const browserSync = require('browser-sync').create();
 const del = require('del');
 const flow = require('rollup-plugin-flow');
 const rollup = require('rollup').rollup;
-const runSequence = require('run-sequence');
 
 let production = false;
 
@@ -34,12 +34,12 @@ gulp.task('rollup', () => {
     }));
 });
 
-gulp.task('js', ['rollup'], () => {
+gulp.task('js', gulp.series('rollup', function js() {
   return gulp.src('build/bundle.js')
     .pipe($.if(production, $.uglify()))
     .pipe(gulp.dest('dist'))
     .pipe(browserSync.stream());
-});
+}));
 
 gulp.task('html', () => {
   return gulp.src('./index.html')
@@ -54,25 +54,24 @@ gulp.task('html', () => {
 });
 
 gulp.task('watch', () => {
-  gulp.watch(['modules/**/*.js'], ['js']);
-  gulp.watch(['./index.html'], ['html']);
+  gulp.watch(['modules/**/*.js'], gulp.series('js'));
+  gulp.watch(['./index.html'], gulp.series('html'));
 });
 
-gulp.task('default', ['clean'], cb => {
-  return runSequence(
-    ['html', 'js'],
-    ['browser-sync', 'watch'],
-    cb
-  );
-});
+gulp.task('default', gulp.series(
+  'clean',
+  gulp.parallel('html', 'js'),
+  gulp.parallel('browser-sync', 'watch')
+));
 
-gulp.task('build', ['clean'], cb => {
-  production = true;
-  return runSequence(
-    ['html', 'js'],
-    cb
-  );
-});
+gulp.task('build', gulp.series(
+  'clean',
+  function build(done) {
+    production = true;
+    done();
+  },
+  gulp.parallel('html', 'js')
+));
 
 gulp.task('compress', () => {
   return gulp.src('dist/**/*')
@@ -82,4 +81,4 @@ gulp.task('compress', () => {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('dist', cb => runSequence('build', 'compress', cb));
+gulp.task('dist', gulp.series('build', 'compress'));
