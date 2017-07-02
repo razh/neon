@@ -10,6 +10,8 @@ import {
   getAttributeLocations,
   getUniformLocations,
 } from './shader';
+import vert from './shaders/test_vert.glsl';
+import frag from './shaders/test_frag.glsl';
 
 camera_create();
 boxGeom_create(1, 1, 1);
@@ -25,23 +27,7 @@ function render(el) {
   gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  var program = createShaderProgram(
-    gl,
-
-    'uniform mat4 M;' +
-    'attribute vec3 p;' +
-    'attribute vec3 c;' +
-    'varying vec3 vc;' +
-    'void main() {' +
-      'vc = c;' +
-      'gl_Position = M * vec4(p, 1.0);' +
-    '}',
-
-    'varying lowp vec3 vc;' +
-    'void main() {' +
-      'gl_FragColor = vec4(vc, 1.0);' +
-    '}'
-  );
+  var program = createShaderProgram(gl, vert, frag);
 
   var attributes = getAttributeLocations(gl, program);
   var uniforms = getUniformLocations(gl, program);

@@ -23,10 +23,40 @@ gulp.task('browser-sync', () => {
 
 gulp.task('clean', () => del(['build', 'dist']));
 
+// https://github.com/mrdoob/three.js/blob/dev/rollup.config.js
+function glsl() {
+  function minify(code) {
+    return code
+      // Remove //
+      .replace(/\s*\/\/.*\n/g, '')
+      // Remove /* */
+      .replace(/\s*\/\*[\s\S]*?\*\//g, '')
+      // # \n+ to \n
+      .replace(/\n{2,}/g, '\n')
+      // Remove newlines and spaces after newlines
+      .replace(/\n\s*/g, '');
+  }
+
+  return {
+    transform(code, id) {
+      if (!/\.glsl$/.test(id)) {
+        return;
+      }
+
+      return {
+        code: `export default ${
+          JSON.stringify(production ? minify(code) : code)
+        };`,
+        map: { mappings: '' },
+      };
+    },
+  };
+}
+
 gulp.task('rollup', () => {
   return rollup({
     entry: 'modules/index.js',
-    plugins: [flow()],
+    plugins: [flow(), glsl()],
   })
     .then(bundle => bundle.write({
       dest: 'build/bundle.js',
