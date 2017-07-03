@@ -14,9 +14,9 @@ import { vec3_create, vec3_clone } from './vec3';
 
 export function face3_create(a: number, b: number, c: number): Face3 {
   return {
-    a: a,
-    b: b,
-    c: c,
+    a,
+    b,
+    c,
     color: vec3_create(),
     vertexColors: [],
   };

@@ -23,7 +23,7 @@ export function mat4_create() {
 }
 
 export function mat4_makeRotationFromQuaternion(m: Matrix4, q: Quaternion) {
-  var x = q.x, y = q.y, z = q.z, w = q.w;
+  var { x, y, z, w } = q;
   var x2 = x + x, y2 = y + y, z2 = z + z;
   var xx = x * x2, xy = x * y2, xz = x * z2;
   var yy = y * y2, yz = y * z2, zz = z * z2;
@@ -55,12 +55,12 @@ export function mat4_makeRotationFromQuaternion(m: Matrix4, q: Quaternion) {
   return m;
 }
 
-export var mat4_lookAt = (function() {
+export var mat4_lookAt = (() => {
   var x = vec3_create();
   var y = vec3_create();
   var z = vec3_create();
 
-  return function(m: Matrix4, eye: Vector3, target: Vector3, up: Vector3) {
+  return (m: Matrix4, eye: Vector3, target: Vector3, up: Vector3) => {
     vec3_normalize(vec3_subVectors(z, eye, target));
 
     if (!vec3_length(z)) {
@@ -90,7 +90,7 @@ export var mat4_lookAt = (function() {
 
     return m;
   };
-}())
+})();
 
 export function mat4_identity(m: Matrix4) {
   m.set([
@@ -194,7 +194,7 @@ export function mat4_getInverse(a: Matrix4, b: Matrix4) {
 }
 
 export function mat4_scale(m: Matrix4, v: Vector3) {
-  var x = v.x, y = v.y, z = v.z;
+  var { x, y, z } = v;
 
   m[0] *= x; m[4] *= y; m[8] *= z;
   m[1] *= x; m[5] *= y; m[9] *= z;

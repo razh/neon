@@ -9,11 +9,11 @@ export type Vector3 = {
   z: number,
 };
 
-export function vec3_create(x: ?number, y: ?number, z: ?number) {
+export function vec3_create(x: number = 0, y: number = 0, z: number = 0) {
   return {
-    x: x || 0,
-    y: y || 0,
-    z: z || 0,
+    x,
+    y,
+    z,
   };
 }
 
@@ -81,7 +81,7 @@ export function vec3_transformDirection(v: Vector3, m: Matrix4) {
   // input: THREE.Matrix4 affine matrix
   // vector interpreted as a direction
 
-  var x = v.x, y = v.y, z = v.z;
+  var { x, y, z } = v;
 
   v.x = m[0] * x + m[4] * y + m[8] * z;
   v.y = m[1] * x + m[5] * y + m[9] * z;
@@ -109,9 +109,7 @@ export function vec3_max(a: Vector3, b: Vector3) {
 }
 
 export function vec3_cross(a: Vector3, b: Vector3) {
-  var x = a.x;
-  var y = a.y;
-  var z = a.z;
+  var { x, y, z } = a;
 
   a.x = y * b.z - z * b.y;
   a.y = z * b.x - x * b.z;
@@ -145,7 +143,7 @@ export function vec3_normalize(v: Vector3) {
 }
 
 export function vec3_applyMatrix4(v: Vector3, m: Matrix4) {
-  var x = v.x, y = v.y, z = v.z;
+  var { x, y, z } = v;
 
   v.x = m[0] * x + m[4] * y + m[8] * z + m[12];
   v.y = m[1] * x + m[5] * y + m[9] * z + m[13];
@@ -155,7 +153,7 @@ export function vec3_applyMatrix4(v: Vector3, m: Matrix4) {
 }
 
 export function vec3_applyQuaternion(v: Vector3, q: Quaternion) {
-  var x = v.x, y = v.y, z = v.z;
+  var { x, y, z } = v;
   var qx = q.x, qy = q.y, qz = q.z, qw = q.w;
 
   // calculate quat * vector

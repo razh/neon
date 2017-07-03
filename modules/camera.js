@@ -21,15 +21,20 @@ import { vec3_clone, vec3_Y } from './vec3';
 
 var DEG_TO_RAD = Math.PI / 180;
 
-export function camera_create(fov: ?number, aspect: ?number, near: ?number, far: ?number) {
+export function camera_create(
+  fov: number = 60,
+  aspect: number = 1,
+  near: number = 0.1,
+  far: number = 2000,
+) {
   return camera_updateProjectionMatrix(Object.assign(
     {},
     object3d_create(),
     {
-      fov: fov || 60,
-      near: near || 0.1,
-      far: far || 2000,
-      aspect: aspect || 1,
+      fov,
+      near,
+      far,
+      aspect,
       up: vec3_clone(vec3_Y),
       matrixWorldInverse: mat4_create(),
       projectionMatrix: mat4_create(),
@@ -37,18 +42,17 @@ export function camera_create(fov: ?number, aspect: ?number, near: ?number, far:
   ));
 }
 
-export var camera_lookAt = (function() {
+export var camera_lookAt = (() => {
   var m1 = mat4_create();
 
-  return function(camera: Camera, vector: Vector3) {
+  return (camera: Camera, vector: Vector3) => {
     mat4_lookAt(m1, vector, camera.position, camera.up);
     quat_setFromRotationMatrix(camera.quaternion, m1);
   };
-}());
+})();
 
 export function camera_updateProjectionMatrix(camera: Camera) {
-  var near = camera.near;
-  var far = camera.far;
+  var { near, far } = camera;
 
   var top = near * Math.tan(camera.fov * 0.5 * DEG_TO_RAD);
   var bottom = -top;

@@ -11,16 +11,16 @@ export type Quaternion = {
 };
 
 export function quat_create(
-  x: ?number,
-  y: ?number,
-  z: ?number,
-  w: ?number
+  x: number = 0,
+  y: number = 0,
+  z: number = 0,
+  w: number = 1,
 ): Quaternion {
   return {
-    x: x || 0,
-    y: y || 0,
-    z: z || 0,
-    w: w != null ? w : 1,
+    x,
+    y,
+    z,
+    w,
   };
 }
 

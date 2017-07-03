@@ -38,15 +38,15 @@ export function object3d_create(): Object3D {
   };
 }
 
-export var object3d_rotateOnAxis = (function() {
+export var object3d_rotateOnAxis = (() => {
   var q1 = quat_create();
 
-  return function rotateOnAxis(obj: Object3D, axis: Vector3, angle: number) {
+  return (obj: Object3D, axis: Vector3, angle: number) => {
     quat_setFromAxisAngle(q1, axis, angle);
     quat_multiply(obj.quaternion, q1);
     return obj;
   };
-}());
+})();
 
 export function object3d_rotateX(obj: Object3D, angle: number) {
   return object3d_rotateOnAxis(obj, vec3_X, angle);
@@ -60,15 +60,15 @@ export function object3d_rotateZ(obj: Object3D, angle: number) {
   return object3d_rotateOnAxis(obj, vec3_Z, angle);
 }
 
-export var object3d_translateOnAxis = (function() {
+export var object3d_translateOnAxis = (() => {
   var v1 = vec3_create();
 
-  return function(obj: Object3D, axis: Vector3, distance: number) {
+  return (obj: Object3D, axis: Vector3, distance: number) => {
     vec3_applyQuaternion(vec3_copy(v1, axis), obj.quaternion);
     vec3_add(obj.position, vec3_multiplyScalar(v1, distance));
     return obj;
   };
-}());
+})();
 
 export function object3d_translateX(obj: Object3D, distance: number) {
   return object3d_translateOnAxis(obj, vec3_X, distance);

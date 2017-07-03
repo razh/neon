@@ -12,7 +12,6 @@ import {
   vec3_create,
   vec3_set,
   vec3_clone,
-  vec3_copy,
   vec3_add,
   vec3_multiply,
 } from './vec3';
@@ -52,58 +51,38 @@ export function geom_push(geom: Geometry, vertices: Array<number>, faces: Array<
   return geom;
 }
 
-export var geom_translate = (function() {
+export var geom_translate = (() => {
   var vector = vec3_create();
 
-  return function(geom: Geometry, x: number, y: number, z: number) {
+  return (geom: Geometry, x: number, y: number, z: number) => {
     vec3_set(vector, x, y, z);
-
-    geom.vertices.map(function(vertex) {
-      vec3_add(vertex, vector);
-    });
-
+    geom.vertices.map(vertex => vec3_add(vertex, vector));
     return geom;
   };
-}());
+})();
 
-export var geom_scale = (function() {
+export var geom_scale = (() => {
   var vector = vec3_create();
 
-  return function(geom: Geometry, x: number, y: number, z: number) {
+  return (geom: Geometry, x: number, y: number, z: number) => {
     vec3_set(vector, x, y, z);
-
-    geom.vertices.map(function(vertex) {
-      vec3_multiply(vertex, vector);
-    });
-
+    geom.vertices.map(vertex => vec3_multiply(vertex, vector));
     return geom;
   };
-}());
+})();
 
 export function geom_merge(a: Geometry, b: Geometry) {
   var vertexOffset = a.vertices.length;
 
-  var i;
-  for (i = 0; i < b.vertices.length; i++) {
-    a.vertices.push(vec3_clone(b.vertices[i]));
-  }
+  a.vertices.push(...b.vertices.map(vec3_clone));
 
-  for (i = 0; i < b.faces.length; i++) {
-    var face = b.faces[i];
-    var faceCopy = face3_create(
-      face.a + vertexOffset,
-      face.b + vertexOffset,
-      face.c + vertexOffset
-    );
-
-    vec3_copy(faceCopy.color, face.color);
-
-    for (var j = 0; j < face.vertexColors.length; j++) {
-      faceCopy.vertexColors.push(vec3_clone(face.vertexColors[j]));
-    }
-
-    a.faces.push(faceCopy);
-  }
+  a.faces.push(...b.faces.map(face => {
+    var faceCopy = face3_clone(face);
+    faceCopy.a += vertexOffset;
+    faceCopy.b += vertexOffset;
+    faceCopy.c += vertexOffset;
+    return faceCopy;
+  }))
 
   return a;
 }
