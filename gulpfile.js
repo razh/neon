@@ -10,6 +10,9 @@ const del = require('del');
 const flow = require('rollup-plugin-flow');
 const rollup = require('rollup').rollup;
 
+const composer = require('gulp-uglify/composer');
+const uglify = composer(require('uglify-es'), console);
+
 let production = false;
 
 gulp.task('browser-sync', () => {
@@ -66,7 +69,7 @@ gulp.task('rollup', () => {
 
 gulp.task('js', gulp.series('rollup', function js() {
   return gulp.src('build/bundle.js')
-    .pipe($.if(production, $.uglify()))
+    .pipe($.if(production, uglify()))
     .pipe(gulp.dest('dist'))
     .pipe(browserSync.stream());
 }));
