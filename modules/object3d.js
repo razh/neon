@@ -5,7 +5,8 @@ import type { Quaternion } from './quat';
 import type { Vector3 } from './vec3';
 
 export type Object3D = {
-  children: Array<Object>,
+  parent: ?Object3D,
+  children: Array<Object3D>,
   position: Vector3,
   quaternion: Quaternion,
   scale: Vector3,
@@ -13,7 +14,13 @@ export type Object3D = {
   matrixWorld: Matrix4,
 };
 
-import { mat4_create } from './mat4';
+import {
+  mat4_create,
+  mat4_compose,
+  mat4_copy,
+  mat4_multiplyMatrices,
+} from './mat4';
+
 import { quat_create, quat_multiply, quat_setFromAxisAngle } from './quat';
 
 import {
@@ -29,6 +36,7 @@ import {
 
 export function object3d_create(): Object3D {
   return {
+    parent: undefined,
     children: [],
     position: vec3_create(),
     quaternion: quat_create(),
@@ -80,4 +88,25 @@ export function object3d_translateY(obj: Object3D, distance: number) {
 
 export function object3d_translateZ(obj: Object3D, distance: number) {
   return object3d_translateOnAxis(obj, vec3_Z, distance);
+}
+
+export function object3d_traverse(obj: Object3D, callback: Object3D => void) {
+  callback(obj);
+  obj.children.map(child => object3d_traverse(child, callback));
+}
+
+export function object3d_updateMatrix(obj: Object3D) {
+  mat4_compose(obj.matrix, obj.position, obj.quaternion, obj.scale);
+}
+
+export function object3d_updateMatrixWorld(obj: Object3D) {
+  object3d_updateMatrix(obj);
+
+  if (!obj.parent) {
+    mat4_copy(obj.matrixWorld, obj.matrix);
+  } else {
+    mat4_multiplyMatrices(obj.matrixWorld, obj.parent.matrixWorld, obj.matrix);
+  }
+
+  obj.children.map(object3d_updateMatrixWorld);
 }
