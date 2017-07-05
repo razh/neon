@@ -16,8 +16,8 @@ export function mesh_create(geometry: Geometry, material: Material) {
     {},
     object3d_create(),
     {
-      geometry: geometry,
-      material: material,
+      geometry,
+      material,
     }
   );
 }

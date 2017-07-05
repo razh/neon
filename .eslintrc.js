@@ -31,6 +31,7 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'no-multi-spaces': 'error',
     'object-curly-spacing': ['error', 'always'],
+    'object-shorthand': ['error', 'always'],
     'padded-blocks': ['error', 'never'],
     'space-before-function-paren': ['error', 'never'],
     'space-in-parens': ['error', 'never'],
