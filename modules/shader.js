@@ -18,7 +18,7 @@ export function createShaderProgram(gl: WebGLRenderingContext, vs: string, fs: s
   return program;
 }
 
-export function createFloat32Buffer(gl: WebGLRenderingContext, array: Array<number>): WebGLBuffer {
+export function createFloat32Buffer(gl: WebGLRenderingContext, array: number[]): WebGLBuffer {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
@@ -32,7 +32,7 @@ export function setFloat32Attribute(gl: WebGLRenderingContext, location: number,
   gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
 }
 
-export function setMat4Uniform(gl: WebGLRenderingContext, location: number, array: Array<number>) {
+export function setMat4Uniform(gl: WebGLRenderingContext, location: number, array: number[]) {
   gl.uniformMatrix4fv(location, false, array);
 }
 

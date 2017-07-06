@@ -7,7 +7,7 @@ export type Face3 = {
   b: number,
   c: number,
   color: Vector3,
-  vertexColors: Array<Vector3>,
+  vertexColors: Vector3[],
 };
 
 import { vec3_create, vec3_clone } from './vec3';

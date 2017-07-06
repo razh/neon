@@ -4,8 +4,8 @@ import type { Vector3 } from './vec3';
 import type { Face3 } from './face3';
 
 export type Geometry = {
-  vertices: Array<Vector3>,
-  faces: Array<Face3>,
+  vertices: Vector3[],
+  faces: Face3[],
 };
 
 import {
@@ -24,7 +24,7 @@ export function geom_create(): Geometry {
   };
 }
 
-export function geom_push(geom: Geometry, vertices: Array<number>, faces: Array<number>) {
+export function geom_push(geom: Geometry, vertices: number[], faces: number[]) {
   var offset = geom.vertices.length;
 
   var i;

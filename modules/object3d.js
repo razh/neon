@@ -5,8 +5,8 @@ import type { Quaternion } from './quat';
 import type { Vector3 } from './vec3';
 
 export type Object3D = {
-  parent: ?Object3D,
-  children: Array<Object3D>,
+  parent?: Object3D,
+  children: Object3D[],
   position: Vector3,
   quaternion: Quaternion,
   scale: Vector3,
