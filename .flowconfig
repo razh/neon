@@ -7,3 +7,5 @@
 
 [options]
 module.name_mapper.extension='glsl' -> './shaders/GLSLFlowStub.js.flow'
+
+suppress_comment=\\(.\\|\n\\)*\\$ExpectError
