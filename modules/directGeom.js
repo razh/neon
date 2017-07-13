@@ -3,7 +3,7 @@
 import type { Geometry } from './geom';
 import type { Vector3 } from './vec3';
 
-type DirectGeometry = {
+export type DirectGeometry = {
   vertices: Vector3[],
   colors: Vector3[],
 };
