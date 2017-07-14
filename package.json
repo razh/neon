@@ -23,9 +23,9 @@
     "babel-eslint": "7.2.3",
     "browser-sync": "2.18.12",
     "del": "3.0.0",
-    "eslint": "4.1.1",
-    "eslint-plugin-flowtype": "2.34.1",
-    "flow-bin": "0.49.1",
+    "eslint": "4.2.0",
+    "eslint-plugin-flowtype": "2.35.0",
+    "flow-bin": "0.50.0",
     "gulp": "gulpjs/gulp.git#38246c3f8b6dbb8d4ef657183e92d90c8299e22f",
     "gulp-htmlmin": "3.0.0",
     "gulp-if": "2.0.2",
@@ -33,8 +33,8 @@
     "gulp-size": "2.1.0",
     "gulp-uglify": "3.0.0",
     "gulp-zip": "4.0.0",
-    "rollup": "0.43.0",
+    "rollup": "0.45.2",
     "rollup-plugin-flow": "1.1.1",
-    "uglify-es": "3.0.23"
+    "uglify-es": "3.0.24"
   }
 }
