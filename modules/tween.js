@@ -6,9 +6,9 @@ type Tween = {
   ease: Function,
 };
 
-export const ease_linear = (t: number) => t;
+export var ease_linear = (t: number) => t;
 
-export function tween_create(options: Object = {}): Tween {
+export var tween_create = (options: Object = {}): Tween => {
   var {
     duration = 0,
     delay = 0,
@@ -20,4 +20,4 @@ export function tween_create(options: Object = {}): Tween {
     delay,
     ease,
   };
-}
+};

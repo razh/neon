@@ -12,7 +12,7 @@ export type Material = {
 import { vec3_create } from './vec3';
 
 // MeshPhongMaterial.
-export function material_create(): Material {
+export var material_create = (): Material => {
   return {
     color: vec3_create(1, 1, 1),
     // 0x111111
@@ -20,4 +20,4 @@ export function material_create(): Material {
     shininess: 30,
     emissive: vec3_create(),
   };
-}
+};

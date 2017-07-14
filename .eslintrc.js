@@ -33,6 +33,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'object-shorthand': ['error', 'always'],
     'padded-blocks': ['error', 'never'],
+    semi: ['error', 'always'],
     'space-before-function-paren': ['error', 'never'],
     'space-in-parens': ['error', 'never'],
   },

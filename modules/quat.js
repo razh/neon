@@ -10,21 +10,21 @@ export type Quaternion = {
   w: number,
 };
 
-export function quat_create(
+export var quat_create = (
   x: number = 0,
   y: number = 0,
   z: number = 0,
   w: number = 1,
-): Quaternion {
+): Quaternion => {
   return {
     x,
     y,
     z,
     w,
   };
-}
+};
 
-export function quat_multiply(a: Quaternion, b: Quaternion) {
+export var quat_multiply = (a: Quaternion, b: Quaternion) => {
   // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
   var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
   var qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
@@ -35,9 +35,9 @@ export function quat_multiply(a: Quaternion, b: Quaternion) {
   a.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
   return a;
-}
+};
 
-export function quat_setFromAxisAngle(q: Quaternion, axis: Vector3, angle: number) {
+export var quat_setFromAxisAngle = (q: Quaternion, axis: Vector3, angle: number) => {
   var halfAngle = angle / 2;
   var s = Math.sin(halfAngle);
 
@@ -47,9 +47,9 @@ export function quat_setFromAxisAngle(q: Quaternion, axis: Vector3, angle: numbe
   q.w = Math.cos(halfAngle);
 
   return q;
-}
+};
 
-export function quat_setFromRotationMatrix(q: Quaternion, m: Matrix4) {
+export var quat_setFromRotationMatrix = (q: Quaternion, m: Matrix4) => {
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
   // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
@@ -91,4 +91,4 @@ export function quat_setFromRotationMatrix(q: Quaternion, m: Matrix4) {
   }
 
   return q;
-}
+};

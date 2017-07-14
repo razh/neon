@@ -4,7 +4,7 @@ import type { Geometry } from './geom';
 
 import { geom_create, geom_push } from './geom';
 
-export function boxGeom_create(width: number, height: number, depth: number): Geometry {
+export var boxGeom_create = (width: number, height: number, depth: number): Geometry => {
   var halfWidth = width / 2;
   var halfHeight = height / 2;
   var halfDepth = depth / 2;
@@ -40,4 +40,4 @@ export function boxGeom_create(width: number, height: number, depth: number): Ge
   ];
 
   return geom_push(geom_create(), vertices, faces);
-}
+};

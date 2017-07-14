@@ -34,7 +34,7 @@ import {
   vec3_Z,
 } from './vec3';
 
-export function object3d_create(): Object3D {
+export var object3d_create = (): Object3D => {
   return {
     parent: undefined,
     children: [],
@@ -44,7 +44,7 @@ export function object3d_create(): Object3D {
     matrix: mat4_create(),
     matrixWorld: mat4_create(),
   };
-}
+};
 
 export var object3d_rotateOnAxis = (() => {
   var q1 = quat_create();
@@ -56,17 +56,17 @@ export var object3d_rotateOnAxis = (() => {
   };
 })();
 
-export function object3d_rotateX(obj: Object3D, angle: number) {
+export var object3d_rotateX = (obj: Object3D, angle: number) => {
   return object3d_rotateOnAxis(obj, vec3_X, angle);
-}
+};
 
-export function object3d_rotateY(obj: Object3D, angle: number) {
+export var object3d_rotateY = (obj: Object3D, angle: number) => {
   return object3d_rotateOnAxis(obj, vec3_Y, angle);
-}
+};
 
-export function object3d_rotateZ(obj: Object3D, angle: number) {
+export var object3d_rotateZ = (obj: Object3D, angle: number) => {
   return object3d_rotateOnAxis(obj, vec3_Z, angle);
-}
+};
 
 export var object3d_translateOnAxis = (() => {
   var v1 = vec3_create();
@@ -78,28 +78,28 @@ export var object3d_translateOnAxis = (() => {
   };
 })();
 
-export function object3d_translateX(obj: Object3D, distance: number) {
+export var object3d_translateX = (obj: Object3D, distance: number) => {
   return object3d_translateOnAxis(obj, vec3_X, distance);
-}
+};
 
-export function object3d_translateY(obj: Object3D, distance: number) {
+export var object3d_translateY = (obj: Object3D, distance: number) => {
   return object3d_translateOnAxis(obj, vec3_Y, distance);
-}
+};
 
-export function object3d_translateZ(obj: Object3D, distance: number) {
+export var object3d_translateZ = (obj: Object3D, distance: number) => {
   return object3d_translateOnAxis(obj, vec3_Z, distance);
-}
+};
 
-export function object3d_traverse(obj: Object3D, callback: Object3D => void) {
+export var object3d_traverse = (obj: Object3D, callback: Object3D => void) => {
   callback(obj);
   obj.children.map(child => object3d_traverse(child, callback));
-}
+};
 
-export function object3d_updateMatrix(obj: Object3D) {
+export var object3d_updateMatrix = (obj: Object3D) => {
   mat4_compose(obj.matrix, obj.position, obj.quaternion, obj.scale);
-}
+};
 
-export function object3d_updateMatrixWorld(obj: Object3D) {
+export var object3d_updateMatrixWorld = (obj: Object3D) => {
   object3d_updateMatrix(obj);
 
   if (!obj.parent) {
@@ -109,4 +109,4 @@ export function object3d_updateMatrixWorld(obj: Object3D) {
   }
 
   obj.children.map(object3d_updateMatrixWorld);
-}
+};

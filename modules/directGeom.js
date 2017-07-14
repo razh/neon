@@ -8,7 +8,7 @@ export type DirectGeometry = {
   colors: Vector3[],
 };
 
-export function directGeom_fromGeom(geom: Geometry): DirectGeometry {
+export var directGeom_fromGeom = (geom: Geometry): DirectGeometry => {
   var vertices = [];
   var colors = [];
 
@@ -28,4 +28,4 @@ export function directGeom_fromGeom(geom: Geometry): DirectGeometry {
     vertices,
     colors,
   };
-}
+};

@@ -12,10 +12,10 @@ export type DirectionalLight = Object3D & {
 import { object3d_create } from './object3d';
 import { vec3_create } from './vec3';
 
-export function light_create(
+export var light_create = (
   color: Vector3 = vec3_create(),
   intensity: number = 1,
-): DirectionalLight {
+): DirectionalLight => {
   return Object.assign(
     {},
     object3d_create(),
@@ -25,4 +25,4 @@ export function light_create(
       target: object3d_create(),
     }
   );
-}
+};

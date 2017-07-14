@@ -17,14 +17,14 @@ import {
 } from './vec3';
 import { face3_create, face3_clone } from './face3';
 
-export function geom_create(): Geometry {
+export var geom_create = (): Geometry => {
   return {
     vertices: [],
     faces: [],
   };
-}
+};
 
-export function geom_push(geom: Geometry, vertices: number[], faces: number[]) {
+export var geom_push = (geom: Geometry, vertices: number[], faces: number[]) => {
   var offset = geom.vertices.length;
 
   var i;
@@ -49,7 +49,7 @@ export function geom_push(geom: Geometry, vertices: number[], faces: number[]) {
   }
 
   return geom;
-}
+};
 
 export var geom_translate = (() => {
   var vector = vec3_create();
@@ -71,7 +71,7 @@ export var geom_scale = (() => {
   };
 })();
 
-export function geom_merge(a: Geometry, b: Geometry) {
+export var geom_merge = (a: Geometry, b: Geometry) => {
   var vertexOffset = a.vertices.length;
 
   a.vertices.push(...b.vertices.map(vec3_clone));
@@ -82,14 +82,14 @@ export function geom_merge(a: Geometry, b: Geometry) {
     faceCopy.b += vertexOffset;
     faceCopy.c += vertexOffset;
     return faceCopy;
-  }))
+  }));
 
   return a;
-}
+};
 
-export function geom_clone(geom: Geometry) {
+export var geom_clone = (geom: Geometry) => {
   var clone = geom_create();
   clone.vertices = geom.vertices.map(vec3_clone);
   clone.faces = geom.faces.map(face3_clone);
   return clone;
-}
+};

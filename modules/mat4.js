@@ -13,16 +13,16 @@ import {
   vec3_subVectors,
 } from './vec3';
 
-export function mat4_create() {
+export var mat4_create = () => {
   return new Float32Array([
     1, 0, 0, 0,
     0, 1, 0, 0,
     0, 0, 1, 0,
     0, 0, 0, 1,
   ]);
-}
+};
 
-export function mat4_makeRotationFromQuaternion(m: Matrix4, q: Quaternion) {
+export var mat4_makeRotationFromQuaternion = (m: Matrix4, q: Quaternion) => {
   var { x, y, z, w } = q;
   var x2 = x + x, y2 = y + y, z2 = z + z;
   var xx = x * x2, xy = x * y2, xz = x * z2;
@@ -53,7 +53,7 @@ export function mat4_makeRotationFromQuaternion(m: Matrix4, q: Quaternion) {
   m[15] = 1;
 
   return m;
-}
+};
 
 export var mat4_lookAt = (() => {
   var x = vec3_create();
@@ -92,7 +92,7 @@ export var mat4_lookAt = (() => {
   };
 })();
 
-export function mat4_identity(m: Matrix4) {
+export var mat4_identity = (m: Matrix4) => {
   m.set([
     1, 0, 0, 0,
     0, 1, 0, 0,
@@ -101,14 +101,14 @@ export function mat4_identity(m: Matrix4) {
   ]);
 
   return m;
-}
+};
 
-export function mat4_copy(a: Matrix4, b: Matrix4) {
+export var mat4_copy = (a: Matrix4, b: Matrix4) => {
   a.set(b);
   return a;
-}
+};
 
-export function mat4_multiplyMatrices(m: Matrix4, a: Matrix4, b: Matrix4) {
+export var mat4_multiplyMatrices = (m: Matrix4, a: Matrix4, b: Matrix4) => {
   var a11 = a[0], a12 = a[4], a13 = a[8], a14 = a[12];
   var a21 = a[1], a22 = a[5], a23 = a[9], a24 = a[13];
   var a31 = a[2], a32 = a[6], a33 = a[10], a34 = a[14];
@@ -140,17 +140,17 @@ export function mat4_multiplyMatrices(m: Matrix4, a: Matrix4, b: Matrix4) {
   m[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
 
   return m;
-}
+};
 
-export function mat4_setPosition(m: Matrix4, v: Vector3) {
+export var mat4_setPosition = (m: Matrix4, v: Vector3) => {
   m[12] = v.x;
   m[13] = v.y;
   m[14] = v.z;
 
   return m;
-}
+};
 
-export function mat4_getInverse(a: Matrix4, b: Matrix4) {
+export var mat4_getInverse = (a: Matrix4, b: Matrix4) => {
   // based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
   var n11 = b[0], n21 = b[1], n31 = b[2], n41 = b[3];
   var n12 = b[4], n22 = b[5], n32 = b[6], n42 = b[7];
@@ -191,9 +191,9 @@ export function mat4_getInverse(a: Matrix4, b: Matrix4) {
   a[15] = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) * detInv;
 
   return a;
-}
+};
 
-export function mat4_scale(m: Matrix4, v: Vector3) {
+export var mat4_scale = (m: Matrix4, v: Vector3) => {
   var { x, y, z } = v;
 
   m[0] *= x; m[4] *= y; m[8] *= z;
@@ -202,11 +202,11 @@ export function mat4_scale(m: Matrix4, v: Vector3) {
   m[3] *= x; m[7] *= y; m[11] *= z;
 
   return m;
-}
+};
 
-export function mat4_compose(m: Matrix4, position: Vector3, quaternion: Quaternion, scale: Vector3) {
+export var mat4_compose = (m: Matrix4, position: Vector3, quaternion: Quaternion, scale: Vector3) => {
   mat4_makeRotationFromQuaternion(m, quaternion);
   mat4_scale(m, scale);
   mat4_setPosition(m, position);
   return m;
-}
+};

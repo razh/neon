@@ -15,13 +15,13 @@ interface Component {
 
 import { mesh_create } from './mesh';
 
-export function entity_create(): Entity<Object> {
+export var entity_create = (): Entity<Object> => {
   return {
     components: [],
   };
-}
+};
 
-export function mesh_entity_create(geometry: Geometry, material: Material): Entity<Mesh> {
+export var mesh_entity_create = (geometry: Geometry, material: Material): Entity<Mesh> => {
   return Object.assign(
     {},
     mesh_create(geometry, material),
@@ -29,9 +29,9 @@ export function mesh_entity_create(geometry: Geometry, material: Material): Enti
       components: [],
     }
   );
-}
+};
 
-export function entity_add(entity: Entity<*>, ...components: Component[]) {
+export var entity_add = (entity: Entity<*>, ...components: Component[]) => {
   components.map(component => {
     if (entity_has(entity, component)) {
       return;
@@ -40,13 +40,13 @@ export function entity_add(entity: Entity<*>, ...components: Component[]) {
     component.parent = entity;
     entity.components.push(component);
   });
-}
+};
 
-export function entity_has(entity: Entity<*>, component: Component) {
+export var entity_has = (entity: Entity<*>, component: Component) => {
   return entity.components.includes(component);
-}
+};
 
-export function entity_remove(entity: Entity<*>, ...components: Component[]) {
+export var entity_remove = (entity: Entity<*>, ...components: Component[]) => {
   components.map(component => {
     var index = entity.components.indexOf(component);
 
@@ -56,12 +56,12 @@ export function entity_remove(entity: Entity<*>, ...components: Component[]) {
         .map(component => (component.parent = undefined));
     }
   });
-}
+};
 
-export function entity_update(entity: Entity<*>, ...args: *[]) {
+export var entity_update = (entity: Entity<*>, ...args: *[]) => {
   entity.components.map(component => component.update(...args));
-}
+};
 
-export function is_entity(object: Object): boolean {
+export var is_entity = (object: Object): boolean => {
   return !!object.components;
-}
+};

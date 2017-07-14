@@ -26,16 +26,13 @@ gl.enable(gl.DEPTH_TEST);
 gl.enable(gl.CULL_FACE);
 gl.getExtension('OES_standard_derivatives');
 
-function setSize(width, height) {
+var setSize = (width, height) => {
   c.width = width;
   c.height = height;
-  gl.viewport(0, 0, width, height)
-}
+  gl.viewport(0, 0, width, height);
+};
 
-setSize(window.innerWidth, window.innerHeight);
-render();
-
-function render() {
+var render = () => {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   var program = createShaderProgram(gl, vert, frag);
@@ -72,7 +69,10 @@ function render() {
   setFloat32Attribute(gl, attributes.c, color, 3);
 
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, position.length / 3);
-}
+};
+
+setSize(window.innerWidth, window.innerHeight);
+render();
 
 window.addEventListener('resize', () => {
   setSize(window.innerWidth, window.innerHeight);

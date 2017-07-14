@@ -21,12 +21,12 @@ import { vec3_clone, vec3_Y } from './vec3';
 
 var DEG_TO_RAD = Math.PI / 180;
 
-export function camera_create(
+export var camera_create = (
   fov: number = 60,
   aspect: number = 1,
   near: number = 0.1,
   far: number = 2000,
-) {
+): Camera => {
   return camera_updateProjectionMatrix(Object.assign(
     {},
     object3d_create(),
@@ -40,7 +40,7 @@ export function camera_create(
       projectionMatrix: mat4_create(),
     }
   ));
-}
+};
 
 export var camera_lookAt = (() => {
   var m1 = mat4_create();
@@ -51,7 +51,7 @@ export var camera_lookAt = (() => {
   };
 })();
 
-export function camera_updateProjectionMatrix(camera: Camera) {
+export var camera_updateProjectionMatrix = (camera: Camera) => {
   var { near, far } = camera;
 
   var top = near * Math.tan(camera.fov * 0.5 * DEG_TO_RAD);
@@ -75,4 +75,4 @@ export function camera_updateProjectionMatrix(camera: Camera) {
   ]);
 
   return camera;
-}
+};

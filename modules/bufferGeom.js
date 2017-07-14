@@ -11,21 +11,21 @@ type BufferGeometry = {
 import { bufferAttr_copyVector3sArray } from './bufferAttr';
 import { directGeom_fromGeom } from './directGeom';
 
-export function bufferGeom_create(): BufferGeometry {
+export var bufferGeom_create = (): BufferGeometry => {
   return {
     attrs: {},
     buffers: {},
   };
-}
+};
 
-export function bufferGeom_fromGeom(bufferGeom: BufferGeometry, geom: Geometry) {
-  return bufferGeom_fromDirectGeom(bufferGeom, directGeom_fromGeom(geom));
-}
+export var bufferGeom_fromGeom = (bufferGeom: BufferGeometry, geom: Geometry) => (
+  bufferGeom_fromDirectGeom(bufferGeom, directGeom_fromGeom(geom))
+);
 
-export function bufferGeom_fromDirectGeom(
+export var bufferGeom_fromDirectGeom = (
   bufferGeom: BufferGeometry,
   geom: DirectGeometry,
-): BufferGeometry {
+): BufferGeometry => {
   var positions = new Float32Array(geom.vertices.length * 3);
   bufferGeom.attrs.position = bufferAttr_copyVector3sArray(positions, geom.vertices);
 
@@ -33,4 +33,4 @@ export function bufferGeom_fromDirectGeom(
   bufferGeom.attrs.color = bufferAttr_copyVector3sArray(colors, geom.colors);
 
   return bufferGeom;
-}
+};

@@ -1,14 +1,14 @@
 // @flow
 
-export function createShaderProgram(gl: WebGLRenderingContext, vs: string, fs: string) {
+export var createShaderProgram = (gl: WebGLRenderingContext, vs: string, fs: string) => {
   var program = gl.createProgram();
 
-  function createShader(type, source) {
+  var createShader = (type, source) => {
     var shader = gl.createShader(type);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     gl.attachShader(program, shader);
-  }
+  };
 
   createShader(gl.VERTEX_SHADER, vs);
   createShader(gl.FRAGMENT_SHADER, fs);
@@ -16,27 +16,27 @@ export function createShaderProgram(gl: WebGLRenderingContext, vs: string, fs: s
   gl.linkProgram(program);
 
   return program;
-}
+};
 
-export function createFloat32Buffer(gl: WebGLRenderingContext, array: number[]): WebGLBuffer {
+export var createFloat32Buffer = (gl: WebGLRenderingContext, array: number[]): WebGLBuffer => {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
   return buffer;
-}
+};
 
 
-export function setFloat32Attribute(gl: WebGLRenderingContext, location: number, buffer: WebGLBuffer, size: number) {
+export var setFloat32Attribute = (gl: WebGLRenderingContext, location: number, buffer: WebGLBuffer, size: number) => {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.enableVertexAttribArray(location);
   gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
-}
+};
 
-export function setMat4Uniform(gl: WebGLRenderingContext, location: number, array: number[]) {
+export var setMat4Uniform = (gl: WebGLRenderingContext, location: number, array: number[]) => {
   gl.uniformMatrix4fv(location, false, array);
-}
+};
 
-export function getAttributeLocations(gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } {
+export var getAttributeLocations = (gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } => {
   var locations = {};
 
   var count = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
@@ -44,15 +44,15 @@ export function getAttributeLocations(gl: WebGLRenderingContext, program: WebGLP
   for (var i = 0; i < count; i++) {
     var attribute = gl.getActiveAttrib(program, i);
     if (attribute) {
-      var name = attribute.name;
+      var { name } = attribute;
       locations[name] = gl.getAttribLocation(program, name);
     }
   }
 
   return locations;
-}
+};
 
-export function getUniformLocations(gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } {
+export var getUniformLocations = (gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } => {
   var locations = {};
 
   var count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
@@ -60,10 +60,10 @@ export function getUniformLocations(gl: WebGLRenderingContext, program: WebGLPro
   for (var i = 0; i < count; i++) {
     var uniform = gl.getActiveUniform(program, i);
     if (uniform) {
-      var name = uniform.name;
+      var { name } = uniform;
       locations[name] = gl.getUniformLocation(program, name);
     }
   }
 
   return locations;
-}
+};
