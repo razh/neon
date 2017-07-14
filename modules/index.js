@@ -18,14 +18,25 @@ boxGeom_create(1, 1, 1);
 
 declare var c: HTMLCanvasElement;
 
-function render(el) {
-  var gl = el.getContext('webgl');
-  if (!gl) {
-    return;
-  }
+// Cast from ?WebGLRenderingContext.
+var gl = ((c.getContext('webgl'): any): WebGLRenderingContext);
 
-  gl.clearColor(0, 0, 0, 0);
-  gl.clear(gl.COLOR_BUFFER_BIT);
+gl.clearColor(0, 0, 0, 0);
+gl.enable(gl.DEPTH_TEST);
+gl.enable(gl.CULL_FACE);
+gl.getExtension('OES_standard_derivatives');
+
+function setSize(width, height) {
+  c.width = width;
+  c.height = height;
+  gl.viewport(0, 0, width, height)
+}
+
+setSize(window.innerWidth, window.innerHeight);
+render();
+
+function render() {
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   var program = createShaderProgram(gl, vert, frag);
 
@@ -36,8 +47,8 @@ function render(el) {
 
   var position = [
     -0.5, -0.5, 0,
-    -0.5, 0.5, 0,
     0.5, -0.5, 0,
+    -0.5, 0.5, 0,
     0.5, 0.5, 0,
   ];
 
@@ -63,6 +74,7 @@ function render(el) {
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, position.length / 3);
 }
 
-c.width = window.innerWidth;
-c.height = window.innerHeight;
-render(c);
+window.addEventListener('resize', () => {
+  setSize(window.innerWidth, window.innerHeight);
+  render();
+});
