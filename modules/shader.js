@@ -42,11 +42,9 @@ export var getAttributeLocations = (gl: WebGLRenderingContext, program: WebGLPro
   var count = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
 
   for (var i = 0; i < count; i++) {
-    var attribute = gl.getActiveAttrib(program, i);
-    if (attribute) {
-      var { name } = attribute;
-      locations[name] = gl.getAttribLocation(program, name);
-    }
+    var attribute = ((gl.getActiveAttrib(program, i): any): WebGLActiveInfo);
+    var { name } = attribute;
+    locations[name] = gl.getAttribLocation(program, name);
   }
 
   return locations;
@@ -58,11 +56,9 @@ export var getUniformLocations = (gl: WebGLRenderingContext, program: WebGLProgr
   var count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
   for (var i = 0; i < count; i++) {
-    var uniform = gl.getActiveUniform(program, i);
-    if (uniform) {
-      var { name } = uniform;
-      locations[name] = gl.getUniformLocation(program, name);
-    }
+    var uniform = ((gl.getActiveUniform(program, i): any): WebGLActiveInfo);
+    var { name } = uniform;
+    locations[name] = gl.getUniformLocation(program, name);
   }
 
   return locations;
