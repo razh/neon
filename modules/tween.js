@@ -3,10 +3,10 @@
 type Tween = {
   delay: number,
   duration: number,
-  ease: Function,
+  ease: number => number,
 };
 
-export var ease_linear = (t: number) => t;
+import { ease_linear } from './easings';
 
 export var tween_create = (options: Object = {}): Tween => {
   var {
