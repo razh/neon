@@ -36,8 +36,8 @@ function glsl() {
       .replace(/\s*\/\*[\s\S]*?\*\//g, '')
       // # \n+ to \n
       .replace(/\n{2,}/g, '\n')
-      // Remove newlines and spaces after newlines
-      .replace(/\n\s*/g, '');
+      // Remove newlines and consecutive spaces after semicolons and braces
+      .replace(/([;{}])\n\s*/g, '$1');
   }
 
   return {
