@@ -13,6 +13,16 @@ const rollup = require('rollup').rollup;
 const composer = require('gulp-uglify/composer');
 const uglify = composer(require('uglify-es'), console);
 
+const escapeStringRegexp = require('escape-string-regexp');
+const operators = require('glsl-tokenizer/lib/operators');
+
+const SPACES_AROUND_OPERATORS_REGEX = new RegExp(
+  `\\s*(${
+    operators.map(escapeStringRegexp).join('|')
+  })\\s*`,
+  'g'
+);
+
 let production = false;
 
 gulp.task('browser-sync', () => {
@@ -36,8 +46,26 @@ function glsl() {
       .replace(/\s*\/\*[\s\S]*?\*\//g, '')
       // # \n+ to \n
       .replace(/\n{2,}/g, '\n')
-      // Remove newlines and consecutive spaces after semicolons and braces
-      .replace(/([;{}])\n\s*/g, '$1');
+      // Remove tabs and consecutive spaces with a single space
+      .replace(/\s{2,}|\t/g, ' ')
+      .split('\n')
+      .map(line => {
+        line = line.trim();
+
+        // Append newlines after preprocessor directives.
+        if (line[0] === '#') {
+          line += '\n';
+        }
+
+        // Remove spaces around operators if not an #extension directive.
+        // For example, #extension GL_OES_standard_derivatives : enable.
+        if (!line.startsWith('#extension')) {
+          line = line.replace(SPACES_AROUND_OPERATORS_REGEX, '$1');
+        }
+
+        return line;
+      })
+      .join('');
   }
 
   return {
