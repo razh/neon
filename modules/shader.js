@@ -1,5 +1,7 @@
 // @flow
 
+import type { Vector3 } from './vec3';
+
 export var createShaderProgram = (gl: WebGLRenderingContext, vs: string, fs: string) => {
   var program = gl.createProgram();
 
@@ -25,15 +27,22 @@ export var createFloat32Buffer = (gl: WebGLRenderingContext, array: number[]): W
   return buffer;
 };
 
-
 export var setFloat32Attribute = (gl: WebGLRenderingContext, location: number, buffer: WebGLBuffer, size: number) => {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.enableVertexAttribArray(location);
   gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
 };
 
+export var setFloatUniform = (gl: WebGLRenderingContext, location: number, value: number) => {
+  gl.uniform1f(location, value);
+};
+
 export var setMat4Uniform = (gl: WebGLRenderingContext, location: number, array: number[]) => {
   gl.uniformMatrix4fv(location, false, array);
+};
+
+export var setVec3Uniform = (gl: WebGLRenderingContext, location: number, vector: Vector3) => {
+  gl.uniform3f(location, vector.x, vector.y, vector.z);
 };
 
 export var getAttributeLocations = (gl: WebGLRenderingContext, program: WebGLProgram): { [string]: number } => {
