@@ -19,7 +19,7 @@ export var directGeom_fromGeom = (geom: Geometry): DirectGeometry => {
     if (vertexColors.length === 3) {
       colors.push(...vertexColors);
     } else {
-      var color = face.color;
+      var { color } = face;
       colors.push(color, color, color);
     }
   });

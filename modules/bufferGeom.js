@@ -5,7 +5,6 @@ import type { Geometry } from './geom';
 
 type BufferGeometry = {
   attrs: { [string]: Float32Array },
-  buffers: { [string]: Float32Array },
 };
 
 import { bufferAttr_copyVector3sArray } from './bufferAttr';
@@ -14,7 +13,6 @@ import { directGeom_fromGeom } from './directGeom';
 export var bufferGeom_create = (): BufferGeometry => {
   return {
     attrs: {},
-    buffers: {},
   };
 };
 

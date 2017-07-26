@@ -22,7 +22,7 @@ export var face3_create = (a: number, b: number, c: number): Face3 => {
   };
 };
 
-export var face3_clone = (face: Face3) => {
+export var face3_clone = (face: Face3): Face3 => {
   return {
     a: face.a,
     b: face.b,
