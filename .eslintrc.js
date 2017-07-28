@@ -26,6 +26,7 @@ module.exports = {
     Uint32Array: false,
     Uint8Array: false,
     Uint8ClampedArray: false,
+    WeakMap: false,
   },
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
