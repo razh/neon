@@ -20,10 +20,10 @@ export var createShaderProgram = (gl: WebGLRenderingContext, vs: string, fs: str
   return program;
 };
 
-export var createFloat32Buffer = (gl: WebGLRenderingContext, array: number[]): WebGLBuffer => {
+export var createFloat32Buffer = (gl: WebGLRenderingContext, array: Float32Array): WebGLBuffer => {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(array), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
   return buffer;
 };
 

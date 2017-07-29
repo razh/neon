@@ -42,21 +42,21 @@ var render = () => {
 
   gl.useProgram(program);
 
-  var position = [
+  var position = new Float32Array([
     -0.5, -0.5, 0,
     0.5, -0.5, 0,
     -0.5, 0.5, 0,
     0.5, 0.5, 0,
-  ];
+  ]);
 
   var positionBuffer = createFloat32Buffer(gl, position);
 
-  var color = createFloat32Buffer(gl, [
+  var color = createFloat32Buffer(gl, new Float32Array([
     1, 1, 1,
     1, 0, 0,
     0, 1, 0,
     0, 0, 1,
-  ]);
+  ]));
 
   setMat4Uniform(gl, uniforms.M, [
     0.5, 0, 0, 0,
