@@ -12,6 +12,8 @@ export type Object3D = {
   scale: Vector3,
   matrix: Matrix4,
   matrixWorld: Matrix4,
+  modelViewMatrix: Matrix4,
+  visible: boolean,
 };
 
 import {
@@ -43,6 +45,8 @@ export var object3d_create = (): Object3D => {
     scale: vec3_create(1, 1, 1),
     matrix: mat4_create(),
     matrixWorld: mat4_create(),
+    modelViewMatrix: mat4_create(),
+    visible: true,
   };
 };
 
