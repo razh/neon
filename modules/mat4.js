@@ -13,7 +13,7 @@ import {
   vec3_subVectors,
 } from './vec3';
 
-export var mat4_create = () => {
+export var mat4_create = (): Matrix4 => {
   return new Float32Array([
     1, 0, 0, 0,
     0, 1, 0, 0,

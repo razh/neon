@@ -38,12 +38,12 @@ export var render = (gl: WebGLRenderingContext) => () => {
     0, 0, 1,
   ]));
 
-  setMat4Uniform(gl, uniforms.M, [
+  setMat4Uniform(gl, uniforms.M, new Float32Array([
     0.5, 0, 0, 0,
     0, 1, 0, 0,
     0, 0, 1, 0,
     0.25, 0, 0, 1,
-  ]);
+  ]));
 
   setFloat32Attribute(gl, attributes.p, positionBuffer, 3);
   setFloat32Attribute(gl, attributes.c, color, 3);

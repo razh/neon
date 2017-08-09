@@ -37,7 +37,7 @@ export var setFloatUniform = (gl: WebGLRenderingContext, location: number, value
   gl.uniform1f(location, value);
 };
 
-export var setMat4Uniform = (gl: WebGLRenderingContext, location: number, array: number[]) => {
+export var setMat4Uniform = (gl: WebGLRenderingContext, location: number, array: Float32Array) => {
   gl.uniformMatrix4fv(location, false, array);
 };
 
