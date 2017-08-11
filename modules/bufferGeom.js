@@ -3,7 +3,7 @@
 import type { DirectGeometry } from './directGeom';
 import type { Geometry } from './geom';
 
-type BufferGeometry = {
+export type BufferGeometry = {
   attrs: { [string]: Float32Array },
 };
 
