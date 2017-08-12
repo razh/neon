@@ -12,8 +12,21 @@ import {
 import vert from '../shaders/test_vert.glsl';
 import frag from '../shaders/test_frag.glsl';
 
-export var render = (gl: WebGLRenderingContext) => () => {
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+declare var c: HTMLCanvasElement;
+
+// Cast from ?WebGLRenderingContext.
+var gl = ((c.getContext('webgl'): any): WebGLRenderingContext);
+
+gl.clearColor(0, 0, 0, 0);
+
+var setSize = (width, height) => {
+  c.width = width;
+  c.height = height;
+  gl.viewport(0, 0, width, height);
+};
+
+var render = () => {
+  gl.clear(gl.COLOR_BUFFER_BIT);
 
   var program = createShaderProgram(gl, vert, frag);
 
@@ -50,3 +63,11 @@ export var render = (gl: WebGLRenderingContext) => () => {
 
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, position.length / 3);
 };
+
+setSize(window.innerWidth, window.innerHeight);
+render();
+
+window.addEventListener('resize', () => {
+  setSize(window.innerWidth, window.innerHeight);
+  render();
+});
