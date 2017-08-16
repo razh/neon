@@ -57,7 +57,7 @@ var setFloat32AttributeBuffer = (
 
   if (!buffers) {
     buffers = {};
-    buffers.set(bufferGeom, buffers);
+    bufferGeomBuffers.set(bufferGeom, buffers);
   }
 
   var buffer = buffers[name];
