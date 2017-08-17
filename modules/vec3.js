@@ -56,6 +56,13 @@ export var vec3_addVectors = (v: Vector3, a: Vector3, b: Vector3) => {
   return v;
 };
 
+export var vec3_sub = (a: Vector3, b: Vector3) => {
+  a.x -= b.x;
+  a.y -= b.y;
+  a.z -= b.z;
+  return a;
+};
+
 export var vec3_subVectors = (v: Vector3, a: Vector3, b: Vector3) => {
   v.x = a.x - b.x;
   v.y = a.y - b.y;
