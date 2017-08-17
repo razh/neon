@@ -37,7 +37,13 @@ var fogColor = vec3_create(1, 1, 1);
 var fogNear = 1;
 var fogFar = 1000;
 
-var program = createShaderProgram(gl, vert, frag);
+var directionalLights = [];
+
+var program = createShaderProgram(
+  gl,
+  vert,
+  frag.replace(/NUM_DIR_LIGHTS/g, ((directionalLights.length: any): string)),
+);
 
 var attributes = getAttributeLocations(gl, program);
 var uniforms = getUniformLocations(gl, program);
