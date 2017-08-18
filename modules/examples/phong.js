@@ -6,8 +6,12 @@ import type { Mesh } from '../mesh';
 
 import { bufferGeom_fromGeom, bufferGeom_create } from '../bufferGeom';
 import { camera_create } from '../camera';
-import { mat4_multiplyMatrices } from '../mat4';
-import { object3d_create, object3d_traverse } from '../object3d';
+import { mat4_getInverse, mat4_multiplyMatrices } from '../mat4';
+import {
+  object3d_create,
+  object3d_traverse,
+  object3d_updateMatrixWorld,
+} from '../object3d';
 import {
   createShaderProgram,
   createFloat32Buffer,
@@ -18,7 +22,13 @@ import {
   getAttributeLocations,
   getUniformLocations,
 } from '../shader';
-import { vec3_create } from '../vec3';
+import {
+  vec3_create,
+  vec3_multiplyScalar,
+  vec3_setFromMatrixPosition,
+  vec3_sub,
+  vec3_transformDirection,
+} from '../vec3';
 
 import vert from '../shaders/phong_vert.glsl';
 import frag from '../shaders/phong_frag.glsl';
@@ -36,6 +46,8 @@ gl.getExtension('OES_standard_derivatives');
 var fogColor = vec3_create(1, 1, 1);
 var fogNear = 1;
 var fogFar = 1000;
+
+var ambientLightColor = vec3_create(0.5, 0.5, 0.5);
 
 var directionalLights = [];
 
@@ -106,8 +118,28 @@ var renderMesh = (mesh: Mesh, camera: Camera) => {
   gl.drawArrays(gl.TRIANGLES, 0, bufferGeom.attrs.position.length / 3);
 };
 
+var lightDirection = vec3_create();
+
 var render = () => {
+  object3d_updateMatrixWorld(scene);
+  mat4_getInverse(camera.matrixWorldInverse, camera.matrixWorld);
+
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  setVec3Uniform(gl, uniforms.ambientLightColor, ambientLightColor);
+
+  directionalLights.map((light, index) => {
+    var temp = vec3_create();
+
+    var direction = vec3_setFromMatrixPosition(lightDirection, light.matrixWorld);
+    vec3_setFromMatrixPosition(temp, light.target.matrixWorld);
+    vec3_transformDirection(vec3_sub(direction, temp), camera.matrixWorldInverse);
+
+    var color = vec3_multiplyScalar(Object.assign(temp, light.color), light.intensity);
+
+    setVec3Uniform(gl, uniforms[`directionalLights[${index}].direction`], direction);
+    setVec3Uniform(gl, uniforms[`directionalLights[${index}].color`], color);
+  });
 
   object3d_traverse(scene, object => {
     if (object.visible && object.geometry && object.material) {
