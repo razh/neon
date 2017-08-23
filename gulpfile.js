@@ -86,11 +86,11 @@ function glsl() {
 
 gulp.task('rollup', () => {
   return rollup({
-    entry: 'modules/index.js',
+    input: 'modules/index.js',
     plugins: [flow(), glsl()],
   })
     .then(bundle => bundle.write({
-      dest: 'build/bundle.js',
+      file: 'build/bundle.js',
       format: 'iife',
     }));
 });
