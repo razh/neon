@@ -17,7 +17,7 @@ export var face3_create = (a: number, b: number, c: number): Face3 => {
     a,
     b,
     c,
-    color: vec3_create(),
+    color: vec3_create(1, 1, 1),
     vertexColors: [],
   };
 };

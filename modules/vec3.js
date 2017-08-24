@@ -146,7 +146,7 @@ export var vec3_length = (v: Vector3) => {
 };
 
 export var vec3_normalize = (v: Vector3) => {
-  return vec3_divideScalar(v, vec3_length(v));
+  return vec3_divideScalar(v, vec3_length(v) || 1);
 };
 
 export var vec3_applyMatrix4 = (v: Vector3, m: Matrix4) => {
