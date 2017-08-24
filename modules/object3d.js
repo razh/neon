@@ -50,6 +50,19 @@ export var object3d_create = (): Object3D => {
   };
 };
 
+export var object3d_add = (parent: Object3D, child: Object3D) => {
+  child.parent = parent;
+  parent.children.push(child);
+  return parent;
+};
+
+export var object3d_remove = (parent: Object3D, child: Object3D) => {
+  var index = parent.children.indexOf(child);
+  if (index >= 0) {
+    parent.children.splice(index, 1);
+  }
+};
+
 export var object3d_rotateOnAxis = (() => {
   var q1 = quat_create();
 
