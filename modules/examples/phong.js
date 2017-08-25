@@ -1,13 +1,21 @@
 // @flow
 
 import type { BufferGeometry } from '../bufferGeom';
-import type { Camera } from '../camera';
 import type { Mesh } from '../mesh';
 
+import { boxGeom_create } from '../boxGeom';
 import { bufferGeom_fromGeom, bufferGeom_create } from '../bufferGeom';
-import { camera_create } from '../camera';
-import { mat4_getInverse, mat4_multiplyMatrices } from '../mat4';
 import {
+  camera_create,
+  camera_lookAt,
+  camera_updateProjectionMatrix,
+} from '../camera';
+import { light_create } from '../directionalLight';
+import { mat4_getInverse, mat4_multiplyMatrices } from '../mat4';
+import { material_create } from '../material';
+import { mesh_create } from '../mesh';
+import {
+  object3d_add,
   object3d_create,
   object3d_traverse,
   object3d_updateMatrixWorld,
@@ -25,6 +33,7 @@ import {
 import {
   vec3_create,
   vec3_multiplyScalar,
+  vec3_set,
   vec3_setFromMatrixPosition,
   vec3_sub,
   vec3_transformDirection,
@@ -49,7 +58,12 @@ var fogFar = 1000;
 
 var ambientLightColor = vec3_create(0.5, 0.5, 0.5);
 
-var directionalLights = [];
+var light = light_create(vec3_create(1, 1, 1));
+vec3_set(light.position, 128, 48, 0);
+
+var directionalLights = [
+  light,
+];
 
 var program = createShaderProgram(
   gl,
@@ -57,11 +71,28 @@ var program = createShaderProgram(
   frag.replace(/NUM_DIR_LIGHTS/g, ((directionalLights.length: any): string)),
 );
 
+gl.useProgram(program);
+
 var attributes = getAttributeLocations(gl, program);
 var uniforms = getUniformLocations(gl, program);
 
 var scene = object3d_create();
-var camera = camera_create();
+var camera = camera_create(60);
+vec3_set(camera.position, 64, 64, 64);
+camera_lookAt(camera, vec3_create());
+
+var cameraObject = object3d_create();
+object3d_add(cameraObject, camera);
+object3d_add(scene, cameraObject);
+directionalLights.map(light => object3d_add(scene, light));
+
+object3d_add(
+  scene,
+  mesh_create(
+    boxGeom_create(8, 8, 8),
+    material_create(),
+  ),
+);
 
 var bufferGeomBuffers = new WeakMap();
 
@@ -89,7 +120,7 @@ var setFloat32AttributeBuffer = (
 
 var bufferGeoms = new WeakMap();
 
-var renderMesh = (mesh: Mesh, camera: Camera) => {
+var renderMesh = (mesh: Mesh) => {
   var { geometry, material } = mesh;
 
   setVec3Uniform(gl, uniforms.fogColor, fogColor);
@@ -143,7 +174,7 @@ var render = () => {
 
   object3d_traverse(scene, object => {
     if (object.visible && object.geometry && object.material) {
-      renderMesh(((object: any): Mesh), camera);
+      renderMesh(((object: any): Mesh));
     }
   });
 };
