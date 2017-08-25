@@ -183,6 +183,9 @@ var setSize = (width, height) => {
   c.width = width;
   c.height = height;
   gl.viewport(0, 0, width, height);
+
+  camera.aspect = width / height;
+  camera_updateProjectionMatrix(camera);
 };
 
 setSize(window.innerWidth, window.innerHeight);
