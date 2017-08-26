@@ -24,6 +24,28 @@ export var quat_create = (
   };
 };
 
+export var quat_set = (
+  q: Quaternion,
+  x: number,
+  y: number,
+  z: number,
+  w: number
+) => {
+  q.x = x;
+  q.y = y;
+  q.z = z;
+  q.w = w;
+  return q;
+};
+
+export var quat_copy = (a: Quaternion, b: Quaternion) => {
+  a.x = b.x;
+  a.y = b.y;
+  a.z = b.z;
+  a.w = b.w;
+  return a;
+};
+
 export var quat_multiply = (a: Quaternion, b: Quaternion) => {
   // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
   var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
@@ -88,6 +110,30 @@ export var quat_setFromRotationMatrix = (q: Quaternion, m: Matrix4) => {
     q.x = (m13 + m31) / s;
     q.y = (m23 + m32) / s;
     q.z = 0.25 * s;
+  }
+
+  return q;
+};
+
+export var quat_length = (q: Quaternion) => {
+  return Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+};
+
+export var quat_normalize = (q: Quaternion) => {
+  var l = quat_length(q);
+
+  if (!l) {
+    q.x = 0;
+    q.y = 0;
+    q.z = 0;
+    q.w = 1;
+  } else {
+    l = 1 / l;
+
+    q.x = q.x * l;
+    q.y = q.y * l;
+    q.z = q.z * l;
+    q.w = q.w * l;
   }
 
   return q;
