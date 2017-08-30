@@ -10,6 +10,7 @@ import {
   camera_lookAt,
   camera_updateProjectionMatrix,
 } from '../camera';
+import { controls_create } from '../controls';
 import { light_create } from '../directionalLight';
 import { mat4_getInverse, mat4_multiplyMatrices } from '../mat4';
 import { material_create } from '../material';
@@ -20,6 +21,7 @@ import {
   object3d_traverse,
   object3d_updateMatrixWorld,
 } from '../object3d';
+import { pointerLock_create } from '../pointerLock';
 import {
   createShaderProgram,
   createFloat32Buffer,
@@ -82,6 +84,7 @@ var scene = object3d_create();
 var camera = camera_create(60);
 vec3_set(camera.position, 64, 64, 64);
 camera_lookAt(camera, vec3_create());
+pointerLock_create(controls_create(camera), c);
 
 var cameraObject = object3d_create();
 object3d_add(cameraObject, camera);
