@@ -52,6 +52,8 @@ gl.enable(gl.DEPTH_TEST);
 gl.enable(gl.CULL_FACE);
 gl.getExtension('OES_standard_derivatives');
 
+var running = false;
+
 var fogColor = vec3_create(1, 1, 1);
 var fogNear = 1;
 var fogFar = 1000;
@@ -179,6 +181,14 @@ var render = () => {
   });
 };
 
+var animate = () => {
+  render();
+
+  if (running) {
+    requestAnimationFrame(animate);
+  }
+};
+
 var setSize = (width, height) => {
   c.width = width;
   c.height = height;
@@ -189,9 +199,19 @@ var setSize = (width, height) => {
 };
 
 setSize(window.innerWidth, window.innerHeight);
-render();
+animate();
 
 window.addEventListener('resize', () => {
   setSize(window.innerWidth, window.innerHeight);
   render();
+});
+
+document.addEventListener('keypress', (event: KeyboardEvent) => {
+  // Pause/play.
+  if (event.code === 'KeyP') {
+    running = !running;
+    if (running) {
+      animate();
+    }
+  }
 });
