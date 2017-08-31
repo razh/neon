@@ -99,6 +99,9 @@ object3d_add(
   ),
 );
 
+var update = () => {
+};
+
 var bufferGeomBuffers = new WeakMap();
 
 var setFloat32AttributeBuffer = (
@@ -185,6 +188,7 @@ var render = () => {
 };
 
 var animate = () => {
+  update();
   render();
 
   if (running) {
