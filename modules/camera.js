@@ -27,7 +27,7 @@ export var camera_create = (
   near: number = 0.1,
   far: number = 2000,
 ): Camera => {
-  return camera_updateProjectionMatrix(Object.assign(
+  var camera = Object.assign(
     {},
     object3d_create(),
     {
@@ -39,7 +39,11 @@ export var camera_create = (
       matrixWorldInverse: mat4_create(),
       projectionMatrix: mat4_create(),
     }
-  ));
+  );
+
+  camera_updateProjectionMatrix(camera);
+
+  return camera;
 };
 
 export var camera_lookAt = (() => {
@@ -73,6 +77,4 @@ export var camera_updateProjectionMatrix = (camera: Camera) => {
     a, b, c, -1,
     0, 0, d, 0,
   ]);
-
-  return camera;
 };
