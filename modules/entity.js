@@ -1,37 +1,25 @@
 // @flow
 
-import type { Geometry } from './geom';
-import type { Material } from './material';
-import type { Mesh } from './mesh';
-
-type Entity<T: Object> = T & {
+type Entity = {
   components: Component[],
 };
 
 interface Component {
-  parent?: Entity<*>,
+  parent?: Entity,
   update(): void,
 }
 
-import { mesh_create } from './mesh';
-
-export var entity_create = (): Entity<Object> => {
-  return {
-    components: [],
-  };
-};
-
-export var mesh_entity_create = (geometry: Geometry, material: Material): Entity<Mesh> => {
+export var entity_create = <T: Object>(object: T): T & Entity => {
   return Object.assign(
     {},
-    mesh_create(geometry, material),
+    object,
     {
       components: [],
     }
   );
 };
 
-export var entity_add = (entity: Entity<*>, ...components: Component[]) => {
+export var entity_add = (entity: Entity, ...components: Component[]) => {
   components.map(component => {
     if (entity_has(entity, component)) {
       return;
@@ -42,11 +30,11 @@ export var entity_add = (entity: Entity<*>, ...components: Component[]) => {
   });
 };
 
-export var entity_has = (entity: Entity<*>, component: Component) => {
+export var entity_has = (entity: Entity, component: Component) => {
   return entity.components.includes(component);
 };
 
-export var entity_remove = (entity: Entity<*>, ...components: Component[]) => {
+export var entity_remove = (entity: Entity, ...components: Component[]) => {
   components.map(component => {
     var index = entity.components.indexOf(component);
 
@@ -58,7 +46,7 @@ export var entity_remove = (entity: Entity<*>, ...components: Component[]) => {
   });
 };
 
-export var entity_update = (entity: Entity<*>, ...args: *[]) => {
+export var entity_update = (entity: Entity, ...args: *[]) => {
   entity.components.map(component => component.update(...args));
 };
 
