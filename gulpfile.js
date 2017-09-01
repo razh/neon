@@ -49,18 +49,25 @@ function glsl() {
       // Remove tabs and consecutive spaces with a single space
       .replace(/\s{2,}|\t/g, ' ')
       .split('\n')
-      .map(line => {
+      .map((line, index, array) => {
         line = line.trim();
-
-        // Append newlines after preprocessor directives.
-        if (line[0] === '#') {
-          line += '\n';
-        }
 
         // Remove spaces around operators if not an #extension directive.
         // For example, #extension GL_OES_standard_derivatives : enable.
         if (!line.startsWith('#extension')) {
           line = line.replace(SPACES_AROUND_OPERATORS_REGEX, '$1');
+        }
+
+        // Append newlines after preprocessor directives.
+        if (line[0] === '#') {
+          line += '\n';
+
+          // Append newlines before the start of preprocessor directive blocks.
+          if (index > 0) {
+            if (array[index - 1][0] !== '#') {
+              line = '\n' + line;
+            }
+          }
         }
 
         return line;
