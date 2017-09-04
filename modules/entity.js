@@ -1,6 +1,6 @@
 // @flow
 
-type Entity = {
+export type Entity = {
   components: Component[],
 };
 

@@ -4,7 +4,6 @@ import type { Object3D } from './object3d';
 
 type Controls = {
   object: Object3D,
-  speed: number,
   turnRate: number,
   sensitivity: number,
   enabled: boolean,
@@ -25,7 +24,6 @@ var yawQuat = quat_create();
 export var controls_create = (object: Object3D): Controls => {
   var controls = {
     object,
-    speed: 1,
     turnRate: Math.PI / 4,
     sensitivity: 0.002,
     enabled: false,
