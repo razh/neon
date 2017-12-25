@@ -46,33 +46,40 @@ export var box3_expandByPoint = (box: Box3, point: Vector3) => {
   return box;
 };
 
+export var box3_expandByObject = (() => {
+  var scope;
+  var v1 = vec3_create();
+
+  var traverse = node => {
+    var { geometry } = ((node: any): Mesh);
+    if (geometry) {
+      geometry.vertices.map(vertex => {
+        Object.assign(v1, vertex);
+        vec3_applyMatrix4(v1, node.matrixWorld);
+        box3_expandByPoint(scope, v1);
+      });
+    }
+  };
+
+  return (box: Box3, object: Object3D) => {
+    scope = box;
+    object3d_updateMatrixWorld(object);
+    object3d_traverse(object, traverse);
+    return box;
+  };
+})();
+
 export var box3_setFromPoints = (box: Box3, points: Vector3[]) => {
   box3_makeEmpty(box);
   points.map(point => box3_expandByPoint(box, point));
   return box;
 };
 
-export var box3_setFromObject = (() => {
-  var v1 = vec3_create();
-
-  return (box: Box3, object: Object3D) => {
-    object3d_updateMatrixWorld(object);
-    box3_makeEmpty(box);
-
-    object3d_traverse(object, node => {
-      var { geometry } = ((node: any): Mesh);
-      if (geometry) {
-        geometry.vertices.map(vertex => {
-          Object.assign(v1, vertex);
-          vec3_applyMatrix4(v1, node.matrixWorld);
-          box3_expandByPoint(box, v1);
-        });
-      }
-    });
-
-    return box;
-  };
-})();
+export var box3_setFromObject = (box: Box3, object: Object3D) => {
+  box3_makeEmpty(box);
+  box3_setFromObject(box, object);
+  return box;
+};
 
 export var box3_containsPoint = (box: Box3, point: Vector3) => {
   return (
