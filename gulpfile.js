@@ -99,15 +99,19 @@ gulp.task('rollup', () => {
     .then(bundle => bundle.write({
       file: 'build/bundle.js',
       format: 'iife',
-    }));
+    }))
+    // eslint-disable-next-line no-console
+    .catch(error => console.error(error));
 });
 
-gulp.task('js', gulp.series('rollup', function js() {
+gulp.task('uglify', () => {
   return gulp.src('build/bundle.js')
     .pipe($.if(production, uglify()))
     .pipe(gulp.dest('dist'))
     .pipe(browserSync.stream());
-}));
+});
+
+gulp.task('js', gulp.series('rollup', 'uglify'));
 
 gulp.task('html', () => {
   return gulp.src('./index.html')
