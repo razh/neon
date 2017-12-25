@@ -31,15 +31,23 @@ export var vec3_setScalar = (v: Vector3, scalar: number) => {
   return v;
 };
 
-export var vec3_clone = (v: Vector3) => {
-  return vec3_create(v.x, v.y, v.z);
+export var vec3_setX = (v: Vector3, x: number) => {
+  v.x = x;
+  return v;
 };
 
-export var vec3_copy = (a: Vector3, b: Vector3) => {
-  a.x = b.x;
-  a.y = b.y;
-  a.z = b.z;
-  return a;
+export var vec3_setY = (v: Vector3, y: number) => {
+  v.y = y;
+  return v;
+};
+
+export var vec3_setZ = (v: Vector3, z: number) => {
+  v.z = z;
+  return v;
+};
+
+export var vec3_clone = (v: Vector3) => {
+  return vec3_create(v.x, v.y, v.z);
 };
 
 export var vec3_add = (a: Vector3, b: Vector3) => {
@@ -54,6 +62,13 @@ export var vec3_addVectors = (v: Vector3, a: Vector3, b: Vector3) => {
   v.y = a.y + b.y;
   v.z = a.z + b.z;
   return v;
+};
+
+export var vec3_addScaledVector = (a: Vector3, b: Vector3, s: number) => {
+  a.x += b.x * s;
+  a.y += b.y * s;
+  a.z += b.z * s;
+  return a;
 };
 
 export var vec3_sub = (a: Vector3, b: Vector3) => {
@@ -141,6 +156,10 @@ export var vec3_crossVectors = (v: Vector3, a: Vector3, b: Vector3) => {
   return v;
 };
 
+export var vec3_dot = (a: Vector3, b: Vector3) => {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+};
+
 export var vec3_length = (v: Vector3) => {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 };
@@ -192,6 +211,13 @@ export var vec3_setFromMatrixPosition = (v: Vector3, m: Matrix4) => {
   v.x = m[12];
   v.y = m[13];
   v.z = m[14];
+  return v;
+};
+
+export var vec3_fromArray = (v: Vector3, array: number[]) => {
+  v.x = array[0];
+  v.y = array[1];
+  v.z = array[2];
   return v;
 };
 

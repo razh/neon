@@ -12,7 +12,6 @@ type Controls = {
 
 import {
   quat_create,
-  quat_copy,
   quat_set,
   quat_normalize,
   quat_multiply,
@@ -44,7 +43,7 @@ export var controls_create = (object: Object3D): Controls => {
       // pitch * object * yaw
       quat_multiply(object.quaternion, pitchQuat);
       quat_multiply(yawQuat, object.quaternion);
-      quat_copy(object.quaternion, yawQuat);
+      Object.assign(object.quaternion, yawQuat);
     },
   };
 

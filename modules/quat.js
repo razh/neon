@@ -38,14 +38,6 @@ export var quat_set = (
   return q;
 };
 
-export var quat_copy = (a: Quaternion, b: Quaternion) => {
-  a.x = b.x;
-  a.y = b.y;
-  a.z = b.z;
-  a.w = b.w;
-  return a;
-};
-
 export var quat_multiply = (a: Quaternion, b: Quaternion) => {
   // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
   var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
