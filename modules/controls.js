@@ -4,7 +4,6 @@ import type { Object3D } from './object3d';
 
 type Controls = {
   object: Object3D,
-  turnRate: number,
   sensitivity: number,
   enabled: boolean,
   onMouseMove(MouseEvent): void,
@@ -23,10 +22,8 @@ var yawQuat = quat_create();
 export var controls_create = (object: Object3D): Controls => {
   var controls = {
     object,
-    turnRate: Math.PI / 4,
     sensitivity: 0.002,
     enabled: false,
-
     onMouseMove(event: MouseEvent) {
       if (!controls.enabled) {
         return;
