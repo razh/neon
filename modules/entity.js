@@ -15,7 +15,7 @@ export var entity_create = <T: Object>(object: T): T & Entity => {
     object,
     {
       components: [],
-    }
+    },
   );
 };
 

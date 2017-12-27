@@ -15,6 +15,7 @@ module.exports = {
     sourceType: 'module',
   },
   globals: {
+    Promise: false,
     ArrayBuffer: false,
     DataView: false,
     Float32Array: false,
@@ -29,13 +30,25 @@ module.exports = {
     WeakMap: false,
   },
   rules: {
-    'comma-dangle': ['error', 'always-multiline'],
+    'arrow-parens': ['error', 'as-needed'],
+    'comma-dangle': ['error', {
+      arrays: 'always-multiline',
+      objects: 'always-multiline',
+      imports: 'always-multiline',
+      exports: 'always-multiline',
+      functions: 'always-multiline',
+    }],
+    'func-style': ['error', 'expression'],
     'no-multi-spaces': 'error',
     'object-curly-spacing': ['error', 'always'],
     'object-shorthand': ['error', 'always'],
     'padded-blocks': ['error', 'never'],
     semi: ['error', 'always'],
-    'space-before-function-paren': ['error', 'never'],
+    'space-before-function-paren': ['error', {
+      anonymous: 'never',
+      named: 'never',
+      asyncArrow: 'always',
+    }],
     'space-in-parens': ['error', 'never'],
   },
 };

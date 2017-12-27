@@ -18,6 +18,6 @@ export var mesh_create = (geometry: Geometry, material: Material): Mesh => {
     {
       geometry,
       material,
-    }
+    },
   );
 };

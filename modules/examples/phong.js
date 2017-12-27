@@ -108,7 +108,7 @@ var setFloat32AttributeBuffer = (
   name: string,
   location: number,
   bufferGeom: BufferGeometry,
-  size: number
+  size: number,
 ) => {
   var buffers = bufferGeomBuffers.get(bufferGeom);
 

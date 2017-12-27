@@ -23,6 +23,6 @@ export var light_create = (
       color,
       intensity,
       target: object3d_create(),
-    }
+    },
   );
 };

@@ -38,7 +38,7 @@ export var camera_create = (
       up: vec3_clone(vec3_Y),
       matrixWorldInverse: mat4_create(),
       projectionMatrix: mat4_create(),
-    }
+    },
   );
 
   camera_updateProjectionMatrix(camera);

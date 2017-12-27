@@ -29,7 +29,7 @@ export var quat_set = (
   x: number,
   y: number,
   z: number,
-  w: number
+  w: number,
 ) => {
   q.x = x;
   q.y = y;

@@ -33,8 +33,8 @@ export var geom_push = (geom: Geometry, vertices: number[], faces: number[]) => 
       vec3_create(
         vertices[i],
         vertices[i + 1],
-        vertices[i + 2]
-      )
+        vertices[i + 2],
+      ),
     );
   }
 
@@ -43,8 +43,8 @@ export var geom_push = (geom: Geometry, vertices: number[], faces: number[]) => 
       face3_create(
         offset + faces[i],
         offset + faces[i + 1],
-        offset + faces[i + 2]
-      )
+        offset + faces[i + 2],
+      ),
     );
   }
 
