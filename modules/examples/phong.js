@@ -197,9 +197,13 @@ var animate = () => {
 };
 
 var setSize = (width, height) => {
-  c.width = width;
-  c.height = height;
-  gl.viewport(0, 0, width, height);
+  var { devicePixelRatio = 1 } = window;
+
+  c.width = width * devicePixelRatio;
+  c.height = height * devicePixelRatio;
+  c.style.width = `${width}px`;
+  c.style.height = `${height}px`;
+  gl.viewport(0, 0, c.width, c.height);
 
   camera.aspect = width / height;
   camera_updateProjectionMatrix(camera);
