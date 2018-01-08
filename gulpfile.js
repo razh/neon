@@ -1,4 +1,5 @@
 /* eslint-env node */
+/* eslint-disable func-style */
 
 'use strict';
 
@@ -20,7 +21,7 @@ const SPACES_AROUND_OPERATORS_REGEX = new RegExp(
   `\\s*(${
     operators.map(escapeStringRegexp).join('|')
   })\\s*`,
-  'g'
+  'g',
 );
 
 let production = false;
@@ -133,7 +134,7 @@ gulp.task('watch', () => {
 gulp.task('default', gulp.series(
   'clean',
   gulp.parallel('html', 'js'),
-  gulp.parallel('browser-sync', 'watch')
+  gulp.parallel('browser-sync', 'watch'),
 ));
 
 gulp.task('build', gulp.series(
@@ -142,7 +143,7 @@ gulp.task('build', gulp.series(
     production = true;
     done();
   },
-  gulp.parallel('html', 'js')
+  gulp.parallel('html', 'js'),
 ));
 
 gulp.task('compress', () => {
