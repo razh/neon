@@ -27,19 +27,16 @@ export var camera_create = (
   near: number = 0.1,
   far: number = 2000,
 ): Camera => {
-  var camera = Object.assign(
-    {},
-    object3d_create(),
-    {
-      fov,
-      near,
-      far,
-      aspect,
-      up: vec3_clone(vec3_Y),
-      matrixWorldInverse: mat4_create(),
-      projectionMatrix: mat4_create(),
-    },
-  );
+  var camera = {
+    ...object3d_create(),
+    fov,
+    near,
+    far,
+    aspect,
+    up: vec3_clone(vec3_Y),
+    matrixWorldInverse: mat4_create(),
+    projectionMatrix: mat4_create(),
+  };
 
   camera_updateProjectionMatrix(camera);
 

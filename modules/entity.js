@@ -10,13 +10,10 @@ interface Component {
 }
 
 export var entity_create = <T: Object>(object: T): T & Entity => {
-  return Object.assign(
-    {},
-    object,
-    {
-      components: [],
-    },
-  );
+  return {
+    ...object,
+    components: [],
+  };
 };
 
 export var entity_add = (entity: Entity, ...components: Component[]) => {

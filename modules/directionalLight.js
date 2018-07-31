@@ -16,13 +16,10 @@ export var light_create = (
   color: Vector3 = vec3_create(),
   intensity: number = 1,
 ): DirectionalLight => {
-  return Object.assign(
-    {},
-    object3d_create(),
-    {
-      color,
-      intensity,
-      target: object3d_create(),
-    },
-  );
+  return {
+    ...object3d_create(),
+    color,
+    intensity,
+    target: object3d_create(),
+  };
 };

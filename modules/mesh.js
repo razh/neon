@@ -12,12 +12,9 @@ export type Mesh = Object3D & {
 import { object3d_create } from './object3d';
 
 export var mesh_create = (geometry: Geometry, material: Material): Mesh => {
-  return Object.assign(
-    {},
-    object3d_create(),
-    {
-      geometry,
-      material,
-    },
-  );
+  return {
+    ...object3d_create(),
+    geometry,
+    material,
+  };
 };
