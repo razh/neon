@@ -181,8 +181,9 @@ var render = () => {
   });
 
   object3d_traverse(scene, object => {
+    object = ((object: any): Mesh);
     if (object.visible && object.geometry && object.material) {
-      renderMesh(((object: any): Mesh));
+      renderMesh(object);
     }
   });
 };

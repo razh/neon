@@ -205,7 +205,7 @@ export var ray_applyMatrix4 = (r: Ray, m: Matrix4) => {
   return r;
 };
 
-export var ray_intersectObjects = (ray: Ray, objects: Mesh[]) => {
+export var ray_intersectObjects = (ray: Ray, objects: Mesh[]): Intersection[] => {
   return []
     .concat(...objects.map(object => ray_intersectsMesh(ray, object)))
     .sort((a, b) => a.distance - b.distance);
