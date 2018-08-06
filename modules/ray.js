@@ -57,7 +57,7 @@ export var ray_at = (ray: Ray, t: number, result: Vector3 = vec3_create()) => {
   );
 };
 
-export var ray_intersectBox = (ray: Ray, box: Box3, optionalTarget?: Vector3) => {
+export var ray_intersectBox = (ray: Ray, box: Box3, target: Vector3) => {
   var { origin, direction } = ray;
 
   var txmin = (box.min.x - origin.x) / direction.x;
@@ -97,7 +97,7 @@ export var ray_intersectBox = (ray: Ray, box: Box3, optionalTarget?: Vector3) =>
     return;
   }
 
-  return ray_at(ray, tmin >= 0 ? tmin : tmax, optionalTarget);
+  return ray_at(ray, tmin >= 0 ? tmin : tmax, target);
 };
 
 export var ray_intersectTriangle = (() => {
@@ -106,7 +106,7 @@ export var ray_intersectTriangle = (() => {
   var edge2 = vec3_create();
   var normal = vec3_create();
 
-  return (ray: Ray, a: Vector3, b: Vector3, c: Vector3, optionalTarget?: Vector3) => {
+  return (ray: Ray, a: Vector3, b: Vector3, c: Vector3, target: Vector3) => {
     vec3_subVectors(edge1, b, a);
     vec3_subVectors(edge2, c, a);
 
@@ -145,7 +145,7 @@ export var ray_intersectTriangle = (() => {
       return;
     }
 
-    return ray_at(ray, QdN / DdN, optionalTarget);
+    return ray_at(ray, QdN / DdN, target);
   };
 })();
 
@@ -157,7 +157,7 @@ export var ray_intersectsMesh = (() => {
   var intersectionPointWorld = vec3_create();
 
   var checkIntersection = (object, ray, a, b, c, point): ?Intersection => {
-    var intersect = ray_intersectTriangle(ray, a, b, c);
+    var intersect = ray_intersectTriangle(ray, a, b, c, point);
     if (!intersect) {
       return;
     }
