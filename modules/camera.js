@@ -60,14 +60,15 @@ export var camera_updateProjectionMatrix = (camera: Camera) => {
   var left = bottom * camera.aspect;
   var right = top * camera.aspect;
 
-  var x = 2 * near / (right - left);
-  var y = 2 * near / (top - bottom);
+  var x = (2 * near) / (right - left);
+  var y = (2 * near) / (top - bottom);
 
   var a = (right + left) / (right - left);
   var b = (top + bottom) / (top - bottom);
   var c = -(far + near) / (far - near);
-  var d = -2 * far * near / (far - near);
+  var d = (-2 * far * near) / (far - near);
 
+  // prettier-ignore
   camera.projectionMatrix.set([
     x, 0, 0, 0,
     0, y, 0, 0,

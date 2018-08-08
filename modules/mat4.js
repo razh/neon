@@ -14,6 +14,7 @@ import {
 } from './vec3';
 
 export var mat4_create = (): Matrix4 => {
+  // prettier-ignore
   return new Float32Array([
     1, 0, 0, 0,
     0, 1, 0, 0,
@@ -24,9 +25,13 @@ export var mat4_create = (): Matrix4 => {
 
 export var mat4_makeRotationFromQuaternion = (m: Matrix4, q: Quaternion) => {
   var { x, y, z, w } = q;
+  // prettier-ignore
   var x2 = x + x, y2 = y + y, z2 = z + z;
+  // prettier-ignore
   var xx = x * x2, xy = x * y2, xz = x * z2;
+  // prettier-ignore
   var yy = y * y2, yz = y * z2, zz = z * z2;
+  // prettier-ignore
   var wx = w * x2, wy = w * y2, wz = w * z2;
 
   m[0] = 1 - (yy + zz);
@@ -93,6 +98,7 @@ export var mat4_lookAt = (() => {
 })();
 
 export var mat4_identity = (m: Matrix4) => {
+  // prettier-ignore
   m.set([
     1, 0, 0, 0,
     0, 1, 0, 0,

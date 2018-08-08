@@ -22,6 +22,7 @@ var program = createShaderProgram(gl, vert, frag);
 gl.useProgram(program);
 
 // Create buffers.
+// prettier-ignore
 var position = new Float32Array([
   -0.5, -0.5, 0,
   0.5, -0.5, 0,
@@ -31,6 +32,7 @@ var position = new Float32Array([
 
 var positionBuffer = createFloat32Buffer(gl, position);
 
+// prettier-ignore
 var color = createFloat32Buffer(gl, new Float32Array([
   1, 1, 1,
   1, 0, 0,
@@ -42,6 +44,7 @@ var color = createFloat32Buffer(gl, new Float32Array([
 var attributes = getAttributeLocations(gl, program);
 var uniforms = getUniformLocations(gl, program);
 
+// prettier-ignore
 setMat4Uniform(gl, uniforms.M, new Float32Array([
   0.5, 0, 0, 0,
   0, 1, 0, 0,

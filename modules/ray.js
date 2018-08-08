@@ -72,13 +72,13 @@ export var ray_intersectBox = (ray: Ray, box: Box3, target: Vector3) => {
     [tymin, tymax] = [tymax, tymin];
   }
 
-  if ((txmin > tymax) || (tymin > txmax)) {
+  if (txmin > tymax || tymin > txmax) {
     return;
   }
 
   // Math.min/max with NaN support (0 / 0).
-  var tmin = ((tymin > txmin) || (txmin !== txmin)) ? tymin : txmin;
-  var tmax = ((tymax < txmax) || (txmax !== txmax)) ? tymax : txmax;
+  var tmin = tymin > txmin || txmin !== txmin ? tymin : txmin;
+  var tmax = tymax < txmax || txmax !== txmax ? tymax : txmax;
 
   var tzmin = (box.min.z - origin.z) / direction.z;
   var tzmax = (box.max.z - origin.z) / direction.z;
@@ -86,12 +86,12 @@ export var ray_intersectBox = (ray: Ray, box: Box3, target: Vector3) => {
     [tzmin, tzmax] = [tzmax, tzmin];
   }
 
-  if ((tmin > tzmax) || (tzmin > tmax)) {
+  if (tmin > tzmax || tzmin > tmax) {
     return;
   }
 
-  tmin = ((tzmin > tmin) || (tmin !== tmin)) ? tzmin : tmin;
-  tmax = ((tzmax < tmax) || (tmax !== tmax)) ? tzmax : tmax;
+  tmin = tzmin > tmin || tmin !== tmin ? tzmin : tmin;
+  tmax = tzmax < tmax || tmax !== tmax ? tzmax : tmax;
 
   if (tmax < 0) {
     return;
@@ -118,7 +118,7 @@ export var ray_intersectTriangle = (() => {
 
     if (DdN > 0) {
       return;
-    } if (DdN < 0) {
+    } else if (DdN < 0) {
       sign = -1;
       DdN *= -1;
     } else {
@@ -126,7 +126,8 @@ export var ray_intersectTriangle = (() => {
     }
 
     vec3_subVectors(diff, ray.origin, a);
-    var DdQxE2 = sign * vec3_dot(ray.direction, vec3_crossVectors(edge2, diff, edge2));
+    var DdQxE2 =
+      sign * vec3_dot(ray.direction, vec3_crossVectors(edge2, diff, edge2));
     if (DdQxE2 < 0) {
       return;
     }
@@ -136,7 +137,7 @@ export var ray_intersectTriangle = (() => {
       return;
     }
 
-    if ((DdQxE2 + DdE1xQ) > DdN) {
+    if (DdQxE2 + DdE1xQ > DdN) {
       return;
     }
 
@@ -187,7 +188,14 @@ export var ray_intersectsMesh = (() => {
       var b = vertices[face.b];
       var c = vertices[face.c];
 
-      var intersection = checkIntersection(object, rayCopy, a, b, c, intersectionPoint);
+      var intersection = checkIntersection(
+        object,
+        rayCopy,
+        a,
+        b,
+        c,
+        intersectionPoint,
+      );
       if (intersection) {
         intersection.face = face;
         intersection.faceIndex = index;
@@ -205,7 +213,10 @@ export var ray_applyMatrix4 = (r: Ray, m: Matrix4) => {
   return r;
 };
 
-export var ray_intersectObjects = (ray: Ray, objects: Mesh[]): Intersection[] => {
+export var ray_intersectObjects = (
+  ray: Ray,
+  objects: Mesh[],
+): Intersection[] => {
   return []
     .concat(...objects.map(object => ray_intersectsMesh(ray, object)))
     .sort((a, b) => a.distance - b.distance);

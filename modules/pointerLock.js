@@ -1,6 +1,9 @@
 // @flow
 
-export var pointerLock_create = (controls: { enabled: boolean }, element: Element) => {
+export var pointerLock_create = (
+  controls: { enabled: boolean },
+  element: Element,
+) => {
   var hasPointerLock = 'pointerLockElement' in document;
 
   if (!hasPointerLock) {
