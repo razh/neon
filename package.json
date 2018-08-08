@@ -37,6 +37,6 @@
     "gulp-zip": "4.2.0",
     "rollup": "0.63.4",
     "rollup-plugin-flow": "1.1.1",
-    "uglify-es": "3.3.9"
+    "terser": "3.8.1"
   }
 }

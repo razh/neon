@@ -12,7 +12,7 @@ const flow = require('rollup-plugin-flow');
 const rollup = require('rollup').rollup;
 
 const composer = require('gulp-uglify/composer');
-const uglify = composer(require('uglify-es'), console);
+const uglify = composer(require('terser'), console);
 
 const escapeStringRegexp = require('escape-string-regexp');
 const operators = require('glsl-tokenizer/lib/operators');
