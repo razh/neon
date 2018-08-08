@@ -1,4 +1,4 @@
-//  @flow
+// @flow
 
 import type { Vector3 } from './vec3';
 import type { Face3 } from './face3';

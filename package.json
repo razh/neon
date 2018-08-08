@@ -24,9 +24,9 @@
     "browser-sync": "2.24.6",
     "del": "3.0.0",
     "escape-string-regexp": "1.0.5",
-    "eslint": "5.2.0",
+    "eslint": "5.3.0",
     "eslint-plugin-flowtype": "2.50.0",
-    "flow-bin": "0.77.0",
+    "flow-bin": "0.78.0",
     "glsl-tokenizer": "2.1.2",
     "gulp": "4.0.0",
     "gulp-htmlmin": "4.0.0",
@@ -35,7 +35,7 @@
     "gulp-size": "3.0.0",
     "gulp-uglify": "3.0.1",
     "gulp-zip": "4.2.0",
-    "rollup": "0.63.4",
+    "rollup": "0.64.1",
     "rollup-plugin-flow": "1.1.1",
     "terser": "3.8.1"
   }
