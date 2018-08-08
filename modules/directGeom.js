@@ -13,7 +13,11 @@ export var directGeom_fromGeom = (geom: Geometry): DirectGeometry => {
   var colors = [];
 
   geom.faces.map(face => {
-    vertices.push(geom.vertices[face.a], geom.vertices[face.b], geom.vertices[face.c]);
+    vertices.push(
+      geom.vertices[face.a],
+      geom.vertices[face.b],
+      geom.vertices[face.c],
+    );
 
     var { vertexColors } = face;
     if (vertexColors.length === 3) {

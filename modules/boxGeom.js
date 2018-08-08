@@ -4,12 +4,17 @@ import type { Geometry } from './geom';
 
 import { geom_create, geom_push } from './geom';
 
-export var boxGeom_create = (width: number, height: number, depth: number): Geometry => {
+export var boxGeom_create = (
+  width: number,
+  height: number,
+  depth: number,
+): Geometry => {
   var halfWidth = width / 2;
   var halfHeight = height / 2;
   var halfDepth = depth / 2;
 
   // Generated from new THREE.BoxGeometry(1, 1, 1).
+  // prettier-ignore
   var vertices = [
     // px.
     halfWidth, halfHeight, halfDepth,
@@ -24,6 +29,7 @@ export var boxGeom_create = (width: number, height: number, depth: number): Geom
     -halfWidth, -halfHeight, halfDepth,
   ];
 
+  // prettier-ignore
   var faces = [
     0, 2, 1,
     2, 3, 1,

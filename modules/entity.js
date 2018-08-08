@@ -5,8 +5,8 @@ export type Entity = {
 };
 
 interface Component {
-  parent?: Entity,
-  update(): void,
+  parent?: Entity;
+  update(): void;
 }
 
 export var entity_create = <T: Object>(object: T): T & Entity => {

@@ -40,8 +40,14 @@ export var quat_set = (
 
 export var quat_multiply = (a: Quaternion, b: Quaternion) => {
   // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
-  var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
-  var qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
+  var qax = a.x,
+    qay = a.y,
+    qaz = a.z,
+    qaw = a.w;
+  var qbx = b.x,
+    qby = b.y,
+    qbz = b.z,
+    qbw = b.w;
 
   a.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
   a.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
@@ -51,7 +57,11 @@ export var quat_multiply = (a: Quaternion, b: Quaternion) => {
   return a;
 };
 
-export var quat_setFromAxisAngle = (q: Quaternion, axis: Vector3, angle: number) => {
+export var quat_setFromAxisAngle = (
+  q: Quaternion,
+  axis: Vector3,
+  angle: number,
+) => {
   var halfAngle = angle / 2;
   var s = Math.sin(halfAngle);
 
@@ -67,9 +77,15 @@ export var quat_setFromRotationMatrix = (q: Quaternion, m: Matrix4) => {
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
   // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
-  var m11 = m[0], m12 = m[4], m13 = m[8];
-  var m21 = m[1], m22 = m[5], m23 = m[9];
-  var m31 = m[2], m32 = m[6], m33 = m[10];
+  var m11 = m[0],
+    m12 = m[4],
+    m13 = m[8];
+  var m21 = m[1],
+    m22 = m[5],
+    m23 = m[9];
+  var m31 = m[2],
+    m32 = m[6],
+    m33 = m[10];
 
   var trace = m11 + m22 + m33;
   var s;

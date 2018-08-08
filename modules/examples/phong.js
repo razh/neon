@@ -65,9 +65,7 @@ var ambientLightColor = vec3_create(0.5, 0.5, 0.5);
 var light = light_create(vec3_create(1, 1, 1));
 vec3_set(light.position, 128, 48, 0);
 
-var directionalLights = [
-  light,
-];
+var directionalLights = [light];
 
 var program = createShaderProgram(
   gl,
@@ -91,16 +89,9 @@ object3d_add(cameraObject, camera);
 object3d_add(scene, cameraObject);
 directionalLights.map(light => object3d_add(scene, light));
 
-object3d_add(
-  scene,
-  mesh_create(
-    boxGeom_create(8, 8, 8),
-    material_create(),
-  ),
-);
+object3d_add(scene, mesh_create(boxGeom_create(8, 8, 8), material_create()));
 
-var update = () => {
-};
+var update = () => {};
 
 var bufferGeomBuffers = new WeakMap();
 
@@ -140,7 +131,11 @@ var renderMesh = (mesh: Mesh) => {
   setFloatUniform(gl, uniforms.shininess, material.shininess);
   setVec3Uniform(gl, uniforms.emissive, material.emissive);
 
-  mat4_multiplyMatrices(mesh.modelViewMatrix, camera.matrixWorldInverse, mesh.matrixWorld);
+  mat4_multiplyMatrices(
+    mesh.modelViewMatrix,
+    camera.matrixWorldInverse,
+    mesh.matrixWorld,
+  );
 
   setMat4Uniform(gl, uniforms.modelViewMatrix, mesh.modelViewMatrix);
   setMat4Uniform(gl, uniforms.projectionMatrix, camera.projectionMatrix);
@@ -170,13 +165,26 @@ var render = () => {
   directionalLights.map((light, index) => {
     var temp = vec3_create();
 
-    var direction = vec3_setFromMatrixPosition(lightDirection, light.matrixWorld);
+    var direction = vec3_setFromMatrixPosition(
+      lightDirection,
+      light.matrixWorld,
+    );
     vec3_setFromMatrixPosition(temp, light.target.matrixWorld);
-    vec3_transformDirection(vec3_sub(direction, temp), camera.matrixWorldInverse);
+    vec3_transformDirection(
+      vec3_sub(direction, temp),
+      camera.matrixWorldInverse,
+    );
 
-    var color = vec3_multiplyScalar(Object.assign(temp, light.color), light.intensity);
+    var color = vec3_multiplyScalar(
+      Object.assign(temp, light.color),
+      light.intensity,
+    );
 
-    setVec3Uniform(gl, uniforms[`directionalLights[${index}].direction`], direction);
+    setVec3Uniform(
+      gl,
+      uniforms[`directionalLights[${index}].direction`],
+      direction,
+    );
     setVec3Uniform(gl, uniforms[`directionalLights[${index}].color`], color);
   });
 

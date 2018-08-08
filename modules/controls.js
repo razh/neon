@@ -9,12 +9,7 @@ type Controls = {
   onMouseMove(MouseEvent): void,
 };
 
-import {
-  quat_create,
-  quat_set,
-  quat_normalize,
-  quat_multiply,
-} from './quat';
+import { quat_create, quat_set, quat_normalize, quat_multiply } from './quat';
 
 var pitchQuat = quat_create();
 var yawQuat = quat_create();

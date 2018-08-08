@@ -82,6 +82,7 @@ export var box3_setFromObject = (box: Box3, object: Object3D) => {
 };
 
 export var box3_containsPoint = (box: Box3, point: Vector3) => {
+  // prettier-ignore
   return (
     box.min.x <= point.x && point.x <= box.max.x &&
     box.min.y <= point.y && point.y <= box.max.y &&
@@ -90,6 +91,7 @@ export var box3_containsPoint = (box: Box3, point: Vector3) => {
 };
 
 export var box3_intersectsBox = (a: Box3, b: Box3) => {
+  // prettier-ignore
   return !(
     a.max.x < b.min.x || a.min.x > b.max.x ||
     a.max.y < b.min.y || a.min.y > b.max.y ||

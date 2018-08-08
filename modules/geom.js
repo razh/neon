@@ -24,17 +24,17 @@ export var geom_create = (): Geometry => {
   };
 };
 
-export var geom_push = (geom: Geometry, vertices: number[], faces: number[]) => {
+export var geom_push = (
+  geom: Geometry,
+  vertices: number[],
+  faces: number[],
+) => {
   var offset = geom.vertices.length;
 
   var i;
   for (i = 0; i < vertices.length; i += 3) {
     geom.vertices.push(
-      vec3_create(
-        vertices[i],
-        vertices[i + 1],
-        vertices[i + 2],
-      ),
+      vec3_create(vertices[i], vertices[i + 1], vertices[i + 2]),
     );
   }
 
@@ -76,13 +76,15 @@ export var geom_merge = (a: Geometry, b: Geometry) => {
 
   a.vertices.push(...b.vertices.map(vec3_clone));
 
-  a.faces.push(...b.faces.map(face => {
-    var faceCopy = face3_clone(face);
-    faceCopy.a += vertexOffset;
-    faceCopy.b += vertexOffset;
-    faceCopy.c += vertexOffset;
-    return faceCopy;
-  }));
+  a.faces.push(
+    ...b.faces.map(face => {
+      var faceCopy = face3_clone(face);
+      faceCopy.a += vertexOffset;
+      faceCopy.b += vertexOffset;
+      faceCopy.c += vertexOffset;
+      return faceCopy;
+    }),
+  );
 
   return a;
 };

@@ -180,7 +180,10 @@ export var vec3_applyMatrix4 = (v: Vector3, m: Matrix4) => {
 
 export var vec3_applyQuaternion = (v: Vector3, q: Quaternion) => {
   var { x, y, z } = v;
-  var qx = q.x, qy = q.y, qz = q.z, qw = q.w;
+  var qx = q.x,
+    qy = q.y,
+    qz = q.z,
+    qw = q.w;
 
   // calculate quat * vector
 
@@ -203,7 +206,9 @@ export var vec3_distanceTo = (a: Vector3, b: Vector3) => {
 };
 
 export var vec3_distanceToSquared = (a: Vector3, b: Vector3) => {
-  var dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
+  var dx = a.x - b.x,
+    dy = a.y - b.y,
+    dz = a.z - b.z;
   return dx * dx + dy * dy + dz * dz;
 };
 
