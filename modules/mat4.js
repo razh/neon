@@ -22,38 +22,14 @@ export var mat4_create = (): Matrix4 => {
   ]);
 };
 
-export var mat4_makeRotationFromQuaternion = (m: Matrix4, q: Quaternion) => {
-  var { x, y, z, w } = q;
-  var x2 = x + x, y2 = y + y, z2 = z + z;
-  var xx = x * x2, xy = x * y2, xz = x * z2;
-  var yy = y * y2, yz = y * z2, zz = z * z2;
-  var wx = w * x2, wy = w * y2, wz = w * z2;
+export var mat4_makeRotationFromQuaternion = (() => {
+  var zero = vec3_create();
+  var one = vec3_create(1, 1, 1);
 
-  m[0] = 1 - (yy + zz);
-  m[4] = xy - wz;
-  m[8] = xz + wy;
-
-  m[1] = xy + wz;
-  m[5] = 1 - (xx + zz);
-  m[9] = yz - wx;
-
-  m[2] = xz - wy;
-  m[6] = yz + wx;
-  m[10] = 1 - (xx + yy);
-
-  // last column
-  m[3] = 0;
-  m[7] = 0;
-  m[11] = 0;
-
-  // bottom row
-  m[12] = 0;
-  m[13] = 0;
-  m[14] = 0;
-  m[15] = 1;
-
-  return m;
-};
+  return (m: Matrix4, q: Quaternion) => {
+    return mat4_compose(m, zero, q, one);
+  };
+})();
 
 export var mat4_lookAt = (() => {
   var x = vec3_create();
@@ -70,7 +46,13 @@ export var mat4_lookAt = (() => {
     vec3_normalize(vec3_crossVectors(x, up, z));
 
     if (!vec3_length(x)) {
-      z.z += 0.0001;
+      // up and z are parallel
+      if (Math.abs(up.z) === 1) {
+        z.x += 0.0001;
+      } else {
+        z.z += 0.0001;
+      }
+
       vec3_normalize(vec3_crossVectors(x, up, z));
     }
 
@@ -204,9 +186,47 @@ export var mat4_scale = (m: Matrix4, v: Vector3) => {
   return m;
 };
 
-export var mat4_compose = (m: Matrix4, position: Vector3, quaternion: Quaternion, scale: Vector3) => {
-  mat4_makeRotationFromQuaternion(m, quaternion);
-  mat4_scale(m, scale);
-  mat4_setPosition(m, position);
+export var mat4_compose = (
+  m: Matrix4,
+  position: Vector3,
+  quaternion: Quaternion,
+  scale: Vector3,
+) => {
+  var { x, y, z, w } = quaternion;
+  // prettier-ignore
+  var x2 = x + x, y2 = y + y, z2 = z + z;
+  // prettier-ignore
+  var xx = x * x2, xy = x * y2, xz = x * z2;
+  // prettier-ignore
+  var yy = y * y2, yz = y * z2, zz = z * z2;
+  // prettier-ignore
+  var wx = w * x2, wy = w * y2, wz = w * z2;
+
+  // prettier-ignore
+  var sx = scale.x, sy = scale.y, sz = scale.z;
+
+  m[0] = (1 - (yy + zz)) * sx;
+  m[4] = (xy - wz) * sy;
+  m[8] = (xz + wy) * sz;
+
+  m[1] = (xy + wz) * sx;
+  m[5] = (1 - (xx + zz)) * sy;
+  m[9] = (yz - wx) * sz;
+
+  m[2] = (xz - wy) * sx;
+  m[6] = (yz + wx) * sy;
+  m[10] = (1 - (xx + yy)) * sz;
+
+  // last column
+  m[3] = 0;
+  m[7] = 0;
+  m[11] = 0;
+
+  // bottom row
+  m[12] = position.x;
+  m[13] = position.y;
+  m[14] = position.z;
+  m[15] = 1;
+
   return m;
 };
