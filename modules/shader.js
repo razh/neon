@@ -10,6 +10,12 @@ export var createShaderProgram = (gl: WebGLRenderingContext, vs: string, fs: str
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     gl.attachShader(program, shader);
+
+    // var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    // console.log('Shader compiled successfully: ' + compiled);
+    // var compilationLog = gl.getShaderInfoLog(shader);
+    // console.log('Shader compiler log: ' + compilationLog);
+    // console.log(type, source)
   };
 
   createShader(gl.VERTEX_SHADER, vs);
