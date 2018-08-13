@@ -3,6 +3,8 @@
 import type { Matrix4 } from './mat4';
 import type { Vector3 } from './vec3';
 
+import { clamp } from './math';
+
 export type Quaternion = {
   x: number,
   y: number,
@@ -38,22 +40,11 @@ export var quat_set = (
   return q;
 };
 
-export var quat_multiply = (a: Quaternion, b: Quaternion) => {
-  // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
-  var qax = a.x,
-    qay = a.y,
-    qaz = a.z,
-    qaw = a.w;
-  var qbx = b.x,
-    qby = b.y,
-    qbz = b.z,
-    qbw = b.w;
-
-  a.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
-  a.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
-  a.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
-  a.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
-
+export var quat_copy = (a: Quaternion, b: Quaternion) => {
+  a.x = b.x;
+  a.y = b.y;
+  a.z = b.z;
+  a.w = b.w;
   return a;
 };
 
@@ -124,6 +115,104 @@ export var quat_setFromRotationMatrix = (q: Quaternion, m: Matrix4) => {
   }
 
   return q;
+};
+
+export var quat_multiply = (a: Quaternion, b: Quaternion) => {
+  // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
+  var qax = a.x,
+    qay = a.y,
+    qaz = a.z,
+    qaw = a.w;
+  var qbx = b.x,
+    qby = b.y,
+    qbz = b.z,
+    qbw = b.w;
+
+  a.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+  a.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+  a.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+  a.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+
+  return a;
+};
+
+export var quat_slerp = (a: Quaternion, b: Quaternion, t: number) => {
+  if (t === 0) return a;
+  if (t === 1) return quat_copy(a, b);
+
+  var { x, y, z, w } = a;
+
+  // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
+
+  var cosHalfTheta = w * b.w + x * b.x + y * b.y + z * b.z;
+
+  if (cosHalfTheta < 0) {
+    a.w = -b.w;
+    a.x = -b.x;
+    a.y = -b.y;
+    a.z = -b.z;
+
+    cosHalfTheta = -cosHalfTheta;
+  } else {
+    quat_copy(a, b);
+  }
+
+  if (cosHalfTheta >= 1.0) {
+    a.w = w;
+    a.x = x;
+    a.y = y;
+    a.z = z;
+
+    return a;
+  }
+
+  var sqrSinHalfTheta = 1.0 - cosHalfTheta * cosHalfTheta;
+
+  if (sqrSinHalfTheta <= Number.EPSILON) {
+    var s = 1 - t;
+    a.w = s * w + t * a.w;
+    a.x = s * x + t * a.x;
+    a.y = s * y + t * a.y;
+    a.z = s * z + t * a.z;
+
+    return quat_normalize(a);
+  }
+
+  var sinHalfTheta = Math.sqrt(sqrSinHalfTheta);
+  var halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
+  var ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta,
+    ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
+
+  a.w = w * ratioA + a.w * ratioB;
+  a.x = x * ratioA + a.x * ratioB;
+  a.y = y * ratioA + a.y * ratioB;
+  a.z = z * ratioA + a.z * ratioB;
+
+  return a;
+};
+
+export var quat_angleTo = (a: Quaternion, b: Quaternion) => {
+  return 2 * Math.acos(Math.abs(clamp(quat_dot(a, b), -1, 1)));
+};
+
+export var quat_rotateTowards = (
+  a: Quaternion,
+  b: Quaternion,
+  step: number,
+) => {
+  var angle = quat_angleTo(a, b);
+
+  if (!angle) return a;
+
+  var t = Math.min(1, step / angle);
+
+  quat_slerp(a, b, t);
+
+  return a;
+};
+
+export var quat_dot = (a: Quaternion, b: Quaternion) => {
+  return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 };
 
 export var quat_length = (q: Quaternion) => {
