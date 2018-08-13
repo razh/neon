@@ -62,6 +62,9 @@ export var quat_setFromAxisAngle = (
   axis: Vector3,
   angle: number,
 ) => {
+  // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
+  // assumes axis is normalized
+
   var halfAngle = angle / 2;
   var s = Math.sin(halfAngle);
 

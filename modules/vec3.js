@@ -171,9 +171,11 @@ export var vec3_normalize = (v: Vector3) => {
 export var vec3_applyMatrix4 = (v: Vector3, m: Matrix4) => {
   var { x, y, z } = v;
 
-  v.x = m[0] * x + m[4] * y + m[8] * z + m[12];
-  v.y = m[1] * x + m[5] * y + m[9] * z + m[13];
-  v.z = m[2] * x + m[6] * y + m[10] * z + m[14];
+  var w = 1 / (m[3] * x + m[7] * y + m[11] * z + m[15]);
+
+  v.x = (m[0] * x + m[4] * y + m[8] * z + m[12]) * w;
+  v.y = (m[1] * x + m[5] * y + m[9] * z + m[13]) * w;
+  v.z = (m[2] * x + m[6] * y + m[10] * z + m[14]) * w;
 
   return v;
 };
