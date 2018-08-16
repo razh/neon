@@ -105,8 +105,8 @@ void main() {
 
   diffuseColor *= vColor;
 
-  vec3 fdx = vec3(dFdx(vViewPosition.x), dFdx(vViewPosition.y), dFdx(vViewPosition.z));
-  vec3 fdy = vec3(dFdy(vViewPosition.x), dFdy(vViewPosition.y), dFdy(vViewPosition.z));
+  vec3 fdx = dFdx(vViewPosition);
+  vec3 fdy = dFdy(vViewPosition);
   vec3 normal = normalize(cross(fdx, fdy));
 
   BlinnPhongMaterial material;
