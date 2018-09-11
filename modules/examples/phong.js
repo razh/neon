@@ -124,7 +124,7 @@ var renderMesh = (mesh: Mesh) => {
 
   setVec3Uniform(gl, uniforms.fogColor, fogColor);
   setFloatUniform(gl, uniforms.fogNear, fogNear);
-  setFloatUniform(gl, uniforms.floatFar, fogFar);
+  setFloatUniform(gl, uniforms.fogFar, fogFar);
 
   setVec3Uniform(gl, uniforms.diffuse, material.color);
   setVec3Uniform(gl, uniforms.specular, material.specular);
