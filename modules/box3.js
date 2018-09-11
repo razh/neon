@@ -77,7 +77,7 @@ export var box3_setFromPoints = (box: Box3, points: Vector3[]) => {
 
 export var box3_setFromObject = (box: Box3, object: Object3D) => {
   box3_makeEmpty(box);
-  box3_setFromObject(box, object);
+  box3_expandByObject(box, object);
   return box;
 };
 
