@@ -1,9 +1,8 @@
-// @flow
-
-export var pointerLock_create = (
-  controls: { enabled: boolean },
-  element: Element,
-) => {
+/**
+ * @param {{ enabled: boolean }} controls
+ * @param {Element} element
+ */
+export var pointerLock_create = (controls, element) => {
   var hasPointerLock = 'pointerLockElement' in document;
 
   if (!hasPointerLock) {
@@ -12,7 +11,7 @@ export var pointerLock_create = (
   }
 
   var onPointerLockChange = () => {
-    controls.enabled = element === (document: any).pointerLockElement;
+    controls.enabled = element === document.pointerLockElement;
   };
 
   document.addEventListener('pointerlockchange', onPointerLockChange);

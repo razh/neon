@@ -7,6 +7,7 @@
     "gulp": "gulp",
     "lint": "eslint ./modules",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
+    "typescript": "tsc --allowJs --checkJs --noEmit --noImplicitAny ./globals.d.ts ./modules/math.js ./modules/pointerLock.js ./modules/vec3.js",
     "test": "test"
   },
   "repository": {
@@ -40,7 +41,8 @@
     "prettier": "1.15.3",
     "rollup": "0.68.1",
     "rollup-plugin-flow": "1.1.1",
-    "terser": "3.13.1"
+    "terser": "3.13.1",
+    "typescript": "3.1.1"
   },
   "prettier": {
     "singleQuote": true,

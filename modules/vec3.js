@@ -1,15 +1,17 @@
-// @flow
+/**
+ * @typedef {Object} Vector3
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ */
 
-import type { Matrix4 } from './mat4';
-import type { Quaternion } from './quat';
-
-export type Vector3 = {
-  x: number,
-  y: number,
-  z: number,
-};
-
-export var vec3_create = (x: number = 0, y: number = 0, z: number = 0) => {
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @return {Vector3}
+ */
+export var vec3_create = (x = 0, y = 0, z = 0) => {
   return {
     x,
     y,
@@ -17,167 +19,269 @@ export var vec3_create = (x: number = 0, y: number = 0, z: number = 0) => {
   };
 };
 
-export var vec3_set = (v: Vector3, x: number, y: number, z: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @return {Vector3}
+ */
+export var vec3_set = (v, x, y, z) => {
   v.x = x;
   v.y = y;
   v.z = z;
   return v;
 };
 
-export var vec3_setScalar = (v: Vector3, scalar: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} scalar
+ * @return {Vector3}
+ */
+export var vec3_setScalar = (v, scalar) => {
   v.x = scalar;
   v.y = scalar;
   v.z = scalar;
   return v;
 };
 
-export var vec3_setX = (v: Vector3, x: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} x
+ * @return {Vector3}
+ */
+export var vec3_setX = (v, x) => {
   v.x = x;
   return v;
 };
 
-export var vec3_setY = (v: Vector3, y: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} y
+ * @return {Vector3}
+ */
+export var vec3_setY = (v, y) => {
   v.y = y;
   return v;
 };
 
-export var vec3_setZ = (v: Vector3, z: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} z
+ * @return {Vector3}
+ */
+export var vec3_setZ = (v, z) => {
   v.z = z;
   return v;
 };
 
-export var vec3_clone = (v: Vector3) => {
+/**
+ * @param {Vector3} v
+ * @return {Vector3}
+ */
+export var vec3_clone = v => {
   return vec3_create(v.x, v.y, v.z);
 };
 
-export var vec3_add = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_add = (a, b) => {
   a.x += b.x;
   a.y += b.y;
   a.z += b.z;
   return a;
 };
 
-export var vec3_addVectors = (v: Vector3, a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} v
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_addVectors = (v, a, b) => {
   v.x = a.x + b.x;
   v.y = a.y + b.y;
   v.z = a.z + b.z;
   return v;
 };
 
-export var vec3_addScaledVector = (a: Vector3, b: Vector3, s: number) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @param {number} s
+ * @return {Vector3}
+ */
+export var vec3_addScaledVector = (a, b, s) => {
   a.x += b.x * s;
   a.y += b.y * s;
   a.z += b.z * s;
   return a;
 };
 
-export var vec3_sub = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_sub = (a, b) => {
   a.x -= b.x;
   a.y -= b.y;
   a.z -= b.z;
   return a;
 };
 
-export var vec3_subVectors = (v: Vector3, a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} v
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_subVectors = (v, a, b) => {
   v.x = a.x - b.x;
   v.y = a.y - b.y;
   v.z = a.z - b.z;
   return v;
 };
 
-export var vec3_multiply = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_multiply = (a, b) => {
   a.x *= b.x;
   a.y *= b.y;
   a.z *= b.z;
   return a;
 };
 
-export var vec3_multiplyScalar = (v: Vector3, scalar: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} scalar
+ * @return {Vector3}
+ */
+export var vec3_multiplyScalar = (v, scalar) => {
   v.x *= scalar;
   v.y *= scalar;
   v.z *= scalar;
   return v;
 };
 
-export var vec3_applyMatrix4 = (v: Vector3, m: Matrix4) => {
-  var { x, y, z } = v;
+// export var vec3_applyMatrix4 = (v, m) => {
+//   var { x, y, z } = v;
 
-  var w = 1 / (m[3] * x + m[7] * y + m[11] * z + m[15]);
+//   var w = 1 / (m[3] * x + m[7] * y + m[11] * z + m[15]);
 
-  v.x = (m[0] * x + m[4] * y + m[8] * z + m[12]) * w;
-  v.y = (m[1] * x + m[5] * y + m[9] * z + m[13]) * w;
-  v.z = (m[2] * x + m[6] * y + m[10] * z + m[14]) * w;
+//   v.x = (m[0] * x + m[4] * y + m[8] * z + m[12]) * w;
+//   v.y = (m[1] * x + m[5] * y + m[9] * z + m[13]) * w;
+//   v.z = (m[2] * x + m[6] * y + m[10] * z + m[14]) * w;
 
-  return v;
-};
+//   return v;
+// };
 
-export var vec3_applyQuaternion = (v: Vector3, q: Quaternion) => {
-  var { x, y, z } = v;
-  var qx = q.x,
-    qy = q.y,
-    qz = q.z,
-    qw = q.w;
+// export var vec3_applyQuaternion = (v, q) => {
+//   var { x, y, z } = v;
+//   var qx = q.x,
+//     qy = q.y,
+//     qz = q.z,
+//     qw = q.w;
 
-  // calculate quat * vector
+//   // calculate quat * vector
 
-  var ix = qw * x + qy * z - qz * y;
-  var iy = qw * y + qz * x - qx * z;
-  var iz = qw * z + qx * y - qy * x;
-  var iw = -qx * x - qy * y - qz * z;
+//   var ix = qw * x + qy * z - qz * y;
+//   var iy = qw * y + qz * x - qx * z;
+//   var iz = qw * z + qx * y - qy * x;
+//   var iw = -qx * x - qy * y - qz * z;
 
-  // calculate result * inverse quat
+//   // calculate result * inverse quat
 
-  v.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-  v.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-  v.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+//   v.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+//   v.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+//   v.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 
-  return v;
-};
+//   return v;
+// };
 
-export var vec3_transformDirection = (v: Vector3, m: Matrix4) => {
-  // input: THREE.Matrix4 affine matrix
-  // vector interpreted as a direction
+// export var vec3_transformDirection = (v, m) => {
+//   // input: THREE.Matrix4 affine matrix
+//   // vector interpreted as a direction
 
-  var { x, y, z } = v;
+//   var { x, y, z } = v;
 
-  v.x = m[0] * x + m[4] * y + m[8] * z;
-  v.y = m[1] * x + m[5] * y + m[9] * z;
-  v.z = m[2] * x + m[6] * y + m[10] * z;
+//   v.x = m[0] * x + m[4] * y + m[8] * z;
+//   v.y = m[1] * x + m[5] * y + m[9] * z;
+//   v.z = m[2] * x + m[6] * y + m[10] * z;
 
-  return vec3_normalize(v);
-};
+//   return vec3_normalize(v);
+// };
 
-export var vec3_divideScalar = (v: Vector3, scalar: number) => {
+/**
+ * @param {Vector3} v
+ * @param {number} scalar
+ * @return {Vector3}
+ */
+export var vec3_divideScalar = (v, scalar) => {
   return vec3_multiplyScalar(v, 1 / scalar);
 };
 
-export var vec3_min = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_min = (a, b) => {
   a.x = Math.min(a.x, b.x);
   a.y = Math.min(a.y, b.y);
   a.z = Math.min(a.z, b.z);
   return a;
 };
 
-export var vec3_max = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_max = (a, b) => {
   a.x = Math.max(a.x, b.x);
   a.y = Math.max(a.y, b.y);
   a.z = Math.max(a.z, b.z);
   return a;
 };
 
-export var vec3_dot = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {number}
+ */
+export var vec3_dot = (a, b) => {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 };
 
-export var vec3_length = (v: Vector3) => {
+/**
+ * @param {Vector3} v
+ * @return {number}
+ */
+export var vec3_length = v => {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 };
 
-export var vec3_normalize = (v: Vector3) => {
+/**
+ * @param {Vector3} v
+ * @return {Vector3}
+ */
+export var vec3_normalize = v => {
   return vec3_divideScalar(v, vec3_length(v) || 1);
 };
 
-export var vec3_cross = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_cross = (a, b) => {
   var { x, y, z } = a;
 
   a.x = y * b.z - z * b.y;
@@ -187,7 +291,13 @@ export var vec3_cross = (a: Vector3, b: Vector3) => {
   return a;
 };
 
-export var vec3_crossVectors = (v: Vector3, a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} v
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {Vector3}
+ */
+export var vec3_crossVectors = (v, a, b) => {
   var ax = a.x;
   var ay = a.y;
   var az = a.z;
@@ -203,25 +313,40 @@ export var vec3_crossVectors = (v: Vector3, a: Vector3, b: Vector3) => {
   return v;
 };
 
-export var vec3_distanceTo = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {number}
+ */
+export var vec3_distanceTo = (a, b) => {
   return Math.sqrt(vec3_distanceToSquared(a, b));
 };
 
-export var vec3_distanceToSquared = (a: Vector3, b: Vector3) => {
+/**
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @return {number}
+ */
+export var vec3_distanceToSquared = (a, b) => {
   var dx = a.x - b.x,
     dy = a.y - b.y,
     dz = a.z - b.z;
   return dx * dx + dy * dy + dz * dz;
 };
 
-export var vec3_setFromMatrixPosition = (v: Vector3, m: Matrix4) => {
-  v.x = m[12];
-  v.y = m[13];
-  v.z = m[14];
-  return v;
-};
+// export var vec3_setFromMatrixPosition = (v, m) => {
+//   v.x = m[12];
+//   v.y = m[13];
+//   v.z = m[14];
+//   return v;
+// };
 
-export var vec3_fromArray = (v: Vector3, array: number[]) => {
+/**
+ * @param {Vector3} v
+ * @param {number[]} array
+ * @return {Vector3}
+ */
+export var vec3_fromArray = (v, array) => {
   v.x = array[0];
   v.y = array[1];
   v.z = array[2];
