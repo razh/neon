@@ -1,15 +1,25 @@
-// @flow
+/**
+ * @typedef {import('./easings').Easing} Easing
+ */
 
-type Tween = {
-  delay: number,
-  duration: number,
-  ease: number => number,
-};
+/**
+ * @typedef {Object} Tween
+ * @property {number} delay
+ * @property {number} duration
+ * @property {Easing} ease
+ */
 
 import { ease_linear } from './easings.js';
 
-export var tween_create = (options: Object = {}): Tween => {
-  var { duration = 0, delay = 0, ease = ease_linear } = options;
+/**
+ * @param {Object} options
+ * @param {number=} options.delay
+ * @param {number=} options.duration
+ * @param {Easing=} options.ease
+ * @return {Tween}
+ */
+export var tween_create = (options = {}) => {
+  var { delay = 0, duration = 0, ease = ease_linear } = options;
 
   return {
     duration,

@@ -7,7 +7,7 @@
     "gulp": "gulp",
     "lint": "eslint ./modules",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
-    "typescript": "tsc --allowJs --checkJs --noEmit --noImplicitAny ./globals.d.ts ./modules/math.js ./modules/pointerLock.js ./modules/vec3.js",
+    "typescript": "tsc",
     "test": "test"
   },
   "repository": {

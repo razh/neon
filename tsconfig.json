@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "noImplicitAny": true,
+    "rootDirs": ["modules"]
+  },
+  "include": [
+    "./globals.d.ts",
+    "./modules/shader.js",
+    "./modules/tween.js"
+  ]
+}
