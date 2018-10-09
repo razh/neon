@@ -2,13 +2,21 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "lib": ["dom", "ES2018"],
     "noEmit": true,
     "noImplicitAny": true,
     "rootDirs": ["modules"]
   },
   "include": [
     "./globals.d.ts",
+    "./modules/keys.js",
+    "./modules/face3.js",
+    "./modules/mat4.js",
+    "./modules/math.js",
+    "./modules/material.js",
+    "./modules/quat.js",
     "./modules/shader.js",
-    "./modules/tween.js"
+    "./modules/tween.js",
+    "./modules/vec3.js"
   ]
 }

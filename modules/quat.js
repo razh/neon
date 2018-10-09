@@ -1,23 +1,26 @@
-// @flow
+/**
+ * @typedef {import('./mat4').Matrix4} Matrix4
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Matrix4 } from './mat4';
-import type { Vector3 } from './vec3';
+/**
+ * @typedef {Object} Quaternion
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ * @property {number} w
+ */
 
 import { clamp } from './math.js';
 
-export type Quaternion = {
-  x: number,
-  y: number,
-  z: number,
-  w: number,
-};
-
-export var quat_create = (
-  x: number = 0,
-  y: number = 0,
-  z: number = 0,
-  w: number = 1,
-): Quaternion => {
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @param {number} w
+ * @return {Quaternion}
+ */
+export var quat_create = (x = 0, y = 0, z = 0, w = 1) => {
   return {
     x,
     y,
@@ -26,13 +29,15 @@ export var quat_create = (
   };
 };
 
-export var quat_set = (
-  q: Quaternion,
-  x: number,
-  y: number,
-  z: number,
-  w: number,
-) => {
+/**
+ * @param {Quaternion} q
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @param {number} w
+ * @return {Quaternion}
+ */
+export var quat_set = (q, x, y, z, w) => {
   q.x = x;
   q.y = y;
   q.z = z;
@@ -40,7 +45,12 @@ export var quat_set = (
   return q;
 };
 
-export var quat_copy = (a: Quaternion, b: Quaternion) => {
+/**
+ * @param {Quaternion} a
+ * @param {Quaternion} b
+ * @return {Quaternion}
+ */
+export var quat_copy = (a, b) => {
   a.x = b.x;
   a.y = b.y;
   a.z = b.z;
@@ -48,7 +58,12 @@ export var quat_copy = (a: Quaternion, b: Quaternion) => {
   return a;
 };
 
-export var quat_setFromEuler = (q: Quaternion, euler: Vector3) => {
+/**
+ * @param {Quaternion} q
+ * @param {Vector3} euler
+ * @return {Quaternion}
+ */
+export var quat_setFromEuler = (q, euler) => {
   var { x, y, z } = euler;
 
   // http://www.mathworks.com/matlabcentral/fileexchange/
@@ -71,11 +86,13 @@ export var quat_setFromEuler = (q: Quaternion, euler: Vector3) => {
   return q;
 };
 
-export var quat_setFromAxisAngle = (
-  q: Quaternion,
-  axis: Vector3,
-  angle: number,
-) => {
+/**
+ * @param {Quaternion} q
+ * @param {Vector3} axis
+ * @param {number} angle
+ * @return {Quaternion}
+ */
+export var quat_setFromAxisAngle = (q, axis, angle) => {
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
   // assumes axis is normalized
 
@@ -90,7 +107,12 @@ export var quat_setFromAxisAngle = (
   return q;
 };
 
-export var quat_setFromRotationMatrix = (q: Quaternion, m: Matrix4) => {
+/**
+ * @param {Quaternion} q
+ * @param {Matrix4} m
+ * @return {Quaternion}
+ */
+export var quat_setFromRotationMatrix = (q, m) => {
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
   // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
@@ -140,15 +162,22 @@ export var quat_setFromRotationMatrix = (q: Quaternion, m: Matrix4) => {
   return q;
 };
 
-export var quat_angleTo = (a: Quaternion, b: Quaternion) => {
+/**
+ * @param {Quaternion} a
+ * @param {Quaternion} b
+ * @return {number}
+ */
+export var quat_angleTo = (a, b) => {
   return 2 * Math.acos(Math.abs(clamp(quat_dot(a, b), -1, 1)));
 };
 
-export var quat_rotateTowards = (
-  a: Quaternion,
-  b: Quaternion,
-  step: number,
-) => {
+/**
+ * @param {Quaternion} a
+ * @param {Quaternion} b
+ * @param {number} step
+ * @return {Quaternion}
+ */
+export var quat_rotateTowards = (a, b, step) => {
   var angle = quat_angleTo(a, b);
 
   if (!angle) return a;
@@ -160,15 +189,28 @@ export var quat_rotateTowards = (
   return a;
 };
 
-export var quat_dot = (a: Quaternion, b: Quaternion) => {
+/**
+ * @param {Quaternion} a
+ * @param {Quaternion} b
+ * @return {number}
+ */
+export var quat_dot = (a, b) => {
   return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 };
 
-export var quat_length = (q: Quaternion) => {
+/**
+ * @param {Quaternion} q
+ * @return {number}
+ */
+export var quat_length = q => {
   return Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 };
 
-export var quat_normalize = (q: Quaternion) => {
+/**
+ * @param {Quaternion} q
+ * @return {Quaternion}
+ */
+export var quat_normalize = q => {
   var l = quat_length(q);
 
   if (!l) {
@@ -188,7 +230,12 @@ export var quat_normalize = (q: Quaternion) => {
   return q;
 };
 
-export var quat_multiply = (a: Quaternion, b: Quaternion) => {
+/**
+ * @param {Quaternion} a
+ * @param {Quaternion} b
+ * @return {Quaternion}
+ */
+export var quat_multiply = (a, b) => {
   // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
   var qax = a.x,
     qay = a.y,
@@ -207,7 +254,13 @@ export var quat_multiply = (a: Quaternion, b: Quaternion) => {
   return a;
 };
 
-export var quat_slerp = (a: Quaternion, b: Quaternion, t: number) => {
+/**
+ * @param {Quaternion} a
+ * @param {Quaternion} b
+ * @param {number} t
+ * @return {Quaternion}
+ */
+export var quat_slerp = (a, b, t) => {
   if (t === 0) return a;
   if (t === 1) return quat_copy(a, b);
 

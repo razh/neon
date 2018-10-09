@@ -1,18 +1,25 @@
-// @flow
+/**
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Vector3 } from './vec3';
-
-export type Face3 = {
-  a: number,
-  b: number,
-  c: number,
-  color: Vector3,
-  vertexColors: Vector3[],
-};
+/**
+ * @typedef {Object} Face3
+ * @property {number} a
+ * @property {number} b
+ * @property {number} c
+ * @property {Vector3} color
+ * @property {Vector3[]} vertexColors
+ */
 
 import { vec3_create, vec3_clone } from './vec3.js';
 
-export var face3_create = (a: number, b: number, c: number): Face3 => {
+/**
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @return {Face3}
+ */
+export var face3_create = (a, b, c) => {
   return {
     a,
     b,
@@ -22,7 +29,11 @@ export var face3_create = (a: number, b: number, c: number): Face3 => {
   };
 };
 
-export var face3_clone = (face: Face3): Face3 => {
+/**
+ * @param {Face3} face
+ * @return {Face3}
+ */
+export var face3_clone = face => {
   return {
     a: face.a,
     b: face.b,

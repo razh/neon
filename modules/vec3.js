@@ -1,4 +1,9 @@
 /**
+ * @typedef {import('./mat4').Matrix4} Matrix4
+ * @typedef {import('./quat').Quaternion} Quaternion
+ */
+
+/**
  * @typedef {Object} Vector3
  * @property {number} x
  * @property {number} y
@@ -170,53 +175,68 @@ export var vec3_multiplyScalar = (v, scalar) => {
   return v;
 };
 
-// export var vec3_applyMatrix4 = (v, m) => {
-//   var { x, y, z } = v;
+/**
+ * @param {Vector3} v
+ * @param {Matrix4} m
+ * @return {Vector3}
+ */
+export var vec3_applyMatrix4 = (v, m) => {
+  var { x, y, z } = v;
 
-//   var w = 1 / (m[3] * x + m[7] * y + m[11] * z + m[15]);
+  var w = 1 / (m[3] * x + m[7] * y + m[11] * z + m[15]);
 
-//   v.x = (m[0] * x + m[4] * y + m[8] * z + m[12]) * w;
-//   v.y = (m[1] * x + m[5] * y + m[9] * z + m[13]) * w;
-//   v.z = (m[2] * x + m[6] * y + m[10] * z + m[14]) * w;
+  v.x = (m[0] * x + m[4] * y + m[8] * z + m[12]) * w;
+  v.y = (m[1] * x + m[5] * y + m[9] * z + m[13]) * w;
+  v.z = (m[2] * x + m[6] * y + m[10] * z + m[14]) * w;
 
-//   return v;
-// };
+  return v;
+};
 
-// export var vec3_applyQuaternion = (v, q) => {
-//   var { x, y, z } = v;
-//   var qx = q.x,
-//     qy = q.y,
-//     qz = q.z,
-//     qw = q.w;
+/**
+ * @param {Vector3} v
+ * @param {Quaternion} q
+ * @return {Vector3}
+ */
+export var vec3_applyQuaternion = (v, q) => {
+  var { x, y, z } = v;
+  var qx = q.x,
+    qy = q.y,
+    qz = q.z,
+    qw = q.w;
 
-//   // calculate quat * vector
+  // calculate quat * vector
 
-//   var ix = qw * x + qy * z - qz * y;
-//   var iy = qw * y + qz * x - qx * z;
-//   var iz = qw * z + qx * y - qy * x;
-//   var iw = -qx * x - qy * y - qz * z;
+  var ix = qw * x + qy * z - qz * y;
+  var iy = qw * y + qz * x - qx * z;
+  var iz = qw * z + qx * y - qy * x;
+  var iw = -qx * x - qy * y - qz * z;
 
-//   // calculate result * inverse quat
+  // calculate result * inverse quat
 
-//   v.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-//   v.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-//   v.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+  v.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+  v.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+  v.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 
-//   return v;
-// };
+  return v;
+};
 
-// export var vec3_transformDirection = (v, m) => {
-//   // input: THREE.Matrix4 affine matrix
-//   // vector interpreted as a direction
+/**
+ * @param {Vector3} v
+ * @param {Matrix4} m
+ * @return {Vector3}
+ */
+export var vec3_transformDirection = (v, m) => {
+  // input: THREE.Matrix4 affine matrix
+  // vector interpreted as a direction
 
-//   var { x, y, z } = v;
+  var { x, y, z } = v;
 
-//   v.x = m[0] * x + m[4] * y + m[8] * z;
-//   v.y = m[1] * x + m[5] * y + m[9] * z;
-//   v.z = m[2] * x + m[6] * y + m[10] * z;
+  v.x = m[0] * x + m[4] * y + m[8] * z;
+  v.y = m[1] * x + m[5] * y + m[9] * z;
+  v.z = m[2] * x + m[6] * y + m[10] * z;
 
-//   return vec3_normalize(v);
-// };
+  return vec3_normalize(v);
+};
 
 /**
  * @param {Vector3} v
@@ -334,12 +354,17 @@ export var vec3_distanceToSquared = (a, b) => {
   return dx * dx + dy * dy + dz * dz;
 };
 
-// export var vec3_setFromMatrixPosition = (v, m) => {
-//   v.x = m[12];
-//   v.y = m[13];
-//   v.z = m[14];
-//   return v;
-// };
+/**
+ * @param {Vector3} v
+ * @param {Matrix4} m
+ * @return {Vector3}
+ */
+export var vec3_setFromMatrixPosition = (v, m) => {
+  v.x = m[12];
+  v.y = m[13];
+  v.z = m[14];
+  return v;
+};
 
 /**
  * @param {Vector3} v

@@ -1,9 +1,11 @@
-// @flow
+/**
+ * @typedef {import('./quat').Quaternion} Quaternion
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Quaternion } from './quat';
-import type { Vector3 } from './vec3';
-
-export type Matrix4 = Float32Array;
+/**
+ * @typedef {Float32Array} Matrix4
+ */
 
 import {
   vec3_create,
@@ -13,7 +15,7 @@ import {
   vec3_subVectors,
 } from './vec3.js';
 
-export var mat4_create = (): Matrix4 => {
+export var mat4_create = () => {
   // prettier-ignore
   return new Float32Array([
     1, 0, 0, 0,
@@ -23,7 +25,11 @@ export var mat4_create = (): Matrix4 => {
   ]);
 };
 
-export var mat4_identity = (m: Matrix4) => {
+/**
+ * @param {Matrix4} m
+ * @return {Matrix4}
+ */
+export var mat4_identity = m => {
   // prettier-ignore
   m.set([
     1, 0, 0, 0,
@@ -35,26 +41,45 @@ export var mat4_identity = (m: Matrix4) => {
   return m;
 };
 
-export var mat4_copy = (a: Matrix4, b: Matrix4) => {
+/**
+ * @param {Matrix4} a
+ * @param {Matrix4} b
+ * @return {Matrix4}
+ */
+export var mat4_copy = (a, b) => {
   a.set(b);
   return a;
 };
 
+/**
+ * @callback MakeRotationFromQuaternion
+ * @param {Matrix4} m
+ * @param {Quaternion} q
+ * @return {Matrix4}
+ */
 export var mat4_makeRotationFromQuaternion = (() => {
   var zero = vec3_create();
   var one = vec3_create(1, 1, 1);
 
-  return (m: Matrix4, q: Quaternion) => {
+  return /** @type {MakeRotationFromQuaternion} */ (m, q) => {
     return mat4_compose(m, zero, q, one);
   };
 })();
 
+/**
+ * @callback LookAt
+ * @param {Matrix4} m
+ * @param {Vector3} eye
+ * @param {Vector3} target
+ * @param {Vector3} up
+ * @return {Matrix4}
+ */
 export var mat4_lookAt = (() => {
   var x = vec3_create();
   var y = vec3_create();
   var z = vec3_create();
 
-  return (m: Matrix4, eye: Vector3, target: Vector3, up: Vector3) => {
+  return /** @type {LookAt} */ (m, eye, target, up) => {
     vec3_normalize(vec3_subVectors(z, eye, target));
 
     if (!vec3_length(z)) {
@@ -92,7 +117,13 @@ export var mat4_lookAt = (() => {
   };
 })();
 
-export var mat4_multiplyMatrices = (m: Matrix4, a: Matrix4, b: Matrix4) => {
+/**
+ * @param {Matrix4} m
+ * @param {Matrix4} a
+ * @param {Matrix4} b
+ * @return {Matrix4}
+ */
+export var mat4_multiplyMatrices = (m, a, b) => {
   var a11 = a[0],
     a12 = a[4],
     a13 = a[8],
@@ -150,7 +181,12 @@ export var mat4_multiplyMatrices = (m: Matrix4, a: Matrix4, b: Matrix4) => {
   return m;
 };
 
-export var mat4_setPosition = (m: Matrix4, v: Vector3) => {
+/**
+ * @param {Matrix4} m
+ * @param {Vector3} v
+ * @return {Matrix4}
+ */
+export var mat4_setPosition = (m, v) => {
   m[12] = v.x;
   m[13] = v.y;
   m[14] = v.z;
@@ -158,7 +194,12 @@ export var mat4_setPosition = (m: Matrix4, v: Vector3) => {
   return m;
 };
 
-export var mat4_getInverse = (a: Matrix4, b: Matrix4) => {
+/**
+ * @param {Matrix4} a
+ * @param {Matrix4} b
+ * @return {Matrix4}
+ */
+export var mat4_getInverse = (a, b) => {
   // based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
   var n11 = b[0],
     n21 = b[1],
@@ -321,7 +362,12 @@ export var mat4_getInverse = (a: Matrix4, b: Matrix4) => {
   return a;
 };
 
-export var mat4_scale = (m: Matrix4, v: Vector3) => {
+/**
+ * @param {Matrix4} m
+ * @param {Vector3} v
+ * @return {Matrix4}
+ */
+export var mat4_scale = (m, v) => {
   var { x, y, z } = v;
 
   m[0] *= x;
@@ -343,12 +389,14 @@ export var mat4_scale = (m: Matrix4, v: Vector3) => {
   return m;
 };
 
-export var mat4_compose = (
-  m: Matrix4,
-  position: Vector3,
-  quaternion: Quaternion,
-  scale: Vector3,
-) => {
+/**
+ * @param {Matrix4} m
+ * @param {Vector3} position
+ * @param {Quaternion} quaternion
+ * @param {Vector3} scale
+ * @return {Matrix4}
+ */
+export var mat4_compose = (m, position, quaternion, scale) => {
   var { x, y, z, w } = quaternion;
   var x2 = x + x,
     y2 = y + y,
