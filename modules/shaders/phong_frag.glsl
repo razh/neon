@@ -32,6 +32,7 @@ struct GeometricContext {
 varying vec3 vColor;
 
 uniform vec3 fogColor;
+varying float fogDepth;
 uniform float fogNear;
 uniform float fogFar;
 
@@ -132,7 +133,6 @@ void main() {
 
   vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + emissive;
 
-  float depth = gl_FragCoord.z / gl_FragCoord.w;
-  float fogFactor = smoothstep(fogNear, fogFar, depth);
+  float fogFactor = smoothstep(fogNear, fogFar, fogDepth);
   gl_FragColor = vec4(mix(outgoingLight, fogColor, fogFactor), 1.0);
 }
