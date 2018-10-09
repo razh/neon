@@ -23,6 +23,23 @@ export var mat4_create = (): Matrix4 => {
   ]);
 };
 
+export var mat4_identity = (m: Matrix4) => {
+  // prettier-ignore
+  m.set([
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1,
+  ]);
+
+  return m;
+};
+
+export var mat4_copy = (a: Matrix4, b: Matrix4) => {
+  a.set(b);
+  return a;
+};
+
 export var mat4_makeRotationFromQuaternion = (() => {
   var zero = vec3_create();
   var one = vec3_create(1, 1, 1);
@@ -74,23 +91,6 @@ export var mat4_lookAt = (() => {
     return m;
   };
 })();
-
-export var mat4_identity = (m: Matrix4) => {
-  // prettier-ignore
-  m.set([
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1,
-  ]);
-
-  return m;
-};
-
-export var mat4_copy = (a: Matrix4, b: Matrix4) => {
-  a.set(b);
-  return a;
-};
 
 export var mat4_multiplyMatrices = (m: Matrix4, a: Matrix4, b: Matrix4) => {
   var a11 = a[0],
