@@ -3,7 +3,7 @@
 import type { Matrix4 } from './mat4';
 import type { Vector3 } from './vec3';
 
-import { clamp } from './math';
+import { clamp } from './math.js';
 
 export type Quaternion = {
   x: number,

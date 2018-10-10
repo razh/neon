@@ -7,7 +7,7 @@ import {
   setMat4Uniform,
   getAttributeLocations,
   getUniformLocations,
-} from '../shader';
+} from '../shader.js';
 
 import vert from '../shaders/test_vert.glsl';
 import frag from '../shaders/test_frag.glsl';

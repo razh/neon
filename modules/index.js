@@ -1,3 +1,3 @@
 // @flow
 
-import {} from './examples/phong';
+import {} from './examples/phong.js';

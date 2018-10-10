@@ -19,7 +19,7 @@ export type Intersection = {
   faceIndex?: number,
 };
 
-import { mat4_create, mat4_getInverse } from './mat4';
+import { mat4_create, mat4_getInverse } from './mat4.js';
 import {
   vec3_create,
   vec3_add,
@@ -32,7 +32,7 @@ import {
   vec3_multiplyScalar,
   vec3_subVectors,
   vec3_transformDirection,
-} from './vec3';
+} from './vec3.js';
 
 export var ray_create = (
   origin: Vector3 = vec3_create(),

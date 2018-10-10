@@ -10,7 +10,7 @@ export type Face3 = {
   vertexColors: Vector3[],
 };
 
-import { vec3_create, vec3_clone } from './vec3';
+import { vec3_create, vec3_clone } from './vec3.js';
 
 export var face3_create = (a: number, b: number, c: number): Face3 => {
   return {

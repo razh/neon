@@ -3,25 +3,25 @@
 import type { BufferGeometry } from '../bufferGeom';
 import type { Mesh } from '../mesh';
 
-import { boxGeom_create } from '../boxGeom';
-import { bufferGeom_fromGeom, bufferGeom_create } from '../bufferGeom';
+import { boxGeom_create } from '../boxGeom.js';
+import { bufferGeom_fromGeom, bufferGeom_create } from '../bufferGeom.js';
 import {
   camera_create,
   camera_lookAt,
   camera_updateProjectionMatrix,
-} from '../camera';
-import { controls_create } from '../controls';
-import { light_create } from '../directionalLight';
-import { mat4_getInverse, mat4_multiplyMatrices } from '../mat4';
-import { material_create } from '../material';
-import { mesh_create } from '../mesh';
+} from '../camera.js';
+import { controls_create } from '../controls.js';
+import { light_create } from '../directionalLight.js';
+import { mat4_getInverse, mat4_multiplyMatrices } from '../mat4.js';
+import { material_create } from '../material.js';
+import { mesh_create } from '../mesh.js';
 import {
   object3d_add,
   object3d_create,
   object3d_traverse,
   object3d_updateMatrixWorld,
-} from '../object3d';
-import { pointerLock_create } from '../pointerLock';
+} from '../object3d.js';
+import { pointerLock_create } from '../pointerLock.js';
 import {
   createShaderProgram,
   createFloat32Buffer,
@@ -31,7 +31,7 @@ import {
   setVec3Uniform,
   getAttributeLocations,
   getUniformLocations,
-} from '../shader';
+} from '../shader.js';
 import {
   vec3_create,
   vec3_multiplyScalar,
@@ -39,7 +39,7 @@ import {
   vec3_setFromMatrixPosition,
   vec3_sub,
   vec3_transformDirection,
-} from '../vec3';
+} from '../vec3.js';
 
 import vert from '../shaders/phong_vert.glsl';
 import frag from '../shaders/phong_frag.glsl';

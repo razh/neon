@@ -9,7 +9,7 @@ export type Material = {
   emissive: Vector3,
 };
 
-import { vec3_create } from './vec3';
+import { vec3_create } from './vec3.js';
 
 // MeshPhongMaterial.
 export var material_create = (): Material => {

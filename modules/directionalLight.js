@@ -9,8 +9,8 @@ export type DirectionalLight = Object3D & {
   target: Object3D,
 };
 
-import { object3d_create } from './object3d';
-import { vec3_create } from './vec3';
+import { object3d_create } from './object3d.js';
+import { vec3_create } from './vec3.js';
 
 export var light_create = (
   color: Vector3 = vec3_create(),

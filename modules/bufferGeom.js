@@ -7,8 +7,8 @@ export type BufferGeometry = {
   attrs: { [string]: Float32Array },
 };
 
-import { bufferAttr_copyVector3sArray } from './bufferAttr';
-import { directGeom_fromGeom } from './directGeom';
+import { bufferAttr_copyVector3sArray } from './bufferAttr.js';
+import { directGeom_fromGeom } from './directGeom.js';
 
 export var bufferGeom_create = (): BufferGeometry => {
   return {

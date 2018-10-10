@@ -10,8 +10,8 @@ type Controls = {
 };
 
 import { clamp } from './math.js';
-import { quat_create, quat_multiply, quat_setFromEuler } from './quat';
-import { vec3_create } from './vec3';
+import { quat_create, quat_multiply, quat_setFromEuler } from './quat.js';
+import { vec3_create } from './vec3.js';
 
 var pitchQuat = quat_create();
 var yawQuat = quat_create();

@@ -14,10 +14,10 @@ export type Camera = Object3D & {
   projectionMatrix: Matrix4,
 };
 
-import { mat4_create, mat4_lookAt } from './mat4';
-import { object3d_create } from './object3d';
-import { quat_setFromRotationMatrix } from './quat';
-import { vec3_clone, vec3_Y } from './vec3';
+import { mat4_create, mat4_lookAt } from './mat4.js';
+import { object3d_create } from './object3d.js';
+import { quat_setFromRotationMatrix } from './quat.js';
+import { vec3_clone, vec3_Y } from './vec3.js';
 
 var DEG_TO_RAD = Math.PI / 180;
 

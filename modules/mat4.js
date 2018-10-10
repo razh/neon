@@ -11,7 +11,7 @@ import {
   vec3_length,
   vec3_normalize,
   vec3_subVectors,
-} from './vec3';
+} from './vec3.js';
 
 export var mat4_create = (): Matrix4 => {
   // prettier-ignore

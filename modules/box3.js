@@ -9,14 +9,14 @@ export type Box3 = {
   max: Vector3,
 };
 
-import { object3d_traverse, object3d_updateMatrixWorld } from './object3d';
+import { object3d_traverse, object3d_updateMatrixWorld } from './object3d.js';
 import {
   vec3_create,
   vec3_add,
   vec3_applyMatrix4,
   vec3_min,
   vec3_max,
-} from './vec3';
+} from './vec3.js';
 
 export var box3_create = (
   min: Vector3 = vec3_create(Infinity, Infinity, Infinity),
