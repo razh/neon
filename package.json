@@ -21,14 +21,14 @@
   "homepage": "https://github.com/razh/neon#readme",
   "devDependencies": {
     "babel-eslint": "10.0.1",
-    "browser-sync": "2.26.0",
+    "browser-sync": "2.26.3",
     "del": "3.0.0",
     "escape-string-regexp": "1.0.5",
-    "eslint": "5.6.1",
-    "eslint-config-prettier": "3.1.0",
-    "eslint-plugin-flowtype": "2.50.3",
+    "eslint": "5.11.0",
+    "eslint-config-prettier": "3.3.0",
+    "eslint-plugin-flowtype": "3.2.0",
     "eslint-plugin-prettier": "3.0.0",
-    "flow-bin": "0.82.0",
+    "flow-bin": "0.89.0",
     "glsl-tokenizer": "2.1.5",
     "gulp": "4.0.0",
     "gulp-htmlmin": "5.0.1",
@@ -37,10 +37,10 @@
     "gulp-size": "3.0.0",
     "gulp-uglify": "3.0.1",
     "gulp-zip": "4.2.0",
-    "prettier": "1.14.3",
-    "rollup": "0.66.5",
+    "prettier": "1.15.3",
+    "rollup": "0.68.1",
     "rollup-plugin-flow": "1.1.1",
-    "terser": "3.10.0"
+    "terser": "3.13.1"
   },
   "prettier": {
     "singleQuote": true,
