@@ -1,13 +1,14 @@
-// @flow
+/**
+ * @typedef {import('./object3d').Object3D } Object3D
+ */
 
-import type { Object3D } from './object3d';
-
-type Controls = {
-  object: Object3D,
-  sensitivity: number,
-  enabled: boolean,
-  onMouseMove(MouseEvent): void,
-};
+/**
+ * @typedef Controls
+ * @property {Object3D} object
+ * @property {number} sensitivity
+ * @property {boolean} enabled
+ * @property {(event: MouseEvent) => void} onMouseMove
+ */
 
 import { clamp } from './math.js';
 import { quat_create, quat_multiply, quat_setFromEuler } from './quat.js';
@@ -16,15 +17,20 @@ import { vec3_create } from './vec3.js';
 var pitchQuat = quat_create();
 var yawQuat = quat_create();
 
-export var controls_create = (object: Object3D): Controls => {
+/**
+ * @param {Object3D} object
+ * @return {Controls}
+ */
+export var controls_create = object => {
   var pitchEuler = vec3_create();
   var yawEuler = vec3_create();
 
+  /** @type {Controls} */
   var controls = {
     object,
     sensitivity: 0.002,
     enabled: false,
-    onMouseMove(event: MouseEvent) {
+    onMouseMove(event) {
       if (!controls.enabled) {
         return;
       }
@@ -52,6 +58,9 @@ export var controls_create = (object: Object3D): Controls => {
   return controls;
 };
 
-export var controls_dispose = (controls: Controls) => {
+/**
+ * @param {Controls} controls
+ */
+export var controls_dispose = controls => {
   document.removeEventListener('mousemove', controls.onMouseMove);
 };

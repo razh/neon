@@ -4,7 +4,7 @@
  */
 
 /**
- * @typedef {Object} Quaternion
+ * @typedef Quaternion
  * @property {number} x
  * @property {number} y
  * @property {number} z

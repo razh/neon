@@ -1,11 +1,12 @@
-// @flow
+/**
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Vector3 } from './vec3';
-
-export var bufferAttr_copyVector3sArray = (
-  array: Float32Array,
-  vectors: Array<Vector3>,
-) => {
+/**
+ * @param {Float32Array} array
+ * @param {Vector3[]} vectors
+ */
+export var bufferAttr_copyVector3sArray = (array, vectors) => {
   var offset = 0;
 
   vectors.map(vector => {

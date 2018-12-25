@@ -1,18 +1,23 @@
-// @flow
+/**
+ * @typedef {import('./mat4').Matrix4} Matrix4
+ * @typedef {import('./object3d').Object3D} Object3D
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Matrix4 } from './mat4';
-import type { Object3D } from './object3d';
-import type { Vector3 } from './vec3';
+/**
+ * @typedef CameraSubclass
+ * @property {number} fov
+ * @property {number} near
+ * @property {number} far
+ * @property {number} aspect
+ * @property {Vector3} up
+ * @property {Matrix4} matrixWorldInverse
+ * @property {Matrix4} projectionMatrix
+ */
 
-export type Camera = Object3D & {
-  fov: number,
-  near: number,
-  far: number,
-  aspect: number,
-  up: Vector3,
-  matrixWorldInverse: Matrix4,
-  projectionMatrix: Matrix4,
-};
+/**
+ * @typedef {Object3D & CameraSubclass} Camera
+ */
 
 import { mat4_create, mat4_lookAt } from './mat4.js';
 import { object3d_create } from './object3d.js';
@@ -21,12 +26,14 @@ import { vec3_clone, vec3_Y } from './vec3.js';
 
 var DEG_TO_RAD = Math.PI / 180;
 
-export var camera_create = (
-  fov: number = 60,
-  aspect: number = 1,
-  near: number = 0.1,
-  far: number = 2000,
-): Camera => {
+/**
+ * @param {number} fov
+ * @param {number} aspect
+ * @param {number} near
+ * @param {number} far
+ * @return {Camera}
+ */
+export var camera_create = (fov = 60, aspect = 1, near = 0.1, far = 2000) => {
   var camera = {
     ...object3d_create(),
     fov,
@@ -43,16 +50,24 @@ export var camera_create = (
   return camera;
 };
 
+/**
+ * @callback LookAt
+ * @param {Camera} camera
+ * @param {Vector3} vector
+ */
 export var camera_lookAt = (() => {
   var m1 = mat4_create();
 
-  return (camera: Camera, vector: Vector3) => {
+  return /** @type {LookAt} */ (camera, vector) => {
     mat4_lookAt(m1, camera.position, vector, camera.up);
     quat_setFromRotationMatrix(camera.quaternion, m1);
   };
 })();
 
-export var camera_updateProjectionMatrix = (camera: Camera) => {
+/**
+ * @param {Camera} camera
+ */
+export var camera_updateProjectionMatrix = camera => {
   var { near, far } = camera;
 
   var top = near * Math.tan(camera.fov * 0.5 * DEG_TO_RAD);

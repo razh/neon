@@ -1,14 +1,16 @@
-// @flow
-
-import type { Geometry } from './geom';
+/**
+ * @typedef {import('./geom').Geometry } Geometry
+ */
 
 import { geom_create, geom_push } from './geom.js';
 
-export var boxGeom_create = (
-  width: number,
-  height: number,
-  depth: number,
-): Geometry => {
+/**
+ * @param {number} width
+ * @param {number} height
+ * @param {number} depth
+ * @return {Geometry}
+ */
+export var boxGeom_create = (width, height, depth) => {
   var halfWidth = width / 2;
   var halfHeight = height / 2;
   var halfDepth = depth / 2;

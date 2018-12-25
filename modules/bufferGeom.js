@@ -1,28 +1,39 @@
-// @flow
+/**
+ * @typedef {import('./directGeom').DirectGeometry} DirectGeometry
+ * @typedef {import('./geom').Geometry} Geometry
+ */
 
-import type { DirectGeometry } from './directGeom';
-import type { Geometry } from './geom';
-
-export type BufferGeometry = {
-  attrs: { [string]: Float32Array },
-};
+/**
+ * @typedef BufferGeometry
+ * @property {Object.<string, Float32Array>} attrs
+ */
 
 import { bufferAttr_copyVector3sArray } from './bufferAttr.js';
 import { directGeom_fromGeom } from './directGeom.js';
 
-export var bufferGeom_create = (): BufferGeometry => {
+/**
+ * @return {BufferGeometry}
+ */
+export var bufferGeom_create = () => {
   return {
     attrs: {},
   };
 };
 
-export var bufferGeom_fromGeom = (bufferGeom: BufferGeometry, geom: Geometry) =>
+/**
+ * @param {BufferGeometry} bufferGeom
+ * @param {Geometry} geom
+ * @return {BufferGeometry}
+ */
+export var bufferGeom_fromGeom = (bufferGeom, geom) =>
   bufferGeom_fromDirectGeom(bufferGeom, directGeom_fromGeom(geom));
 
-export var bufferGeom_fromDirectGeom = (
-  bufferGeom: BufferGeometry,
-  geom: DirectGeometry,
-): BufferGeometry => {
+/**
+ * @param {BufferGeometry} bufferGeom
+ * @param {DirectGeometry} geom
+ * @return {BufferGeometry}
+ */
+export var bufferGeom_fromDirectGeom = (bufferGeom, geom) => {
   var positions = new Float32Array(geom.vertices.length * 3);
   bufferGeom.attrs.position = bufferAttr_copyVector3sArray(
     positions,

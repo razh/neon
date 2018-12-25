@@ -1,15 +1,22 @@
-// @flow
+/**
+ * @typedef {import('./geom').Geometry} Geometry
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Geometry } from './geom';
-import type { Vector3 } from './vec3';
+/**
+ * @typedef DirectGeometry
+ * @property {Vector3[]} vertices
+ * @property {Vector3[]} colors
+ */
 
-export type DirectGeometry = {
-  vertices: Vector3[],
-  colors: Vector3[],
-};
-
-export var directGeom_fromGeom = (geom: Geometry): DirectGeometry => {
+/**
+ * @param {Geometry} geom
+ * @return {DirectGeometry}
+ */
+export var directGeom_fromGeom = geom => {
+  /** @type {Vector3[]} */
   var vertices = [];
+  /** @type {Vector3[]} */
   var colors = [];
 
   geom.faces.map(face => {

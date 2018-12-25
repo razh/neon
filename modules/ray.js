@@ -1,23 +1,25 @@
-// @flow
+/**
+ * @typedef {import('./box3').Box3} Box3
+ * @typedef {import('./face3').Face3} Face3
+ * @typedef {import('./mat4').Matrix4} Matrix4
+ * @typedef {import('./mesh').Mesh} Mesh
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Box3 } from './box3';
-import type { Face3 } from './face3';
-import type { Matrix4 } from './mat4';
-import type { Mesh } from './mesh';
-import type { Vector3 } from './vec3';
+/**
+ * @typedef Ray
+ * @property {Vector3} origin
+ * @property {Vector3} direction
+ */
 
-export type Ray = {
-  origin: Vector3,
-  direction: Vector3,
-};
-
-export type Intersection = {
-  object: Mesh,
-  distance: number,
-  point: Vector3,
-  face?: Face3,
-  faceIndex?: number,
-};
+/**
+ * @typedef Intersection
+ * @property {Mesh} object
+ * @property {number} distance
+ * @property {Vector3} point
+ * @property {Face3=} face
+ * @property {number=} faceIndex
+ */
 
 import { mat4_create, mat4_getInverse } from './mat4.js';
 import {
@@ -34,30 +36,49 @@ import {
   vec3_transformDirection,
 } from './vec3.js';
 
-export var ray_create = (
-  origin: Vector3 = vec3_create(),
-  direction: Vector3 = vec3_create(),
-): Ray => {
+/**
+ * @param {Vector3} origin
+ * @param {Vector3} direction
+ * @return {Ray}
+ */
+export var ray_create = (origin = vec3_create(), direction = vec3_create()) => {
   return {
     origin,
     direction,
   };
 };
 
-export var ray_copy = (a: Ray, b: Ray) => {
+/**
+ * @param {Ray} a
+ * @param {Ray} b
+ * @return {Ray}
+ */
+export var ray_copy = (a, b) => {
   Object.assign(a.origin, b.origin);
   Object.assign(a.direction, b.direction);
   return a;
 };
 
-export var ray_at = (ray: Ray, t: number, result: Vector3 = vec3_create()) => {
+/**
+ * @param {Ray} ray
+ * @param {number} t
+ * @param {Vector3} result
+ * @return {Vector3}
+ */
+export var ray_at = (ray, t, result = vec3_create()) => {
   return vec3_add(
     vec3_multiplyScalar(Object.assign(result, ray.direction), t),
     ray.origin,
   );
 };
 
-export var ray_intersectBox = (ray: Ray, box: Box3, target: Vector3) => {
+/**
+ * @param {Ray} ray
+ * @param {Box3} box
+ * @param {Vector3} target
+ * @return {Vector3=}
+ */
+export var ray_intersectBox = (ray, box, target) => {
   var { origin, direction } = ray;
 
   var txmin = (box.min.x - origin.x) / direction.x;
@@ -100,13 +121,21 @@ export var ray_intersectBox = (ray: Ray, box: Box3, target: Vector3) => {
   return ray_at(ray, tmin >= 0 ? tmin : tmax, target);
 };
 
+/**
+ * @callback IntersectsTriangle
+ * @param {Ray} ray
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @param {Vector3} c
+ * @param {Vector3} target
+ */
 export var ray_intersectTriangle = (() => {
   var diff = vec3_create();
   var edge1 = vec3_create();
   var edge2 = vec3_create();
   var normal = vec3_create();
 
-  return (ray: Ray, a: Vector3, b: Vector3, c: Vector3, target: Vector3) => {
+  return /** @type {IntersectsTriangle} */ (ray, a, b, c, target) => {
     vec3_subVectors(edge1, b, a);
     vec3_subVectors(edge2, c, a);
 
@@ -150,6 +179,12 @@ export var ray_intersectTriangle = (() => {
   };
 })();
 
+/**
+ * @callback IntersectsMesh
+ * @param {Ray} ray
+ * @param {Mesh} object
+ * @return {Intersection[]}
+ */
 export var ray_intersectsMesh = (() => {
   var inverseMatrix = mat4_create();
   var rayCopy = ray_create();
@@ -157,7 +192,16 @@ export var ray_intersectsMesh = (() => {
   var intersectionPoint = vec3_create();
   var intersectionPointWorld = vec3_create();
 
-  var checkIntersection = (object, ray, a, b, c, point): ?Intersection => {
+  /**
+   * @param {Mesh} object
+   * @param {Ray} ray
+   * @param {Vector3} a
+   * @param {Vector3} b
+   * @param {Vector3} c
+   * @param {Vector3} point
+   * @return {Intersection=}
+   */
+  var checkIntersection = (object, ray, a, b, c, point) => {
     var intersect = ray_intersectTriangle(ray, a, b, c, point);
     if (!intersect) {
       return;
@@ -175,7 +219,8 @@ export var ray_intersectsMesh = (() => {
     };
   };
 
-  return (ray: Ray, object: Mesh) => {
+  return /** @type {IntersectsMesh} */ (ray, object) => {
+    /** @type {Intersection[]} */
     var intersections = [];
 
     mat4_getInverse(inverseMatrix, object.matrixWorld);
@@ -207,17 +252,24 @@ export var ray_intersectsMesh = (() => {
   };
 })();
 
-export var ray_applyMatrix4 = (r: Ray, m: Matrix4) => {
+/**
+ * @param {Ray} r
+ * @param {Matrix4} m
+ * @return {Ray}
+ */
+export var ray_applyMatrix4 = (r, m) => {
   vec3_applyMatrix4(r.origin, m);
   vec3_transformDirection(r.direction, m);
   return r;
 };
 
-export var ray_intersectObjects = (
-  ray: Ray,
-  objects: Mesh[],
-): Intersection[] => {
-  return []
+/**
+ * @param {Ray} ray
+ * @param {Mesh[]} objects
+ * @return {Intersection[]}
+ */
+export var ray_intersectObjects = (ray, objects) => {
+  return /** @type {Intersection[]} */ ([])
     .concat(...objects.map(object => ray_intersectsMesh(ray, object)))
     .sort((a, b) => a.distance - b.distance);
 };

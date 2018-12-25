@@ -3,7 +3,7 @@
  */
 
 /**
- * @typedef {Object} Tween
+ * @typedef Tween
  * @property {number} delay
  * @property {number} duration
  * @property {Easing} ease
@@ -12,7 +12,7 @@
 import { ease_linear } from './easings.js';
 
 /**
- * @param {Object} options
+ * @param {object} options
  * @param {number=} options.delay
  * @param {number=} options.duration
  * @param {Easing=} options.ease

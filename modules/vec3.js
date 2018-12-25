@@ -4,7 +4,7 @@
  */
 
 /**
- * @typedef {Object} Vector3
+ * @typedef Vector3
  * @property {number} x
  * @property {number} y
  * @property {number} z

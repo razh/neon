@@ -1,13 +1,14 @@
-// @flow
+/**
+ * @typedef {import('./mesh').Mesh} Mesh
+ * @typedef {import('./object3d').Object3D} Object3D
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Mesh } from './mesh';
-import type { Object3D } from './object3d';
-import type { Vector3 } from './vec3';
-
-export type Box3 = {
-  min: Vector3,
-  max: Vector3,
-};
+/**
+ * @typedef Box3
+ * @property {Vector3} min
+ * @property {Vector3} max
+ */
 
 import { object3d_traverse, object3d_updateMatrixWorld } from './object3d.js';
 import {
@@ -18,9 +19,14 @@ import {
   vec3_max,
 } from './vec3.js';
 
+/**
+ * @param {Vector3} min
+ * @param {Vector3} max
+ * @return {Box3}
+ */
 export var box3_create = (
-  min: Vector3 = vec3_create(Infinity, Infinity, Infinity),
-  max: Vector3 = vec3_create(-Infinity, -Infinity, -Infinity),
+  min = vec3_create(Infinity, Infinity, Infinity),
+  max = vec3_create(-Infinity, -Infinity, -Infinity),
 ) => {
   return {
     min,
@@ -28,30 +34,53 @@ export var box3_create = (
   };
 };
 
-export var box3_copy = (a: Box3, b: Box3) => {
+/**
+ * @param {Box3} a
+ * @param {Box3} b
+ * @return {Box3}
+ */
+export var box3_copy = (a, b) => {
   Object.assign(a.min, b.min);
   Object.assign(a.max, b.max);
   return a;
 };
 
-export var box3_makeEmpty = (box: Box3) => {
+/**
+ * @param {Box3} box
+ * @return {Box3}
+ */
+export var box3_makeEmpty = box => {
   box.min.x = box.min.y = box.min.z = Infinity;
   box.max.x = box.max.y = box.max.z -= Infinity;
   return box;
 };
 
-export var box3_expandByPoint = (box: Box3, point: Vector3) => {
+/**
+ * @param {Box3} box
+ * @param {Vector3} point
+ * @return {Box3}
+ */
+export var box3_expandByPoint = (box, point) => {
   vec3_min(box.min, point);
   vec3_max(box.max, point);
   return box;
 };
 
+/**
+ * @callback ExpandByObject
+ * @param {Box3} box
+ * @param {Object3D} object
+ */
 export var box3_expandByObject = (() => {
+  /** @type {Box3} */
   var scope;
   var v1 = vec3_create();
 
+  /**
+   * @param {Object3D} node
+   */
   var traverse = node => {
-    var { geometry } = ((node: any): Mesh);
+    var { geometry } = /** @type {Mesh} */ (node);
     if (geometry) {
       geometry.vertices.map(vertex => {
         Object.assign(v1, vertex);
@@ -61,7 +90,7 @@ export var box3_expandByObject = (() => {
     }
   };
 
-  return (box: Box3, object: Object3D) => {
+  return /** @type {ExpandByObject} */ (box, object) => {
     scope = box;
     object3d_updateMatrixWorld(object);
     object3d_traverse(object, traverse);
@@ -69,19 +98,34 @@ export var box3_expandByObject = (() => {
   };
 })();
 
-export var box3_setFromPoints = (box: Box3, points: Vector3[]) => {
+/**
+ * @param {Box3} box
+ * @param {Vector3[]} points
+ * @return {Box3}
+ */
+export var box3_setFromPoints = (box, points) => {
   box3_makeEmpty(box);
   points.map(point => box3_expandByPoint(box, point));
   return box;
 };
 
-export var box3_setFromObject = (box: Box3, object: Object3D) => {
+/**
+ * @param {Box3} box
+ * @param {Object3D} object
+ * @return {Box3}
+ */
+export var box3_setFromObject = (box, object) => {
   box3_makeEmpty(box);
   box3_expandByObject(box, object);
   return box;
 };
 
-export var box3_containsPoint = (box: Box3, point: Vector3) => {
+/**
+ * @param {Box3} box
+ * @param {Vector3} point
+ * @return {boolean}
+ */
+export var box3_containsPoint = (box, point) => {
   // prettier-ignore
   return (
     box.min.x <= point.x && point.x <= box.max.x &&
@@ -90,7 +134,12 @@ export var box3_containsPoint = (box: Box3, point: Vector3) => {
   );
 };
 
-export var box3_intersectsBox = (a: Box3, b: Box3) => {
+/**
+ * @param {Box3} a
+ * @param {Box3} b
+ * @return {boolean}
+ */
+export var box3_intersectsBox = (a, b) => {
   // prettier-ignore
   return !(
     a.max.x < b.min.x || a.min.x > b.max.x ||
@@ -99,7 +148,12 @@ export var box3_intersectsBox = (a: Box3, b: Box3) => {
   );
 };
 
-export var box3_translate = (box: Box3, offset: Vector3) => {
+/**
+ * @param {Box3} box
+ * @param {Vector3} offset
+ * @return {Box3}
+ */
+export var box3_translate = (box, offset) => {
   vec3_add(box.min, offset);
   vec3_add(box.max, offset);
   return box;

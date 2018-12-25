@@ -3,7 +3,7 @@
  */
 
 /**
- * @typedef {Object} Material
+ * @typedef Material
  * @property {Vector3} color
  * @property {Vector3} specular
  * @property {number} shininess

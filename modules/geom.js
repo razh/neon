@@ -1,12 +1,13 @@
-// @flow
+/**
+ * @typedef {import('./vec3').Vector3} Vector3
+ * @typedef {import('./face3').Face3} Face3
+ */
 
-import type { Vector3 } from './vec3';
-import type { Face3 } from './face3';
-
-export type Geometry = {
-  vertices: Vector3[],
-  faces: Face3[],
-};
+/**
+ * @typedef Geometry
+ * @property {Vector3[]} vertices
+ * @property {Face3[]} faces
+ */
 
 import {
   vec3_create,
@@ -17,18 +18,23 @@ import {
 } from './vec3.js';
 import { face3_create, face3_clone } from './face3.js';
 
-export var geom_create = (): Geometry => {
+/**
+ * @return {Geometry}
+ */
+export var geom_create = () => {
   return {
     vertices: [],
     faces: [],
   };
 };
 
-export var geom_push = (
-  geom: Geometry,
-  vertices: number[],
-  faces: number[],
-) => {
+/**
+ * @param {Geometry} geom
+ * @param {number[]} vertices
+ * @param {number[]} faces
+ * @return {Geometry}
+ */
+export var geom_push = (geom, vertices, faces) => {
   var offset = geom.vertices.length;
 
   var i;
@@ -51,27 +57,48 @@ export var geom_push = (
   return geom;
 };
 
+/**
+ * @callback Translate
+ * @param {Geometry} geom
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @return {Geometry}
+ */
 export var geom_translate = (() => {
   var vector = vec3_create();
 
-  return (geom: Geometry, x: number, y: number, z: number) => {
+  return /** @type {Translate} */ (geom, x, y, z) => {
     vec3_set(vector, x, y, z);
     geom.vertices.map(vertex => vec3_add(vertex, vector));
     return geom;
   };
 })();
 
+/**
+ * @callback Scale
+ * @param {Geometry} geom
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @return {Geometry}
+ */
 export var geom_scale = (() => {
   var vector = vec3_create();
 
-  return (geom: Geometry, x: number, y: number, z: number) => {
+  return /** @type {Scale} */ (geom, x, y, z) => {
     vec3_set(vector, x, y, z);
     geom.vertices.map(vertex => vec3_multiply(vertex, vector));
     return geom;
   };
 })();
 
-export var geom_merge = (a: Geometry, b: Geometry) => {
+/**
+ * @param {Geometry} a
+ * @param {Geometry} b
+ * @return {Geometry}
+ */
+export var geom_merge = (a, b) => {
   var vertexOffset = a.vertices.length;
 
   a.vertices.push(...b.vertices.map(vec3_clone));
@@ -89,7 +116,11 @@ export var geom_merge = (a: Geometry, b: Geometry) => {
   return a;
 };
 
-export var geom_clone = (geom: Geometry) => {
+/**
+ * @param {Geometry} geom
+ * @return {Geometry}
+ */
+export var geom_clone = geom => {
   var clone = geom_create();
   clone.vertices = geom.vertices.map(vec3_clone);
   clone.faces = geom.faces.map(face3_clone);

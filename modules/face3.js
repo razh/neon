@@ -3,7 +3,7 @@
  */
 
 /**
- * @typedef {Object} Face3
+ * @typedef Face3
  * @property {number} a
  * @property {number} b
  * @property {number} c

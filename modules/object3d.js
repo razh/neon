@@ -1,20 +1,21 @@
-// @flow
+/**
+ * @typedef {import('./mat4').Matrix4} Matrix4
+ * @typedef {import('./quat').Quaternion} Quaternion
+ * @typedef {import('./vec3').Vector3} Vector3
+ */
 
-import type { Matrix4 } from './mat4';
-import type { Quaternion } from './quat';
-import type { Vector3 } from './vec3';
-
-export type Object3D = {
-  parent?: Object3D,
-  children: Object3D[],
-  position: Vector3,
-  quaternion: Quaternion,
-  scale: Vector3,
-  matrix: Matrix4,
-  matrixWorld: Matrix4,
-  modelViewMatrix: Matrix4,
-  visible: boolean,
-};
+/**
+ * @typedef Object3D
+ * @property {Object3D=} parent
+ * @property {Object3D[]} children
+ * @property {Vector3} position
+ * @property {Quaternion} quaternion
+ * @property {Vector3} scale
+ * @property {Matrix4} matrix
+ * @property {Matrix4} matrixWorld
+ * @property {Matrix4} modelViewMatrix
+ * @property {boolean} visible
+ */
 
 import {
   mat4_create,
@@ -41,7 +42,10 @@ import {
   vec3_Z,
 } from './vec3.js';
 
-export var object3d_create = (): Object3D => {
+/**
+ * @return {Object3D}
+ */
+export var object3d_create = () => {
   return {
     parent: undefined,
     children: [],
@@ -55,82 +59,150 @@ export var object3d_create = (): Object3D => {
   };
 };
 
+/**
+ * @callback LookAt
+ * @param {Object3D} object
+ * @param {Vector3} vector
+ */
 export var object3d_lookAt = (() => {
   var m1 = mat4_create();
 
-  return (object: Object3D, vector: Vector3) => {
+  return /** @type {LookAt} */ (object, vector) => {
     mat4_lookAt(m1, vector, object.position, vec3_Y);
     quat_setFromRotationMatrix(object.quaternion, m1);
   };
 })();
 
-export var object3d_add = (parent: Object3D, child: Object3D) => {
+/**
+ * @param {Object3D} parent
+ * @param {Object3D} child
+ * @return {Object3D}
+ */
+export var object3d_add = (parent, child) => {
   child.parent = parent;
   parent.children.push(child);
   return parent;
 };
 
-export var object3d_remove = (parent: Object3D, child: Object3D) => {
+/**
+ * @param {Object3D} parent
+ * @param {Object3D} child
+ */
+export var object3d_remove = (parent, child) => {
   var index = parent.children.indexOf(child);
   if (index >= 0) {
     parent.children.splice(index, 1);
   }
 };
 
+/**
+ * @callback RotateOnAxis
+ * @param {Object3D} parent
+ * @param {Vector3} axis
+ * @param {number} angle
+ * @return {Object3D}
+ */
 export var object3d_rotateOnAxis = (() => {
   var q1 = quat_create();
 
-  return (obj: Object3D, axis: Vector3, angle: number) => {
+  return /** @type {RotateOnAxis} */ (obj, axis, angle) => {
     quat_setFromAxisAngle(q1, axis, angle);
     quat_multiply(obj.quaternion, q1);
     return obj;
   };
 })();
 
-export var object3d_rotateX = (obj: Object3D, angle: number) => {
+/**
+ * @param {Object3D} obj
+ * @param {number} angle
+ * @return {Object3D}
+ */
+export var object3d_rotateX = (obj, angle) => {
   return object3d_rotateOnAxis(obj, vec3_X, angle);
 };
 
-export var object3d_rotateY = (obj: Object3D, angle: number) => {
+/**
+ * @param {Object3D} obj
+ * @param {number} angle
+ * @return {Object3D}
+ */
+export var object3d_rotateY = (obj, angle) => {
   return object3d_rotateOnAxis(obj, vec3_Y, angle);
 };
 
-export var object3d_rotateZ = (obj: Object3D, angle: number) => {
+/**
+ * @param {Object3D} obj
+ * @param {number} angle
+ * @return {Object3D}
+ */
+export var object3d_rotateZ = (obj, angle) => {
   return object3d_rotateOnAxis(obj, vec3_Z, angle);
 };
 
+/**
+ * @callback TranslateOnAxis
+ * @param {Object3D} obj
+ * @param {Vector3} axis
+ * @param {number} distance
+ * @return {Object3D}
+ */
 export var object3d_translateOnAxis = (() => {
   var v1 = vec3_create();
 
-  return (obj: Object3D, axis: Vector3, distance: number) => {
+  return /** @type {TranslateOnAxis} */ (obj, axis, distance) => {
     vec3_applyQuaternion(Object.assign(v1, axis), obj.quaternion);
     vec3_add(obj.position, vec3_multiplyScalar(v1, distance));
     return obj;
   };
 })();
 
-export var object3d_translateX = (obj: Object3D, distance: number) => {
+/**
+ * @param {Object3D} obj
+ * @param {number} distance
+ * @return {Object3D}
+ */
+export var object3d_translateX = (obj, distance) => {
   return object3d_translateOnAxis(obj, vec3_X, distance);
 };
 
-export var object3d_translateY = (obj: Object3D, distance: number) => {
+/**
+ * @param {Object3D} obj
+ * @param {number} distance
+ * @return {Object3D}
+ */
+export var object3d_translateY = (obj, distance) => {
   return object3d_translateOnAxis(obj, vec3_Y, distance);
 };
 
-export var object3d_translateZ = (obj: Object3D, distance: number) => {
+/**
+ * @param {Object3D} obj
+ * @param {number} distance
+ * @return {Object3D}
+ */
+export var object3d_translateZ = (obj, distance) => {
   return object3d_translateOnAxis(obj, vec3_Z, distance);
 };
 
-export var object3d_traverse = (obj: Object3D, callback: Object3D => void) => {
+/**
+ * @param {Object3D} obj
+ * @param {(obj: Object3D) => void} callback
+ */
+export var object3d_traverse = (obj, callback) => {
   callback(obj);
   obj.children.map(child => object3d_traverse(child, callback));
 };
 
-export var object3d_updateMatrix = (obj: Object3D) => {
+/**
+ * @param {Object3D} obj
+ */
+export var object3d_updateMatrix = obj => {
   mat4_compose(obj.matrix, obj.position, obj.quaternion, obj.scale);
 };
 
-export var object3d_updateMatrixWorld = (obj: Object3D) => {
+/**
+ * @param {Object3D} obj
+ */
+export var object3d_updateMatrixWorld = obj => {
   object3d_updateMatrix(obj);
 
   if (!obj.parent) {
