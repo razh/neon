@@ -42,7 +42,7 @@
     "rollup": "0.68.1",
     "rollup-plugin-flow": "1.1.1",
     "terser": "3.13.1",
-    "typescript": "3.1.1"
+    "typescript": "3.2.2"
   },
   "prettier": {
     "singleQuote": true,
