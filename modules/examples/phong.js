@@ -1,7 +1,7 @@
-// @flow
-
-import type { BufferGeometry } from '../bufferGeom';
-import type { Mesh } from '../mesh';
+/**
+ * @typedef {import('../bufferGeom').BufferGeometry} BufferGeometry
+ * @typedef {import('../mesh').Mesh} Mesh
+ */
 
 import { boxGeom_create } from '../boxGeom.js';
 import { bufferGeom_fromGeom, bufferGeom_create } from '../bufferGeom.js';
@@ -41,13 +41,12 @@ import {
   vec3_transformDirection,
 } from '../vec3.js';
 
-import vert from '../shaders/phong_vert.glsl';
-import frag from '../shaders/phong_frag.glsl';
+import vert from '../shaders/phong_vert.glsl.js';
+import frag from '../shaders/phong_frag.glsl.js';
 
-declare var c: HTMLCanvasElement;
-
-// Cast from ?WebGLRenderingContext.
-var gl = ((c.getContext('webgl'): any): WebGLRenderingContext);
+/* global c */
+// prettier-ignore
+var gl = /** @type {WebGLRenderingContext} */ (c.getContext('webgl'));
 
 gl.clearColor(0, 0, 0, 0);
 gl.enable(gl.DEPTH_TEST);
@@ -70,7 +69,8 @@ var directionalLights = [light];
 var program = createShaderProgram(
   gl,
   vert,
-  frag.replace(/NUM_DIR_LIGHTS/g, ((directionalLights.length: any): string)),
+  // @ts-ignore
+  frag.replace(/NUM_DIR_LIGHTS/g, directionalLights.length),
 );
 
 gl.useProgram(program);
@@ -93,14 +93,16 @@ object3d_add(scene, mesh_create(boxGeom_create(8, 8, 8), material_create()));
 
 var update = () => {};
 
+/** @type {WeakMap.<BufferGeometry,Object.<string,WebGLBuffer>>} */
 var bufferGeomBuffers = new WeakMap();
 
-var setFloat32AttributeBuffer = (
-  name: string,
-  location: number,
-  bufferGeom: BufferGeometry,
-  size: number,
-) => {
+/**
+ * @param {string} name
+ * @param {number} location
+ * @param {BufferGeometry} bufferGeom
+ * @param {number} size
+ */
+var setFloat32AttributeBuffer = (name, location, bufferGeom, size) => {
   var buffers = bufferGeomBuffers.get(bufferGeom);
 
   if (!buffers) {
@@ -119,7 +121,10 @@ var setFloat32AttributeBuffer = (
 
 var bufferGeoms = new WeakMap();
 
-var renderMesh = (mesh: Mesh) => {
+/**
+ * @param {Mesh} mesh
+ */
+var renderMesh = mesh => {
   var { geometry, material } = mesh;
 
   setVec3Uniform(gl, uniforms.fogColor, fogColor);
@@ -189,9 +194,13 @@ var render = () => {
   });
 
   object3d_traverse(scene, object => {
-    object = ((object: any): Mesh);
-    if (object.visible && object.geometry && object.material) {
-      renderMesh(object);
+    // prettier-ignore
+    if (
+      object.visible &&
+      /** @type {Mesh} */ (object).geometry &&
+      /** @type {Mesh} */ (object).material
+    ) {
+      renderMesh(/** @type {Mesh} */ (object));
     }
   });
 };
@@ -205,6 +214,10 @@ var animate = () => {
   }
 };
 
+/**
+ * @param {number} width
+ * @param {number} height
+ */
 var setSize = (width, height) => {
   var { devicePixelRatio = 1 } = window;
 
@@ -226,7 +239,7 @@ window.addEventListener('resize', () => {
   render();
 });
 
-document.addEventListener('keypress', (event: KeyboardEvent) => {
+document.addEventListener('keypress', event => {
   // Pause/play.
   if (event.code === 'KeyP') {
     running = !running;

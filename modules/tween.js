@@ -12,7 +12,7 @@
 import { ease_linear } from './easings.js';
 
 /**
- * @param {object} options
+ * @param {Object} options
  * @param {number=} options.delay
  * @param {number=} options.duration
  * @param {Easing=} options.ease

@@ -1,1 +1,1 @@
-import {} from './examples/phong.js';
+import './examples/basic.js';

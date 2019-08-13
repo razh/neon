@@ -1,22 +1,44 @@
-// @flow
+/**
+ * @typedef Component
+ * @property {Entity=} parent
+ * @property {Function} update
+ */
 
-export type Entity = {
-  components: Component[],
+/**
+ * @typedef Entity
+ * @property {Component[]} components
+ */
+
+/**
+ * @template T
+ * @param {T} options
+ * @return {Component}
+ */
+export var component_create = options => {
+  return {
+    parent: undefined,
+    update() {},
+    ...options,
+  };
 };
 
-interface Component {
-  parent?: Entity;
-  update(): void;
-}
-
-export var entity_create = <T: Object>(object: T): T & Entity => {
+/**
+ * @template T
+ * @param {T} object
+ * @return {Entity}
+ */
+export var entity_create = object => {
   return {
     ...object,
     components: [],
   };
 };
 
-export var entity_add = (entity: Entity, ...components: Component[]) => {
+/**
+ * @param {Entity} entity
+ * @param {Component[]} components
+ */
+export var entity_add = (entity, ...components) => {
   components.map(component => {
     if (entity_has(entity, component)) {
       return;
@@ -27,11 +49,20 @@ export var entity_add = (entity: Entity, ...components: Component[]) => {
   });
 };
 
-export var entity_has = (entity: Entity, component: Component) => {
+/**
+ * @param {Entity} entity
+ * @param {Component} component
+ * @return {boolean}
+ */
+export var entity_has = (entity, component) => {
   return entity.components.includes(component);
 };
 
-export var entity_remove = (entity: Entity, ...components: Component[]) => {
+/**
+ * @param {Entity} entity
+ * @param {Component[]} components
+ */
+export var entity_remove = (entity, ...components) => {
   components.map(component => {
     var index = entity.components.indexOf(component);
 
@@ -43,10 +74,18 @@ export var entity_remove = (entity: Entity, ...components: Component[]) => {
   });
 };
 
-export var entity_update = (entity: Entity, ...args: *[]) => {
+/**
+ * @param {Entity} entity
+ * @param {Array} args
+ */
+export var entity_update = (entity, ...args) => {
   entity.components.map(component => component.update(...args));
 };
 
-export var is_entity = (object: Object): boolean => {
+/**
+ * @param {Object} object
+ * @return {boolean}
+ */
+export var is_entity = object => {
   return !!object.components;
 };

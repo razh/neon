@@ -1,16 +1,15 @@
 module.exports = {
   extends: [
     'eslint:recommended',
-    'plugin:flowtype/recommended',
+    'plugin:jsdoc/recommended',
     'plugin:prettier/recommended',
-    'prettier/flowtype',
   ],
   env: {
     browser: true,
     es6: true,
   },
   parser: 'babel-eslint',
-  plugins: ['flowtype', 'prettier'],
+  plugins: ['jsdoc', 'prettier'],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -18,5 +17,14 @@ module.exports = {
   rules: {
     'func-style': ['error', 'expression'],
     'object-shorthand': ['error', 'always'],
+    'jsdoc/require-param-description': 'off',
+    'jsdoc/require-returns-description': 'off',
+  },
+  settings: {
+    jsdoc: {
+      definedTypes: ['void'],
+      preferredTypes: { object: 'Object' },
+      tagNamePreference: { returns: 'return' },
+    },
   },
 };

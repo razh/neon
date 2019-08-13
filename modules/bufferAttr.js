@@ -5,6 +5,7 @@
 /**
  * @param {Float32Array} array
  * @param {Vector3[]} vectors
+ * @return {Float32Array}
  */
 export var bufferAttr_copyVector3sArray = (array, vectors) => {
   var offset = 0;

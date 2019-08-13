@@ -1,5 +1,3 @@
-// @flow
-
 import {
   createShaderProgram,
   createFloat32Buffer,
@@ -9,13 +7,12 @@ import {
   getUniformLocations,
 } from '../shader.js';
 
-import vert from '../shaders/test_vert.glsl';
-import frag from '../shaders/test_frag.glsl';
+import vert from '../shaders/test_vert.glsl.js';
+import frag from '../shaders/test_frag.glsl.js';
 
-declare var c: HTMLCanvasElement;
-
-// Cast from ?WebGLRenderingContext.
-var gl = ((c.getContext('webgl'): any): WebGLRenderingContext);
+/* global c */
+// prettier-ignore
+var gl = /** @type {WebGLRenderingContext} */ (c.getContext('webgl'));
 gl.clearColor(0, 0, 0, 0);
 
 var program = createShaderProgram(gl, vert, frag);
@@ -55,6 +52,10 @@ setMat4Uniform(gl, uniforms.M, new Float32Array([
 setFloat32Attribute(gl, attributes.p, positionBuffer, 3);
 setFloat32Attribute(gl, attributes.c, color, 3);
 
+/**
+ * @param {number} width
+ * @param {number} height
+ */
 var setSize = (width, height) => {
   c.width = width;
   c.height = height;

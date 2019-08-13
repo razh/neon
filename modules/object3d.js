@@ -184,8 +184,13 @@ export var object3d_translateZ = (obj, distance) => {
 };
 
 /**
+ * @callback TraverseCallback
+ * @param {Object3D} child
+ */
+
+/**
  * @param {Object3D} obj
- * @param {(obj: Object3D) => void} callback
+ * @param {TraverseCallback} callback
  */
 export var object3d_traverse = (obj, callback) => {
   callback(obj);

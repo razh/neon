@@ -4,12 +4,12 @@
     "checkJs": true,
     "lib": ["dom", "ES2018"],
     "noEmit": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "rootDirs": ["modules"]
+    "rootDirs": ["modules"],
+    "strict": true
   },
   "include": [
     "./globals.d.ts",
+    "./modules/box3.js",
     "./modules/boxGeom.js",
     "./modules/bufferAttr.js",
     "./modules/bufferGeom.js",
@@ -18,6 +18,9 @@
     "./modules/directGeom.js",
     "./modules/directionalLight.js",
     "./modules/easings.js",
+    "./modules/entity.js",
+    "./modules/examples/basic.js",
+    "./modules/examples/phong.js",
     "./modules/face3.js",
     "./modules/geom.js",
     "./modules/keys.js",

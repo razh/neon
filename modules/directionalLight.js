@@ -18,6 +18,8 @@ import { object3d_create } from './object3d.js';
 import { vec3_create } from './vec3.js';
 
 /**
+ * @param {Vector3} color
+ * @param {number} intensity
  * @return {DirectionalLight}
  */
 export var light_create = (color = vec3_create(), intensity = 1) => {
