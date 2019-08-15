@@ -42,6 +42,7 @@ var _edge1 = vec3_create();
 var _edge2 = vec3_create();
 var _normal = vec3_create();
 
+// Mesh scope variables.
 var _inverseMatrix = mat4_create();
 
 var _intersectionPoint = vec3_create();
@@ -204,7 +205,7 @@ export var ray_intersectTriangle = (ray, a, b, c, target) => {
  * @param {Vector3} b
  * @param {Vector3} c
  * @param {Vector3} point
- * @return {Intersection=}
+ * @return {Vector3=}
  */
 var checkIntersection = (object, ray, a, b, c, point) => {
   var intersect = ray_intersectTriangle(ray, a, b, c, point);
@@ -215,13 +216,7 @@ var checkIntersection = (object, ray, a, b, c, point) => {
   Object.assign(_intersectionPointWorld, point);
   vec3_applyMatrix4(_intersectionPointWorld, object.matrixWorld);
 
-  var distance = vec3_distanceTo(ray.origin, _intersectionPointWorld);
-
-  return {
-    object,
-    distance,
-    point: vec3_clone(_intersectionPointWorld),
-  };
+  return vec3_clone(_intersectionPointWorld);
 };
 
 var _ray = ray_create();
@@ -231,7 +226,7 @@ var _ray = ray_create();
  * @param {Mesh} object
  * @return {Intersection[]}
  */
-export var ray_intersectsMesh = (ray, object) => {
+export var ray_intersectMesh = (ray, object) => {
   /** @type {Intersection[]} */
   var intersections = [];
 
@@ -240,23 +235,20 @@ export var ray_intersectsMesh = (ray, object) => {
 
   var { vertices, faces } = object.geometry;
 
-  faces.map((face, index) => {
+  faces.map((face, faceIndex) => {
     var a = vertices[face.a];
     var b = vertices[face.b];
     var c = vertices[face.c];
 
-    var intersection = checkIntersection(
-      object,
-      _ray,
-      a,
-      b,
-      c,
-      _intersectionPoint,
-    );
-    if (intersection) {
-      intersection.face = face;
-      intersection.faceIndex = index;
-      intersections.push(intersection);
+    var point = checkIntersection(object, _ray, a, b, c, _intersectionPoint);
+    if (point) {
+      intersections.push({
+        point,
+        object,
+        face,
+        faceIndex,
+        distance: vec3_distanceTo(ray.origin, point),
+      });
     }
   });
 
@@ -281,6 +273,6 @@ export var ray_applyMatrix4 = (r, m) => {
  */
 export var ray_intersectObjects = (ray, objects) => {
   return objects
-    .flatMap(object => ray_intersectsMesh(ray, object))
+    .flatMap(object => ray_intersectMesh(ray, object))
     .sort((a, b) => a.distance - b.distance);
 };
