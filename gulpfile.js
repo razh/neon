@@ -9,8 +9,7 @@ const $ = require('gulp-load-plugins')();
 
 const browserSync = require('browser-sync').create();
 const del = require('del');
-const flow = require('rollup-plugin-flow');
-const rollup = require('rollup').rollup;
+const { rollup } = require('rollup');
 
 const composer = require('gulp-uglify/composer');
 const uglify = composer(require('terser'), console);
@@ -97,7 +96,7 @@ gulp.task('rollup', () => {
   return (
     rollup({
       input: 'modules/index.js',
-      plugins: [flow(), glsl()],
+      plugins: [glsl()],
     })
       .then(bundle =>
         bundle.write({
