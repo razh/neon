@@ -8,10 +8,9 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  parser: 'babel-eslint',
   plugins: ['jsdoc', 'prettier'],
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
     sourceType: 'module',
   },
   rules: {
@@ -22,7 +21,6 @@ module.exports = {
   },
   settings: {
     jsdoc: {
-      definedTypes: ['void'],
       preferredTypes: { object: 'Object' },
       tagNamePreference: { returns: 'return' },
     },

@@ -3,11 +3,16 @@
  */
 
 /**
+ * @callback onMouseMove
+ * @param {MouseEvent} event
+ */
+
+/**
  * @typedef Controls
  * @property {Object3D} object
  * @property {number} sensitivity
  * @property {boolean} enabled
- * @property {(event: MouseEvent) => void} onMouseMove
+ * @property {onMouseMove} onMouseMove
  */
 
 import { clamp } from './math.js';

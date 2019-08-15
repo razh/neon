@@ -1,3 +1,1 @@
-export var shadowMesh = () => {
-
-};
+export var shadowMesh = () => {};
