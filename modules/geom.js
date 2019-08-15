@@ -18,6 +18,8 @@ import {
 } from './vec3.js';
 import { face3_create, face3_clone } from './face3.js';
 
+var _vector = vec3_create();
+
 /**
  * @return {Geometry}
  */
@@ -58,40 +60,30 @@ export var geom_push = (geom, vertices, faces) => {
 };
 
 /**
- * @callback Translate
  * @param {Geometry} geom
  * @param {number} x
  * @param {number} y
  * @param {number} z
  * @return {Geometry}
  */
-export var geom_translate = (() => {
-  var vector = vec3_create();
-
-  return /** @type {Translate} */ (geom, x, y, z) => {
-    vec3_set(vector, x, y, z);
-    geom.vertices.map(vertex => vec3_add(vertex, vector));
-    return geom;
-  };
-})();
+export var geom_translate = (geom, x, y, z) => {
+  vec3_set(_vector, x, y, z);
+  geom.vertices.map(vertex => vec3_add(vertex, _vector));
+  return geom;
+};
 
 /**
- * @callback Scale
  * @param {Geometry} geom
  * @param {number} x
  * @param {number} y
  * @param {number} z
  * @return {Geometry}
  */
-export var geom_scale = (() => {
-  var vector = vec3_create();
-
-  return /** @type {Scale} */ (geom, x, y, z) => {
-    vec3_set(vector, x, y, z);
-    geom.vertices.map(vertex => vec3_multiply(vertex, vector));
-    return geom;
-  };
-})();
+export var geom_scale = (geom, x, y, z) => {
+  vec3_set(_vector, x, y, z);
+  geom.vertices.map(vertex => vec3_multiply(vertex, _vector));
+  return geom;
+};
 
 /**
  * @param {Geometry} a

@@ -36,6 +36,17 @@ import {
   vec3_transformDirection,
 } from './vec3.js';
 
+var _diff = vec3_create();
+
+var _edge1 = vec3_create();
+var _edge2 = vec3_create();
+var _normal = vec3_create();
+
+var _inverseMatrix = mat4_create();
+
+var _intersectionPoint = vec3_create();
+var _intersectionPointWorld = vec3_create();
+
 /**
  * @param {Vector3} origin
  * @param {Vector3} direction
@@ -62,12 +73,12 @@ export var ray_copy = (a, b) => {
 /**
  * @param {Ray} ray
  * @param {number} t
- * @param {Vector3} result
+ * @param {Vector3} target
  * @return {Vector3}
  */
-export var ray_at = (ray, t, result = vec3_create()) => {
+export var ray_at = (ray, t, target = vec3_create()) => {
   return vec3_add(
-    vec3_multiplyScalar(Object.assign(result, ray.direction), t),
+    vec3_multiplyScalar(Object.assign(target, ray.direction), t),
     ray.origin,
   );
 };
@@ -122,135 +133,135 @@ export var ray_intersectBox = (ray, box, target) => {
 };
 
 /**
- * @callback IntersectsTriangle
  * @param {Ray} ray
  * @param {Vector3} a
  * @param {Vector3} b
  * @param {Vector3} c
  * @param {Vector3} target
+ * @return {Vector3=}
  */
-export var ray_intersectTriangle = (() => {
-  var diff = vec3_create();
-  var edge1 = vec3_create();
-  var edge2 = vec3_create();
-  var normal = vec3_create();
+export var ray_intersectTriangle = (ray, a, b, c, target) => {
+  // Compute the offset origin, edges, and normal.
+  // from http://www.geometrictools.com/GTEngine/Include/Mathematics/GteIntrRay3Triangle3.h
+  vec3_subVectors(_edge1, b, a);
+  vec3_subVectors(_edge2, c, a);
+  vec3_crossVectors(_normal, _edge1, _edge2);
 
-  return /** @type {IntersectsTriangle} */ (ray, a, b, c, target) => {
-    vec3_subVectors(edge1, b, a);
-    vec3_subVectors(edge2, c, a);
+  // Solve Q + t*D = b1*E1 + b2*E2 (Q = kDiff, D = ray direction,
+  // E1 = kEdge1, E2 = kEdge2, N = Cross(E1,E2)) by
+  //   |Dot(D,N)|*b1 = sign(Dot(D,N))*Dot(D,Cross(Q,E2))
+  //   |Dot(D,N)|*b2 = sign(Dot(D,N))*Dot(D,Cross(E1,Q))
+  //   |Dot(D,N)|*t = -sign(Dot(D,N))*Dot(Q,N)
+  var DdN = vec3_dot(ray.direction, _normal);
+  var sign = 1;
 
-    vec3_crossVectors(normal, edge1, edge2);
+  if (DdN > 0) {
+    return;
+  } else if (DdN < 0) {
+    sign = -1;
+    DdN *= -1;
+  } else {
+    return;
+  }
 
-    // Determinant.
-    var DdN = vec3_dot(ray.direction, normal);
-    var sign = 1;
+  vec3_subVectors(_diff, ray.origin, a);
+  var DdQxE2 =
+    sign * vec3_dot(ray.direction, vec3_crossVectors(_edge2, _diff, _edge2));
 
-    if (DdN > 0) {
-      return;
-    } else if (DdN < 0) {
-      sign = -1;
-      DdN *= -1;
-    } else {
-      return;
-    }
+  // b1 < 0, no intersection
+  if (DdQxE2 < 0) {
+    return;
+  }
 
-    vec3_subVectors(diff, ray.origin, a);
-    var DdQxE2 =
-      sign * vec3_dot(ray.direction, vec3_crossVectors(edge2, diff, edge2));
-    if (DdQxE2 < 0) {
-      return;
-    }
+  var DdE1xQ = sign * vec3_dot(ray.direction, vec3_cross(_edge1, _diff));
 
-    var DdE1xQ = sign * vec3_dot(ray.direction, vec3_cross(edge1, diff));
-    if (DdE1xQ < 0) {
-      return;
-    }
+  // b2 < 0, no intersection
+  if (DdE1xQ < 0) {
+    return;
+  }
 
-    if (DdQxE2 + DdE1xQ > DdN) {
-      return;
-    }
+  // b1+b2 > 1, no intersection
+  if (DdQxE2 + DdE1xQ > DdN) {
+    return;
+  }
 
-    var QdN = -sign * vec3_dot(diff, normal);
-    if (QdN < 0) {
-      return;
-    }
+  // Line intersects triangle, check if ray does.
+  var QdN = -sign * vec3_dot(_diff, _normal);
 
-    return ray_at(ray, QdN / DdN, target);
-  };
-})();
+  // t < 0, no intersection
+  if (QdN < 0) {
+    return;
+  }
+
+  // Ray intersects triangle.
+  return ray_at(ray, QdN / DdN, target);
+};
 
 /**
- * @callback IntersectsMesh
+ * @param {Mesh} object
+ * @param {Ray} ray
+ * @param {Vector3} a
+ * @param {Vector3} b
+ * @param {Vector3} c
+ * @param {Vector3} point
+ * @return {Intersection=}
+ */
+var checkIntersection = (object, ray, a, b, c, point) => {
+  var intersect = ray_intersectTriangle(ray, a, b, c, point);
+  if (!intersect) {
+    return;
+  }
+
+  Object.assign(_intersectionPointWorld, point);
+  vec3_applyMatrix4(_intersectionPointWorld, object.matrixWorld);
+
+  var distance = vec3_distanceTo(ray.origin, _intersectionPointWorld);
+
+  return {
+    object,
+    distance,
+    point: vec3_clone(_intersectionPointWorld),
+  };
+};
+
+var _ray = ray_create();
+
+/**
  * @param {Ray} ray
  * @param {Mesh} object
  * @return {Intersection[]}
  */
-export var ray_intersectsMesh = (() => {
-  var inverseMatrix = mat4_create();
-  var rayCopy = ray_create();
+export var ray_intersectsMesh = (ray, object) => {
+  /** @type {Intersection[]} */
+  var intersections = [];
 
-  var intersectionPoint = vec3_create();
-  var intersectionPointWorld = vec3_create();
+  mat4_getInverse(_inverseMatrix, object.matrixWorld);
+  ray_applyMatrix4(ray_copy(_ray, ray), _inverseMatrix);
 
-  /**
-   * @param {Mesh} object
-   * @param {Ray} ray
-   * @param {Vector3} a
-   * @param {Vector3} b
-   * @param {Vector3} c
-   * @param {Vector3} point
-   * @return {Intersection=}
-   */
-  var checkIntersection = (object, ray, a, b, c, point) => {
-    var intersect = ray_intersectTriangle(ray, a, b, c, point);
-    if (!intersect) {
-      return;
-    }
+  var { vertices, faces } = object.geometry;
 
-    Object.assign(intersectionPointWorld, point);
-    vec3_applyMatrix4(intersectionPointWorld, object.matrixWorld);
+  faces.map((face, index) => {
+    var a = vertices[face.a];
+    var b = vertices[face.b];
+    var c = vertices[face.c];
 
-    var distance = vec3_distanceTo(ray.origin, intersectionPointWorld);
-
-    return {
+    var intersection = checkIntersection(
       object,
-      distance,
-      point: vec3_clone(intersectionPointWorld),
-    };
-  };
+      _ray,
+      a,
+      b,
+      c,
+      _intersectionPoint,
+    );
+    if (intersection) {
+      intersection.face = face;
+      intersection.faceIndex = index;
+      intersections.push(intersection);
+    }
+  });
 
-  return /** @type {IntersectsMesh} */ (ray, object) => {
-    /** @type {Intersection[]} */
-    var intersections = [];
-
-    mat4_getInverse(inverseMatrix, object.matrixWorld);
-    ray_applyMatrix4(ray_copy(rayCopy, ray), inverseMatrix);
-
-    var { vertices, faces } = object.geometry;
-
-    faces.map((face, index) => {
-      var a = vertices[face.a];
-      var b = vertices[face.b];
-      var c = vertices[face.c];
-
-      var intersection = checkIntersection(
-        object,
-        rayCopy,
-        a,
-        b,
-        c,
-        intersectionPoint,
-      );
-      if (intersection) {
-        intersection.face = face;
-        intersection.faceIndex = index;
-        intersections.push(intersection);
-      }
-    });
-
-    return intersections;
-  };
-})();
+  return intersections;
+};
 
 /**
  * @param {Ray} r
@@ -269,7 +280,7 @@ export var ray_applyMatrix4 = (r, m) => {
  * @return {Intersection[]}
  */
 export var ray_intersectObjects = (ray, objects) => {
-  return /** @type {Intersection[]} */ ([])
-    .concat(...objects.map(object => ray_intersectsMesh(ray, object)))
+  return objects
+    .flatMap(object => ray_intersectsMesh(ray, object))
     .sort((a, b) => a.distance - b.distance);
 };

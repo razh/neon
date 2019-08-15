@@ -10,7 +10,7 @@
  * @property {Vector3} max
  */
 
-import { object3d_traverse, object3d_updateMatrixWorld } from './object3d.js';
+import { object3d_traverse, object3d_updateWorldMatrix } from './object3d.js';
 import {
   vec3_create,
   vec3_add,
@@ -18,6 +18,8 @@ import {
   vec3_min,
   vec3_max,
 } from './vec3.js';
+
+var _vector = vec3_create();
 
 /**
  * @param {Vector3} min
@@ -67,36 +69,25 @@ export var box3_expandByPoint = (box, point) => {
 };
 
 /**
- * @callback ExpandByObject
  * @param {Box3} box
  * @param {Object3D} object
+ * @return {Box3}
  */
-export var box3_expandByObject = (() => {
-  /** @type {Box3} */
-  var scope;
-  var v1 = vec3_create();
-
-  /**
-   * @param {Object3D} node
-   */
-  var traverse = node => {
+export var box3_expandByObject = (box, object) => {
+  object3d_updateWorldMatrix(object);
+  object3d_traverse(object, node => {
+    // prettier-ignore
     var { geometry } = /** @type {Mesh} */ (node);
     if (geometry) {
       geometry.vertices.map(vertex => {
-        Object.assign(v1, vertex);
-        vec3_applyMatrix4(v1, node.matrixWorld);
-        box3_expandByPoint(scope, v1);
+        Object.assign(_vector, vertex);
+        vec3_applyMatrix4(_vector, node.matrixWorld);
+        box3_expandByPoint(box, _vector);
       });
     }
-  };
-
-  return /** @type {ExpandByObject} */ (box, object) => {
-    scope = box;
-    object3d_updateMatrixWorld(object);
-    object3d_traverse(object, traverse);
-    return box;
-  };
-})();
+  });
+  return box;
+};
 
 /**
  * @param {Box3} box

@@ -15,6 +15,12 @@ import {
   vec3_subVectors,
 } from './vec3.js';
 
+var _zero = vec3_create();
+var _one = vec3_create(1, 1, 1);
+var _x = vec3_create();
+var _y = vec3_create();
+var _z = vec3_create();
+
 export var mat4_create = () => {
   // prettier-ignore
   return new Float32Array([
@@ -52,70 +58,61 @@ export var mat4_copy = (a, b) => {
 };
 
 /**
- * @callback MakeRotationFromQuaternion
  * @param {Matrix4} m
  * @param {Quaternion} q
  * @return {Matrix4}
  */
-export var mat4_makeRotationFromQuaternion = (() => {
-  var zero = vec3_create();
-  var one = vec3_create(1, 1, 1);
-
-  return /** @type {MakeRotationFromQuaternion} */ (m, q) => {
-    return mat4_compose(m, zero, q, one);
-  };
-})();
+export var mat4_makeRotationFromQuaternion = (m, q) => {
+  return mat4_compose(m, _zero, q, _one);
+};
 
 /**
- * @callback LookAt
  * @param {Matrix4} m
  * @param {Vector3} eye
  * @param {Vector3} target
  * @param {Vector3} up
  * @return {Matrix4}
  */
-export var mat4_lookAt = (() => {
-  var x = vec3_create();
-  var y = vec3_create();
-  var z = vec3_create();
+export var mat4_lookAt = (m, eye, target, up) => {
+  vec3_subVectors(_z, eye, target);
 
-  return /** @type {LookAt} */ (m, eye, target, up) => {
-    vec3_normalize(vec3_subVectors(z, eye, target));
+  if (!vec3_length(_z)) {
+    // eye and target are in the same position
+    _z.z = 1;
+  }
 
-    if (!vec3_length(z)) {
-      z.z = 1;
+  vec3_normalize(_z);
+  vec3_crossVectors(_x, up, _z);
+
+  if (!vec3_length(_x)) {
+    // up and z are parallel
+    if (Math.abs(up.z) === 1) {
+      _z.x += 0.0001;
+    } else {
+      _z.z += 0.0001;
     }
 
-    vec3_normalize(vec3_crossVectors(x, up, z));
+    vec3_normalize(_z);
+    vec3_crossVectors(_x, up, _z);
+  }
 
-    if (!vec3_length(x)) {
-      // up and z are parallel
-      if (Math.abs(up.z) === 1) {
-        z.x += 0.0001;
-      } else {
-        z.z += 0.0001;
-      }
+  vec3_normalize(_x);
+  vec3_crossVectors(_y, _z, _x);
 
-      vec3_normalize(vec3_crossVectors(x, up, z));
-    }
+  m[0] = _x.x;
+  m[4] = _y.x;
+  m[8] = _z.x;
 
-    vec3_crossVectors(y, z, x);
+  m[1] = _x.y;
+  m[5] = _y.y;
+  m[9] = _z.y;
 
-    m[0] = x.x;
-    m[4] = y.x;
-    m[8] = z.x;
+  m[2] = _x.z;
+  m[6] = _y.z;
+  m[10] = _z.z;
 
-    m[1] = x.y;
-    m[5] = y.y;
-    m[9] = z.y;
-
-    m[2] = x.z;
-    m[6] = y.z;
-    m[10] = z.z;
-
-    return m;
-  };
-})();
+  return m;
+};
 
 /**
  * @param {Matrix4} m

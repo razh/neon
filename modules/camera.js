@@ -26,6 +26,8 @@ import { vec3_clone, vec3_Y } from './vec3.js';
 
 var DEG_TO_RAD = Math.PI / 180;
 
+var _m1 = mat4_create();
+
 /**
  * @param {number} fov
  * @param {number} aspect
@@ -51,18 +53,13 @@ export var camera_create = (fov = 60, aspect = 1, near = 0.1, far = 2000) => {
 };
 
 /**
- * @callback LookAt
  * @param {Camera} camera
  * @param {Vector3} vector
  */
-export var camera_lookAt = (() => {
-  var m1 = mat4_create();
-
-  return /** @type {LookAt} */ (camera, vector) => {
-    mat4_lookAt(m1, camera.position, vector, camera.up);
-    quat_setFromRotationMatrix(camera.quaternion, m1);
-  };
-})();
+export var camera_lookAt = (camera, vector) => {
+  mat4_lookAt(_m1, camera.position, vector, camera.up);
+  quat_setFromRotationMatrix(camera.quaternion, _m1);
+};
 
 /**
  * @param {Camera} camera
@@ -70,7 +67,7 @@ export var camera_lookAt = (() => {
 export var camera_updateProjectionMatrix = camera => {
   var { near, far } = camera;
 
-  var top = near * Math.tan(camera.fov * 0.5 * DEG_TO_RAD);
+  var top = near * Math.tan(DEG_TO_RAD * 0.5 * camera.fov);
   var bottom = -top;
   var left = bottom * camera.aspect;
   var right = top * camera.aspect;

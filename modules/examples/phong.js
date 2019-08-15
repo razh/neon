@@ -19,7 +19,7 @@ import {
   object3d_add,
   object3d_create,
   object3d_traverse,
-  object3d_updateMatrixWorld,
+  object3d_updateWorldMatrix,
 } from '../object3d.js';
 import { pointerLock_create } from '../pointerLock.js';
 import {
@@ -160,7 +160,7 @@ var renderMesh = mesh => {
 var lightDirection = vec3_create();
 
 var render = () => {
-  object3d_updateMatrixWorld(scene);
+  object3d_updateWorldMatrix(scene);
   mat4_getInverse(camera.matrixWorldInverse, camera.matrixWorld);
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

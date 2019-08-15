@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "lib": ["dom", "ES2018"],
+    "lib": ["dom", "ES2019"],
     "noEmit": true,
     "rootDirs": ["modules"],
     "strict": true

@@ -42,6 +42,10 @@ import {
   vec3_Z,
 } from './vec3.js';
 
+var _v1 = vec3_create();
+var _q1 = quat_create();
+var _m1 = mat4_create();
+
 /**
  * @return {Object3D}
  */
@@ -60,18 +64,13 @@ export var object3d_create = () => {
 };
 
 /**
- * @callback LookAt
  * @param {Object3D} object
  * @param {Vector3} vector
  */
-export var object3d_lookAt = (() => {
-  var m1 = mat4_create();
-
-  return /** @type {LookAt} */ (object, vector) => {
-    mat4_lookAt(m1, vector, object.position, vec3_Y);
-    quat_setFromRotationMatrix(object.quaternion, m1);
-  };
-})();
+export var object3d_lookAt = (object, vector) => {
+  mat4_lookAt(_m1, vector, object.position, vec3_Y);
+  quat_setFromRotationMatrix(object.quaternion, _m1);
+};
 
 /**
  * @param {Object3D} parent
@@ -96,21 +95,18 @@ export var object3d_remove = (parent, child) => {
 };
 
 /**
- * @callback RotateOnAxis
- * @param {Object3D} parent
+ * @param {Object3D} obj
  * @param {Vector3} axis
  * @param {number} angle
  * @return {Object3D}
  */
-export var object3d_rotateOnAxis = (() => {
-  var q1 = quat_create();
-
-  return /** @type {RotateOnAxis} */ (obj, axis, angle) => {
-    quat_setFromAxisAngle(q1, axis, angle);
-    quat_multiply(obj.quaternion, q1);
-    return obj;
-  };
-})();
+export var object3d_rotateOnAxis = (obj, axis, angle) => {
+  // rotate object on axis in object space
+  // axis is assumed to be normalized
+  quat_setFromAxisAngle(_q1, axis, angle);
+  quat_multiply(obj.quaternion, _q1);
+  return obj;
+};
 
 /**
  * @param {Object3D} obj
@@ -140,21 +136,18 @@ export var object3d_rotateZ = (obj, angle) => {
 };
 
 /**
- * @callback TranslateOnAxis
  * @param {Object3D} obj
  * @param {Vector3} axis
  * @param {number} distance
  * @return {Object3D}
  */
-export var object3d_translateOnAxis = (() => {
-  var v1 = vec3_create();
-
-  return /** @type {TranslateOnAxis} */ (obj, axis, distance) => {
-    vec3_applyQuaternion(Object.assign(v1, axis), obj.quaternion);
-    vec3_add(obj.position, vec3_multiplyScalar(v1, distance));
-    return obj;
-  };
-})();
+export var object3d_translateOnAxis = (obj, axis, distance) => {
+  // translate object by distance along axis in object space
+  // axis is assumed to be normalized
+  vec3_applyQuaternion(Object.assign(_v1, axis), obj.quaternion);
+  vec3_add(obj.position, vec3_multiplyScalar(_v1, distance));
+  return obj;
+};
 
 /**
  * @param {Object3D} obj
@@ -207,7 +200,7 @@ export var object3d_updateMatrix = obj => {
 /**
  * @param {Object3D} obj
  */
-export var object3d_updateMatrixWorld = obj => {
+export var object3d_updateWorldMatrix = obj => {
   object3d_updateMatrix(obj);
 
   if (!obj.parent) {
@@ -216,5 +209,5 @@ export var object3d_updateMatrixWorld = obj => {
     mat4_multiplyMatrices(obj.matrixWorld, obj.parent.matrixWorld, obj.matrix);
   }
 
-  obj.children.map(object3d_updateMatrixWorld);
+  obj.children.map(object3d_updateWorldMatrix);
 };
