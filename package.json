@@ -2,9 +2,9 @@
   "name": "neon",
   "version": "1.0.0",
   "description": "neon",
-  "main": "modules/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "lint": "eslint ./modules"
+    "lint": "eslint ./src"
   },
   "repository": {
     "type": "git",

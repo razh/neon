@@ -95,7 +95,7 @@ function glsl() {
 gulp.task('rollup', () => {
   return (
     rollup({
-      input: 'modules/index.js',
+      input: 'src/index.js',
       plugins: [glsl()],
     })
       .then(bundle =>
@@ -138,7 +138,7 @@ gulp.task('html', () => {
 });
 
 gulp.task('watch', () => {
-  gulp.watch(['modules/**/*.js'], gulp.series('js'));
+  gulp.watch(['src/**/*.js'], gulp.series('js'));
   gulp.watch(['./index.html'], gulp.series('html'));
 });
 
