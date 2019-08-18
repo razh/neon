@@ -115,11 +115,13 @@ gulp.task('html', () => {
     .pipe(
       $.htmlmin({
         collapseWhitespace: true,
+        minifyCSS: true,
         removeAttributeQuotes: true,
         removeComments: true,
-        minifyCSS: true,
+        removeOptionalTags: true,
       }),
     )
+    .pipe($.replace('./src/index.js', './bundle.js'))
     .pipe(gulp.dest('dist'));
 });
 
