@@ -4,7 +4,8 @@
   "description": "neon",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "watch": "browser-sync start --server --watch --no-open --no-ghost-mode"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,6 @@
     "glsl-tokenizer": "2.1.5",
     "gulp": "4.0.2",
     "gulp-htmlmin": "5.0.1",
-    "gulp-if": "3.0.0",
     "gulp-load-plugins": "2.0.1",
     "gulp-size": "3.0.0",
     "gulp-uglify": "3.0.2",

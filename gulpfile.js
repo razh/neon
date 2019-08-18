@@ -7,7 +7,6 @@
 const gulp = require('gulp');
 const $ = require('gulp-load-plugins')();
 
-const browserSync = require('browser-sync').create();
 const del = require('del');
 const { rollup } = require('rollup');
 
@@ -21,17 +20,6 @@ const SPACES_AROUND_OPERATORS_REGEX = new RegExp(
   `\\s*(${operators.map(escapeStringRegexp).join('|')})\\s*`,
   'g',
 );
-
-let production = false;
-
-gulp.task('browser-sync', () => {
-  return browserSync.init({
-    browser: [],
-    server: {
-      baseDir: './dist',
-    },
-  });
-});
 
 gulp.task('clean', () => del(['build', 'dist']));
 
@@ -82,10 +70,13 @@ function glsl() {
         return;
       }
 
+      const startIndex = code.indexOf('`');
+      const prefix = code.slice(0, startIndex);
+      const endIndex = code.lastIndexOf('`');
+      const glslString = code.slice(startIndex + 1, endIndex - 1).trim();
+
       return {
-        code: `export default ${JSON.stringify(
-          production ? minify(code) : code,
-        )};`,
+        code: `${prefix}\`${minify(glslString)}\``,
         map: { mappings: '' },
       };
     },
@@ -112,9 +103,8 @@ gulp.task('rollup', () => {
 gulp.task('uglify', () => {
   return gulp
     .src('build/bundle.js')
-    .pipe($.if(production, uglify()))
-    .pipe(gulp.dest('dist'))
-    .pipe(browserSync.stream());
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('js', gulp.series('rollup', 'uglify'));
@@ -123,45 +113,17 @@ gulp.task('html', () => {
   return gulp
     .src('./index.html')
     .pipe(
-      $.if(
-        production,
-        $.htmlmin({
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeComments: true,
-          minifyCSS: true,
-        }),
-      ),
+      $.htmlmin({
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+        minifyCSS: true,
+      }),
     )
-    .pipe(gulp.dest('dist'))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', () => {
-  gulp.watch(['src/**/*.js'], gulp.series('js'));
-  gulp.watch(['./index.html'], gulp.series('html'));
-});
-
-gulp.task(
-  'default',
-  gulp.series(
-    'clean',
-    gulp.parallel('html', 'js'),
-    gulp.parallel('browser-sync', 'watch'),
-  ),
-);
-
-gulp.task(
-  'build',
-  gulp.series(
-    'clean',
-    function build(done) {
-      production = true;
-      done();
-    },
-    gulp.parallel('html', 'js'),
-  ),
-);
+gulp.task('build', gulp.series('clean', gulp.parallel('html', 'js')));
 
 gulp.task('compress', () => {
   return gulp
