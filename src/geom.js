@@ -1,6 +1,6 @@
 /**
- * @typedef {import('./vec3').Vector3} Vector3
  * @typedef {import('./face3').Face3} Face3
+ * @typedef {import('./vec3').Vector3} Vector3
  */
 
 /**
@@ -9,14 +9,14 @@
  * @property {Face3[]} faces
  */
 
+import { face3_clone, face3_create } from './face3.js';
 import {
-  vec3_create,
-  vec3_set,
-  vec3_clone,
   vec3_add,
+  vec3_clone,
+  vec3_create,
   vec3_multiply,
+  vec3_set,
 } from './vec3.js';
-import { face3_create, face3_clone } from './face3.js';
 
 var _vector = vec3_create();
 

@@ -1,14 +1,13 @@
 import {
-  createShaderProgram,
   createFloat32Buffer,
-  setFloat32Attribute,
-  setMat4Uniform,
+  createShaderProgram,
   getAttributeLocations,
   getUniformLocations,
+  setFloat32Attribute,
+  setMat4Uniform,
 } from '../shader.js';
-
-import vert from '../shaders/test_vert.glsl.js';
 import frag from '../shaders/test_frag.glsl.js';
+import vert from '../shaders/test_vert.glsl.js';
 
 /* global c */
 // prettier-ignore

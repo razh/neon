@@ -11,7 +11,7 @@
  * @property {Vector3[]} vertexColors
  */
 
-import { vec3_create, vec3_clone } from './vec3.js';
+import { vec3_clone, vec3_create } from './vec3.js';
 
 /**
  * @param {number} a

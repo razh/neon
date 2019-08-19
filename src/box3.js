@@ -12,11 +12,11 @@
 
 import { object3d_traverse, object3d_updateWorldMatrix } from './object3d.js';
 import {
-  vec3_create,
   vec3_add,
   vec3_applyMatrix4,
-  vec3_min,
+  vec3_create,
   vec3_max,
+  vec3_min,
 } from './vec3.js';
 
 var _vector = vec3_create();

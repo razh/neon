@@ -4,7 +4,7 @@
  */
 
 import { boxGeom_create } from '../boxGeom.js';
-import { bufferGeom_fromGeom, bufferGeom_create } from '../bufferGeom.js';
+import { bufferGeom_create, bufferGeom_fromGeom } from '../bufferGeom.js';
 import {
   camera_create,
   camera_lookAt,
@@ -23,15 +23,17 @@ import {
 } from '../object3d.js';
 import { pointerLock_create } from '../pointerLock.js';
 import {
-  createShaderProgram,
   createFloat32Buffer,
+  createShaderProgram,
+  getAttributeLocations,
+  getUniformLocations,
   setFloat32Attribute,
   setFloatUniform,
   setMat4Uniform,
   setVec3Uniform,
-  getAttributeLocations,
-  getUniformLocations,
 } from '../shader.js';
+import frag from '../shaders/phong_frag.glsl.js';
+import vert from '../shaders/phong_vert.glsl.js';
 import {
   vec3_create,
   vec3_multiplyScalar,
@@ -40,9 +42,6 @@ import {
   vec3_sub,
   vec3_transformDirection,
 } from '../vec3.js';
-
-import vert from '../shaders/phong_vert.glsl.js';
-import frag from '../shaders/phong_frag.glsl.js';
 
 /* global c */
 // prettier-ignore

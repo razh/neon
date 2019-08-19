@@ -18,25 +18,23 @@
  */
 
 import {
-  mat4_create,
   mat4_compose,
   mat4_copy,
+  mat4_create,
   mat4_lookAt,
   mat4_multiplyMatrices,
 } from './mat4.js';
-
 import {
   quat_create,
   quat_multiply,
   quat_setFromAxisAngle,
   quat_setFromRotationMatrix,
 } from './quat.js';
-
 import {
-  vec3_create,
   vec3_add,
-  vec3_multiplyScalar,
   vec3_applyQuaternion,
+  vec3_create,
+  vec3_multiplyScalar,
   vec3_X,
   vec3_Y,
   vec3_Z,

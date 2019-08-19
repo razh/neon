@@ -23,10 +23,10 @@
 
 import { mat4_create, mat4_getInverse } from './mat4.js';
 import {
-  vec3_create,
   vec3_add,
   vec3_applyMatrix4,
   vec3_clone,
+  vec3_create,
   vec3_cross,
   vec3_crossVectors,
   vec3_distanceTo,

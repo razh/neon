@@ -8,7 +8,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  plugins: ['jsdoc', 'prettier'],
+  plugins: ['jsdoc', 'prettier', 'simple-import-sort'],
   parserOptions: {
     ecmaVersion: 2019,
     sourceType: 'module',
@@ -18,6 +18,7 @@ module.exports = {
     'object-shorthand': ['error', 'always'],
     'jsdoc/require-param-description': 'off',
     'jsdoc/require-returns-description': 'off',
+    'simple-import-sort/sort': 'error',
   },
   settings: {
     jsdoc: {
