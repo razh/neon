@@ -40,13 +40,8 @@ export var controls_create = object => {
         return;
       }
 
-      var { movementX, movementY } = event;
-
-      var pitch = -movementY * controls.sensitivity;
-      var yaw = -movementX * controls.sensitivity;
-
-      pitchEuler.x += pitch;
-      yawEuler.y += yaw;
+      pitchEuler.x -= event.movementY * controls.sensitivity;
+      yawEuler.y -= event.movementX * controls.sensitivity;
 
       pitchEuler.x = clamp(pitchEuler.x, -Math.PI / 2, Math.PI / 2);
 
