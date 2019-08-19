@@ -9,31 +9,6 @@
   },
   "include": [
     "./globals.d.ts",
-    "./src/box3.js",
-    "./src/boxGeom.js",
-    "./src/bufferAttr.js",
-    "./src/bufferGeom.js",
-    "./src/camera.js",
-    "./src/controls.js",
-    "./src/directGeom.js",
-    "./src/directionalLight.js",
-    "./src/easings.js",
-    "./src/entity.js",
-    "./src/examples/basic.js",
-    "./src/examples/phong.js",
-    "./src/face3.js",
-    "./src/geom.js",
-    "./src/keys.js",
-    "./src/mat4.js",
-    "./src/material.js",
-    "./src/math.js",
-    "./src/mesh.js",
-    "./src/object3d.js",
-    "./src/pointerLock.js",
-    "./src/quat.js",
-    "./src/ray.js",
-    "./src/shader.js",
-    "./src/tween.js",
-    "./src/vec3.js"
+    "./src/**/*.js"
   ]
 }
