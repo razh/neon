@@ -244,6 +244,8 @@ document.addEventListener('keypress', event => {
     running = !running;
     if (running) {
       animate();
+    } else {
+      document.exitPointerLock();
     }
   }
 });
