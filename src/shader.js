@@ -120,3 +120,14 @@ export var getUniformLocations = (gl, program) => {
 
   return locations;
 };
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @return {WebGLShaderPrecisionFormat | null}
+ */
+export var supportsHighPrecision = gl => {
+  return (
+    gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT) &&
+    gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)
+  );
+};
