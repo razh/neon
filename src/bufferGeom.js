@@ -25,8 +25,9 @@ export var bufferGeom_create = () => {
  * @param {Geometry} geom
  * @return {BufferGeometry}
  */
-export var bufferGeom_fromGeom = (bufferGeom, geom) =>
-  bufferGeom_fromDirectGeom(bufferGeom, directGeom_fromGeom(geom));
+export var bufferGeom_fromGeom = (bufferGeom, geom) => {
+  return bufferGeom_fromDirectGeom(bufferGeom, directGeom_fromGeom(geom));
+};
 
 /**
  * @param {BufferGeometry} bufferGeom
